@@ -1,20 +1,28 @@
-# Deploying Jawai Mumal on Hostinger
+# Deploying Jawai Mumal on Hostinger (SSH + live sync with GitHub)
 
-1. **Upload** all files to `public_html` (File Manager or Git deploy). Keep the `.htaccess`.
-2. **Database (recommended):** hPanel → Databases → create a MySQL database + user.
-   Create `config.local.php` next to `config.php`:
-   ```php
-   <?php
-   define('DB_HOST', 'localhost');
-   define('DB_USER', 'u123456789_jawai');
-   define('DB_PASS', 'your-password');
-   define('DB_NAME', 'u123456789_jawai');
+The site runs on plain PHP 8 — no build step. One setup script downloads it from GitHub, creates the database and
+admin login, and installs a cron job that pulls new changes **every minute** (live sync).
+
+## One-time setup
+1. Connect: `ssh -p 65002 YOUR_USER@YOUR_SERVER_IP` (hPanel → Advanced → SSH Access; or use its *Browser terminal*).
+2. Run (replace the password; choose the branch you want live — `main` once the work is merged):
+   ```bash
+   curl -fsSL https://raw.githubusercontent.com/mrsheoganj/jawai-mumal/main/deploy/server-setup.sh -o /tmp/jm-setup.sh
+   JM_ADMIN_PASS='YOUR-ADMIN-PASSWORD' BRANCH=main bash /tmp/jm-setup.sh
    ```
-   Tables and demo content are created automatically on the first visit — no SQL import needed.
-   (Without it the site still works using a SQLite file in `data/`, but MySQL is better for production.)
-3. **Permissions:** `assets/uploads/` and `data/` must be writable (755/775).
-4. Visit `https://jawaimumal.com/admin/login.php`, sign in with `admin` / `admin123` and **change the password** (My account).
-5. In *Contact, logo & rules*, set the email, Instagram/Facebook links, and replace demo rooms/prices/photos.
-6. Enable free SSL in hPanel (force HTTPS).
+   It auto-detects `~/domains/jawaimumal.com/public_html`. Use `SITE_DIR=/path/to/public_html` if yours differs.
+3. Open `https://jawaimumal.com/admin/login.php` — user `admin`, the password you chose.
 
-Backups: download `data/` (if SQLite) or export the MySQL database from phpMyAdmin, plus `assets/uploads/`.
+## What lives where
+- **Code**: GitHub. Every push to the chosen branch goes live within a minute (`deploy/sync.sh`, log in `~/jm-sync.log`).
+- **Database**: a SQLite file in `data/` on the server (no MySQL setup needed). It, the photos in `assets/uploads/` and
+  `config.local.php` are *never* overwritten by a sync. To use MySQL instead, create a database in hPanel and run the
+  setup script with `JM_DB_NAME`, `JM_DB_USER`, `JM_DB_PASS` (and `JM_DB_HOST` if not `localhost`).
+- **Secrets**: only in `config.local.php` on the server (git-ignored). Never commit passwords to this public repository.
+
+## Everyday use
+- Change content (text, photos, prices, slides, modes) in the admin panel — it is stored on the server.
+- Change code/design: commit to the live branch on GitHub and wait a minute.
+- Switch the live branch later: `echo main > ~/domains/jawaimumal.com/public_html/.git/jm-branch`.
+- Backups: download `data/jawai_mumal.sqlite` and `assets/uploads/` (File Manager or `scp -P 65002`).
+- Enable free SSL in hPanel and force HTTPS.
