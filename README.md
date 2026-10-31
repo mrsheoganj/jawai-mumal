@@ -54,3 +54,4 @@ Add editable text anywhere in a template with `<?= et('page.section.key', 'Defau
 Images are free stock photos used as placeholders; replace them with your own from the admin panel.
 <!-- sync-test 1793477259 -->
 <!-- auto-test 1793477280 -->
+<!-- hook-test 1793477297 -->
