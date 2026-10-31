@@ -23,7 +23,7 @@ page_head(t('room.head.eyebrow', 'Stay'), $r['name'], $r['tagline'], $r['image']
       <ul class="meta" style="font-size:1rem"><li><?= icon('users', 18) ?><?= e($r['capacity']) ?></li><li><?= icon('bed', 18) ?><?= e($r['beds']) ?></li><li><?= icon('building', 18) ?><?= e($r['size']) ?></li><li><?= icon('mountain', 18) ?><?= e($r['view_type']) ?></li></ul>
       <h3 style="margin-top:1.5rem"><?= et('room.inroom', 'In the room') ?></h3>
       <ul class="checks" style="color:var(--ink-2)"><?php foreach (lines($r['amenities']) as $a): ?><li><span style="color:var(--gold-d)"><?= icon(amenity_icon($a), 16) ?></span><?= e($a) ?></li><?php endforeach; ?></ul>
-      <div class="price" style="margin:1.2rem 0"><small><?= et('room.from', 'from') ?></small><?= money($r['price']) ?> <span>/ <?= et('room.night', 'night') ?> + <?= e(setting('tax_percent')) ?>% GST</span></div>
+      <div class="price" style="margin:1.2rem 0"><small><?= et('room.from', 'from') ?></small><?= money($r['price']) ?> <span>/ <?= et('room.night', 'night') ?> + <?= e(rtrim(rtrim(number_format(gst_rate((int)$r['price']), 1), '0'), '.')) ?>% GST</span></div>
       <p class="demo-note"><?= icon('clock', 16) ?> Check-in <?= e(setting('checkin_time')) ?> · Check-out <?= e(setting('checkout_time')) ?></p>
     </div>
   </div>

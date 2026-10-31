@@ -38,7 +38,7 @@ admin_head('Bookings & enquiries', 'bookings');
   <?php foreach ($list as $b): ?>
     <tr>
       <td><strong><?= e($b['code']) ?></strong><br><span class="muted"><?= e(date('d M, g:i a', strtotime($b['created_at']))) ?></span></td>
-      <td><strong><?= e($b['guest_name']) ?></strong><br><a href="<?= e(tel($b['phone'])) ?>"><?= e($b['phone']) ?></a> · <a href="<?= e(wa_link('Hello ' . $b['guest_name'] . ', this is Jawai Mumal about your request ' . $b['code'])) ?>" target="_blank" rel="noopener">WhatsApp</a><?= $b['email'] ? '<br><span class="muted">' . e($b['email']) . '</span>' : '' ?></td>
+      <td><strong><?= e($b['guest_name']) ?></strong><br><a href="<?= e(tel($b['phone'])) ?>"><?= e($b['phone']) ?></a> · <a href="<?= e(wa_to($b['phone'], 'Hello ' . $b['guest_name'] . ', this is ' . setting('site_name') . ' about your request ' . $b['code'] . '.')) ?>" target="_blank" rel="noopener">WhatsApp</a><?= $b['email'] ? '<br><span class="muted">' . e($b['email']) . '</span>' : '' ?></td>
       <td><span class="pill"><?= e(booking_types()[$b['type']] ?? $b['type']) ?></span><br><?= e($b['item_name']) ?><br><span class="muted"><?= (int)$b['guests'] ?> guest<?= $b['guests'] > 1 ? 's' : '' ?><?= $b['amount'] ? ' · est. ' . money($b['amount'] + $b['tax']) : '' ?></span></td>
       <td><?= $b['date_from'] ? e(fmt_date($b['date_from'])) : '—' ?><?= $b['date_to'] ? '<br>→ ' . e(fmt_date($b['date_to'])) . ' (' . (int)$b['nights'] . 'n)' : '' ?><?= $b['time_slot'] ? '<br>' . e($b['time_slot']) : '' ?></td>
       <td><?= pill_status($b['status']) ?></td>
@@ -47,7 +47,8 @@ admin_head('Bookings & enquiries', 'bookings');
           <?php if ($b['notes']): ?><p class="help"><strong>Guest note:</strong> <?= e($b['notes']) ?></p><?php endif; ?>
           <select name="status" aria-label="Status"><?php foreach (booking_statuses() as $s): ?><option <?= $b['status'] === $s ? 'selected' : '' ?>><?= e($s) ?></option><?php endforeach; ?></select>
           <textarea name="admin_notes" rows="2" placeholder="Private notes (not shown to guest)"><?= e($b['admin_notes']) ?></textarea>
-          <button class="btn btn--gold btn--sm">Save</button></form>
+          <button class="btn btn--gold btn--sm">Save</button>
+          <a class="btn btn--wa btn--sm" target="_blank" rel="noopener" href="<?= e(wa_to($b['phone'], booking_wa_message($b, true) . "\n\nYour request is confirmed. We look forward to welcoming you. For any change, reply here or call " . setting('owner1_phone') . '.')) ?>"><?= icon('whatsapp', 16) ?> Send confirmation on WhatsApp</a></form>
         <form method="post" style="margin-top:.5rem"><?= csrf_field() ?><input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="<?= (int)$b['id'] ?>"><button class="btn btn--danger btn--sm" data-confirm="Delete this booking permanently?"><?= icon('trash', 16) ?> Delete</button></form></details></td>
     </tr>
   <?php endforeach; ?>

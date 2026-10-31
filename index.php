@@ -159,7 +159,7 @@ $n = count($slides);
         </div>
       </article>
     <?php endforeach; ?>
-    <p style="text-align:center;margin-top:2rem"><a class="btn btn--ghost" href="<?= url('safari.php') ?>"><?= et('home.safari.all', 'All safari experiences') ?> <?= icon('arrow-right', 18) ?></a></p>
+    <p style="text-align:center;margin-top:2rem"><a class="btn btn--line" href="<?= url('safari.php') ?>"><?= et('home.safari.all', 'All safari experiences') ?> <?= icon('arrow-right', 18) ?></a></p>
   </div>
 </section>
 
@@ -248,7 +248,7 @@ $n = count($slides);
           <li style="display:flex;gap:.8rem"><?= icon('phone', 20) ?><span><a style="font:600 1.4rem var(--serif);text-decoration:none" href="<?= e(tel(setting($o . '_phone'))) ?>"><?= e(setting($o . '_phone')) ?></a><br><small style="opacity:.7"><?= e(setting($o . '_name')) ?> · <?= e(setting($o . '_role')) ?></small></span></li>
         <?php endforeach; ?>
       </ul>
-      <div class="hero__cta"><a class="btn btn--gold" href="<?= e(wa_link('Hello Jawai Mumal')) ?>" target="_blank" rel="noopener"><?= icon('whatsapp', 18) ?> WhatsApp</a><a class="btn btn--ghost" href="<?= e(maps_open_url()) ?>" target="_blank" rel="noopener"><?= icon('navigation', 18) ?> <?= et('home.find.btn', 'Get directions') ?></a></div>
+      <div class="hero__cta"><a class="btn btn--gold" href="<?= e(wa_link('Hello Jawai Mumal')) ?>" target="_blank" rel="noopener"><?= icon('whatsapp', 18) ?> WhatsApp</a><a class="btn btn--line" href="<?= e(maps_open_url()) ?>" target="_blank" rel="noopener"><?= icon('navigation', 18) ?> <?= et('home.find.btn', 'Get directions') ?></a></div>
     </div>
     <iframe class="map rv d1" title="Map to <?= e(setting('site_name')) ?>" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="<?= e(map_embed_src()) ?>"></iframe>
   </div>

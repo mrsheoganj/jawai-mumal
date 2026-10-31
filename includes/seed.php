@@ -73,16 +73,16 @@ function jm_seed(PDO $pdo): void {
     $att = [
         ['Jawai Leopard Hills', 'Wildlife', 'Nearby', 'Granite domes, caves and boulder fields where leopards rest by day. A short walk from villages, farms and hill temples. Estimates put the wider Jawai area at roughly 50–70 leopards; there is no official count.', $I.'leopard-log.jpg'],
         ['Jawai Bandh Leopard Conservation Reserve', 'Wildlife', 'Nearby', 'A notified conservation reserve around the Jawai hills that helps protect leopards and their habitat while local herding communities continue to graze their animals nearby.', $I.'hills-terrace.jpg'],
-        ['Jawai Dam (Jawai Bandh)', 'Nature', 'Short drive', 'Completed in 1957 on the Jawai river, one of western Rajasthan\'s largest reservoirs. Mugger crocodiles, winter flamingos, cranes and raptors, with granite hills all around.', $I.'hills-green.jpg'],
+        ['Jawai Dam (Jawai Bandh)', 'Nature', '15 km · about 30 min', 'Completed in 1957 on the Jawai river, one of western Rajasthan\'s largest reservoirs. Mugger crocodiles, winter flamingos, cranes and raptors, with granite hills all around.', $I.'hills-green.jpg'],
         ['Rabari Villages', 'Culture', 'Nearby', 'Meet the Rabari herders, known for their red turbans and silver jewellery, whose long tradition of living beside leopards is the heart of Jawai\'s story.', $I.'culture-hawamahal.jpg'],
         ['Village Food & Chai Stops', 'Experience', 'In and around Bera', 'Bajra roti with ghee, buttermilk, ker sangri and kulhad chai — ask us to arrange a village-style meal or a chai halt on your drive.', $I.'food-thali.jpg'],
         ['Granite Hill Sunrise & Sunset Points', 'Nature', 'Nearby', 'Quiet viewpoints over the boulder-strewn hills, perfect for golden-hour photographs and a flask of tea.', $I.'hero-savanna.jpg'],
         ['Stargazing & Campfire', 'Experience', 'At the hotel', 'Clear desert skies away from city light. Ask the team to arrange an evening campfire.', $I.'resort-night.jpg'],
-        ['Ranakpur Jain Temples', 'Heritage', 'Approx. 1.5–2 hrs', 'A marble temple complex with 1,444 carved pillars set in a forested valley.', $I.'culture-hawamahal.jpg'],
-        ['Kumbhalgarh Fort', 'Heritage', 'Approx. 2 hrs', 'A 15th-century hill fort with one of the longest continuous walls in the world.', $I.'culture-fort.jpg'],
-        ['Mount Abu', 'Nature', 'Approx. 2.5–3 hrs', 'Rajasthan\'s only hill station, with Nakki Lake, the Dilwara temples and cool air.', $I.'hills-green.jpg'],
-        ['Udaipur — City of Lakes', 'Heritage', 'Approx. 2.5 hrs', 'City Palace, Lake Pichola and royal-era havelis.', $I.'resort-deck.jpg'],
-        ['Jodhpur — Mehrangarh Fort', 'Heritage', 'Approx. 3.5 hrs', 'The Blue City and its giant fortress above the old town.', $I.'culture-fort.jpg'],
+        ['Ranakpur Jain Temples', 'Heritage', '48 km · about 1 hr', 'A marble temple complex with 1,444 carved pillars set in a forested valley.', $I.'culture-hawamahal.jpg'],
+        ['Kumbhalgarh Fort', 'Heritage', '81 km · about 1 hr 40 min', 'A 15th-century hill fort with one of the longest continuous walls in the world.', $I.'culture-fort.jpg'],
+        ['Mount Abu', 'Nature', '99 km · about 2 hrs', 'Rajasthan\'s only hill station, with Nakki Lake, the Dilwara temples and cool air.', $I.'hills-green.jpg'],
+        ['Udaipur — City of Lakes', 'Heritage', '114 km · about 2 hrs', 'City Palace, Lake Pichola and royal-era havelis.', $I.'resort-deck.jpg'],
+        ['Jodhpur — Mehrangarh Fort', 'Heritage', '175 km · about 3 hrs', 'The Blue City and its giant fortress above the old town.', $I.'culture-fort.jpg'],
     ];
     foreach ($att as $i => $a) { $st->execute([$a[0], $a[1], $a[2], $a[3], $a[4], 'active', $i]); }
 
@@ -114,7 +114,7 @@ function jm_seed(PDO $pdo): void {
         ['What are check-in and check-out times?', 'Check-in is from 12:00 PM and check-out is by 11:00 AM. Early check-in or late check-out can be arranged on request.'],
         ['Is it suitable for children and older travellers?', 'Very much. Private jeeps let us set a gentle pace, shorten drives and plan comfortable breaks.'],
         ['What should I wear on safari?', 'Neutral colours such as khaki and olive, warm layers for winter mornings, a hat, sunscreen and closed shoes. Modest clothing is appreciated on village visits.'],
-        ['How do I reach Bera?', 'Udaipur airport is about 130 km (2.5–3 hours by road) and Jodhpur airport about 175 km. The nearest railway station is Sumerpur Jawai Bandh (about 18 km); Falna is about 37 km. Please call us for pick-up options.'],
+        ['How do I reach Bera?', 'By road, Udaipur airport is about 129 km (roughly 2 hr 15 min), Jodhpur airport about 173 km (around 2 hr 50 min), Sumerpur Jawai Bandh railway station about 18 km and Falna station about 37 km. See the live map on the Contact page, or call us for pick-up options.'],
         ['How do I confirm a booking?', 'Send a request on the website or WhatsApp us. Our team confirms availability and the final rate personally, usually within a few hours.'],
     ];
     foreach ($faq as $i => $f) { $st->execute([$f[0], $f[1], $i]); }
@@ -132,15 +132,13 @@ function jm_seed_slides(PDO $pdo): void {
 }
 
 function jm_seed_routes(PDO $pdo): void {
-    // Distances are approximate road distances to Bera. Coordinates for stations are left empty on purpose:
-    // directions then search by name. Add exact coordinates in Admin > Distances & travel.
-    $st = $pdo->prepare('INSERT INTO jm_routes (name,kind,code,km,travel_time,note,lat,lng,status,sort_order) VALUES (?,?,?,?,?,?,?,?,?,?)');
-    $rows = [
-        ['Sumerpur Jawai Bandh Railway Station', 'rail', 'JWB', 18, 'about 30 min', 'Nearest railway station', '', '', 'active', 1],
-        ['Falna Railway Station', 'rail', 'FA', 37, 'about 50 min', 'Main line station on the Delhi–Ahmedabad route', '', '', 'active', 2],
-        ['Udaipur City', 'city', '', 115, 'about 2.5 hrs', 'City Palace, lakes and old town', '24.5854', '73.7125', 'active', 3],
-        ['Udaipur Airport (Maharana Pratap)', 'airport', 'UDR', 130, 'about 2.5–3 hrs', 'Nearest major airport', '24.6177', '73.8961', 'active', 4],
-        ['Jodhpur Airport', 'airport', 'JDH', 175, 'about 3.5 hrs', 'Airport for the Marwar side', '26.2511', '73.0489', 'active', 5],
-    ];
-    foreach ($rows as $r) { $st->execute($r); }
+    // Real road distances/routes from Bera village (OpenStreetMap + OSRM), generated once; recalculate any time in Admin > Distances & travel.
+    $data = json_decode((string)@file_get_contents(__DIR__ . '/seed_routes.json'), true) ?: [];
+    $st = $pdo->prepare('INSERT INTO jm_routes (name,kind,code,km,travel_time,note,lat,lng,geom,status,sort_order) VALUES (?,?,?,?,?,?,?,?,?,?,?)');
+    foreach ($data as $r) {
+        $m = (int)round($r['minutes'] * 1.2);
+        $h = intdiv($m, 60); $mm = $m % 60;
+        $time = $h === 0 ? 'about ' . $m . ' min' : 'about ' . $h . ' hr' . ($mm >= 8 ? ' ' . (int)(round($mm / 5) * 5) . ' min' : '');
+        $st->execute([$r['name'], $r['kind'], $r['code'], $r['km'], $time, $r['note'], $r['lat'], $r['lng'], json_encode($r['geom']), 'active', $r['sort']]);
+    }
 }

@@ -41,8 +41,8 @@ function settings_schema(): array {
         'whatsapp'     => ['Contact', 'WhatsApp number (digits only, with country code)', 'text', '916367968353'],
         'email'        => ['Contact', 'Email (leave empty to hide)', 'text', ''],
         'address'      => ['Contact', 'Address', 'textarea', "Near Up-Tehsil Office, Bera Village,\nBera–Bali Road, District Pali,\nRajasthan, India"],
-        'map_lat'      => ['Contact', 'Hotel latitude', 'text', '', 'Exact location for maps and directions. In Google Maps press and hold on the hotel, then copy the two numbers, e.g. 25.1234 and 73.1234. Leave both empty to search by the text below.'],
-        'map_lng'      => ['Contact', 'Hotel longitude', 'text', ''],
+        'map_lat'      => ['Contact', 'Hotel latitude', 'text', '25.0011888', 'Currently set to the centre of Bera village. For the exact pin: in Google Maps press and hold on the hotel, copy the two numbers shown, and paste them here. All maps, directions and distances use these.'],
+        'map_lng'      => ['Contact', 'Hotel longitude', 'text', '73.1774854'],
         'map_query'    => ['Contact', 'Map search text (used when coordinates are empty)', 'text', 'Bera, Pali, Rajasthan'],
         'reception_hours' => ['Contact', 'Reception hours', 'text', 'Open daily · 7:00 AM – 11:00 PM'],
 
@@ -51,7 +51,10 @@ function settings_schema(): array {
         'facebook'  => ['Social links', 'Facebook link', 'url', ''],
 
         // ---------------- Booking rules
-        'tax_percent'   => ['Booking rules', 'GST % added to stays', 'number', '12'],
+        'tax_percent'   => ['Booking rules', 'GST % on room tariff up to the limit below', 'number', '5', 'Please confirm the current rates with your accountant.'],
+        'tax_threshold' => ['Booking rules', 'Tariff limit per night (₹)', 'number', '7500'],
+        'tax_percent_high' => ['Booking rules', 'GST % on room tariff above the limit', 'number', '18'],
+        'notify_email'  => ['Booking rules', 'Email me every new booking request (optional)', 'text', '', 'Needs mail to be enabled on your hosting. WhatsApp and the admin Bookings page always work.'],
         'checkin_time'  => ['Booking rules', 'Check-in time', 'text', '12:00 PM'],
         'checkout_time' => ['Booking rules', 'Check-out time', 'text', '11:00 AM'],
         'max_guests'    => ['Booking rules', 'Max guests per booking', 'number', '12'],

@@ -53,6 +53,6 @@ admin_head('Page text & images', 'texts');
   <?php endforeach; ?>
   </div></div>
 <?php endforeach; ?>
-<div class="actions" style="position:sticky;bottom:0;background:#f4efe4;padding:1rem 0"><button class="btn btn--gold" type="submit"><?= icon('check', 18) ?> Save all changes</button><a class="btn btn--line" href="<?= url('index.php') ?>" target="_blank" rel="noopener">Preview website</a></div>
+<div class="actions" style="position:sticky;bottom:0;background:#fafaf8;padding:1rem 0"><button class="btn btn--gold" type="submit"><?= icon('check', 18) ?> Save all changes</button><a class="btn btn--line" href="<?= url('index.php') ?>" target="_blank" rel="noopener">Preview website</a></div>
 </form>
 <?php admin_foot(); ?>

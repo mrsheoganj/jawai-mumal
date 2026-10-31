@@ -27,7 +27,7 @@ page_head(t('rooms.head.eyebrow', 'Stay'), t('rooms.head.title', 'Rooms & Suites
         </article>
       <?php endforeach; ?>
     </div>
-    <p class="demo-note" style="margin-top:1.5rem"><?= icon('shield-check', 16) ?> <?= et('rooms.note', 'Rates are per room per night, before GST. Our team confirms the final rate for your dates.') ?></p>
+    <p class="demo-note" style="margin-top:1.5rem"><?= icon('shield-check', 16) ?> <?= et('rooms.note', 'Rates are per room per night, before GST. Our team confirms the final rate for your dates.') ?> GST: <?= e(setting('tax_percent')) ?>% up to ₹<?= number_format((int)setting('tax_threshold')) ?>, <?= e(setting('tax_percent_high')) ?>% above.</p>
   </div>
 </section>
 <?php include __DIR__ . '/includes/footer.php'; ?>

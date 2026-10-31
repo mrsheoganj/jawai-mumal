@@ -16,10 +16,11 @@ $nav = [
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?= e($pageTitle) ?></title>
 <meta name="description" content="<?= e($pageDesc) ?>">
-<meta name="theme-color" content="#2b180e">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" href="<?= url('assets/brand/favicon.ico') ?>" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="<?= url('assets/brand/icon-32.png') ?>">
 <link rel="icon" type="image/png" sizes="192x192" href="<?= url('assets/brand/icon-192.png') ?>">
+<link rel="manifest" href="<?= url('site.webmanifest') ?>">
 <link rel="apple-touch-icon" href="<?= url('assets/brand/icon-180.png') ?>">
 <meta property="og:type" content="website">
 <meta property="og:title" content="<?= e($pageTitle) ?>">

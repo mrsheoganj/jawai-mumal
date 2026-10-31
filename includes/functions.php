@@ -207,3 +207,52 @@ function route_link(array $r): string {
 }
 function route_kind_icon(string $k): string { return ['airport' => 'plane', 'rail' => 'train', 'city' => 'building', 'bus' => 'car'][$k] ?? 'map-pin'; }
 function route_kind_label(string $k): string { return ['airport' => 'Airport', 'rail' => 'Railway station', 'city' => 'City', 'bus' => 'Bus stand'][$k] ?? 'Place'; }
+
+
+// ---------- WhatsApp booking messages & GST
+function wa_digits(string $phone): string {
+    $d = preg_replace('/\D/', '', $phone);
+    return strlen($d) === 10 ? '91' . $d : ltrim($d, '0');
+}
+/** Plain-text summary of a booking row, ready for WhatsApp (uses *bold*). */
+function booking_wa_message(array $b, bool $toGuest = false): string {
+    $types = booking_types();
+    $L = [];
+    if ($toGuest) {
+        $L[] = 'Hello ' . $b['guest_name'] . ', thank you for choosing ' . setting('site_name') . '.';
+        $L[] = 'This is about your request *' . $b['code'] . '*:';
+    } else {
+        $L[] = 'Hello ' . setting('site_name') . ', I would like to send this request:';
+    }
+    $L[] = '*' . ($types[$b['type']] ?? $b['type']) . '* — ' . $b['item_name'];
+    if ($b['date_from']) {
+        $L[] = ($b['type'] === 'stay' ? 'Check-in: ' : 'Date: ') . date('D, d M Y', strtotime($b['date_from']));
+        if ($b['date_to']) $L[] = 'Check-out: ' . date('D, d M Y', strtotime($b['date_to'])) . ' (' . (int)$b['nights'] . ' night' . ($b['nights'] > 1 ? 's' : '') . ')';
+    }
+    if ($b['time_slot']) $L[] = 'Time: ' . $b['time_slot'];
+    $L[] = 'Guests: ' . (int)$b['guests'];
+    if ((int)$b['amount'] > 0) $L[] = 'Estimate: ' . money($b['amount'] + $b['tax']) . ($b['tax'] ? ' (incl. GST)' : '');
+    if (!$toGuest) {
+        $L[] = 'Name: ' . $b['guest_name'];
+        $L[] = 'Phone: ' . $b['phone'];
+        if (!empty($b['email'])) $L[] = 'Email: ' . $b['email'];
+    }
+    if (!empty($b['notes'])) $L[] = 'Notes: ' . $b['notes'];
+    if (!$toGuest) $L[] = 'Reference: ' . $b['code'];
+    return implode("\n", $L);
+}
+function wa_to(string $phone, string $msg): string { return 'https://wa.me/' . wa_digits($phone) . '?text=' . rawurlencode($msg); }
+/** GST on room tariff: one rate up to the threshold, another above it (set in Admin). */
+function gst_rate($nightly): float {
+    return (float)($nightly <= (float)setting('tax_threshold', '7500') ? setting('tax_percent', '5') : setting('tax_percent_high', '18'));
+}
+function notify_booking(array $b): void {
+    $to = trim(setting('notify_email'));
+    if ($to === '' || !filter_var($to, FILTER_VALIDATE_EMAIL)) return;
+    $from = 'noreply@' . preg_replace('#^https?://(www\.)?#', '', rtrim(setting('site_url'), '/'));
+    @mail($to, 'New ' . (booking_types()[$b['type']] ?? 'booking') . ' request ' . $b['code'] . ' — ' . $b['guest_name'],
+        booking_wa_message($b) . "\n\nManage: " . rtrim(setting('site_url'), '/') . '/admin/bookings.php?q=' . $b['code'],
+        "From: " . setting('site_name') . " <$from>\r\nContent-Type: text/plain; charset=UTF-8");
+}
+
+require_once __DIR__ . '/geo.php';

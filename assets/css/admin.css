@@ -1,7 +1,7 @@
 /* Jawai Mumal admin */
-:root{--ink:#2b180e;--ink-2:#4a3426;--ink-3:#1b0f08;--gold:#c9973f;--gold-2:#e3b866;--gold-d:#8a6420;--cream:#faf6ec;--sand:#f1e8d6;--paper:#fff;--line:rgba(43,24,14,.14);--muted:#66554a;--ok:#2f6b3f;--err:#a3281f;--r:12px;--serif:'Cormorant Garamond',serif;--sans:'Jost',system-ui,sans-serif;--ease:cubic-bezier(.22,.8,.3,1)}
+:root{--ink:#2b180e;--ink-2:#4a3426;--ink-3:#1b0f08;--gold:#c9973f;--gold-2:#e3b866;--gold-d:#8a6420;--cream:#ffffff;--sand:#f1e8d6;--paper:#fff;--line:rgba(43,24,14,.14);--muted:#66554a;--ok:#2f6b3f;--err:#a3281f;--r:12px;--serif:'Cormorant Garamond',serif;--sans:'Jost',system-ui,sans-serif;--ease:cubic-bezier(.22,.8,.3,1)}
 *,*::before,*::after{box-sizing:border-box}
-body{margin:0;font:400 1rem/1.55 var(--sans);color:var(--ink);background:#f4efe4}
+body{margin:0;font:400 1rem/1.55 var(--sans);color:var(--ink);background:#fafaf8}
 h1,h2,h3{font-family:var(--serif);margin:0 0 .5rem;line-height:1.15}
 a{color:var(--gold-d)}
 .i{flex:none}
@@ -87,7 +87,7 @@ details.bk{border-bottom:1px solid var(--line)}details.bk summary{cursor:pointer
 h2.grp{font-size:1.4rem;margin:1.6rem 0 .8rem;padding-bottom:.4rem;border-bottom:2px solid var(--gold)}
 
 /* Login */
-body.login{display:grid;grid-template-columns:1.1fr .9fr;min-height:100vh;background:var(--cream)}
+body.login{display:grid;grid-template-columns:1.1fr .9fr;min-height:100vh;background:#fff}
 .login__art{position:relative;overflow:hidden;display:grid;place-items:center;color:var(--gold-2);isolation:isolate}
 .login__art>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;animation:kb 20s ease-out both}
 .login__art::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(160deg,rgba(27,15,8,.55),rgba(27,15,8,.82))}

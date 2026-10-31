@@ -72,6 +72,7 @@ function admin_crud(array $c): void {
     }
 
     admin_head($c['title'], $c['active']);
+    if (!empty($c['top']) && !isset($_GET['edit']) && !isset($_GET['new'])) { ($c['top'])(); }
 
     // ---------- Form
     if (isset($_GET['edit']) || isset($_GET['new'])) {
@@ -129,6 +130,7 @@ function admin_crud(array $c): void {
           <?php if (!empty($c['thumb'])): ?><td><img class="thumb" src="<?= e(img($r[$c['thumb']] ?? '')) ?>" alt="" loading="lazy"></td><?php endif; ?>
           <?php foreach ($c['list'] as $l): $x = is_callable($l[1]) ? $l[1]($r) : e($r[$l[1]] ?? ''); ?><td><?= $x ?></td><?php endforeach; ?>
           <td><div class="actions" style="justify-content:flex-end">
+            <?= !empty($c['row_actions']) ? ($c['row_actions'])($r) : '' ?>
             <a class="btn btn--line btn--sm" href="<?= $self ?>?edit=<?= (int)$r['id'] ?>"><?= icon('pencil', 16) ?> Edit</a>
             <form method="post" style="display:inline"><?= csrf_field() ?><input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="<?= (int)$r['id'] ?>"><button class="btn btn--danger btn--sm" data-confirm="Delete this <?= e($c['singular']) ?>? This cannot be undone." aria-label="Delete"><?= icon('trash', 16) ?></button></form>
           </div></td>

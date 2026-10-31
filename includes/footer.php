@@ -6,7 +6,7 @@ $o2 = [setting('owner2_name'), setting('owner2_role'), setting('owner2_phone')];
 <footer class="footer">
   <div class="wrap footer__grid">
     <div class="footer__brand">
-      <img src="<?= e(img(setting('logo_light'))) ?>" alt="<?= e(setting('site_name')) ?>" height="52">
+      <img src="<?= e(img(setting('logo_dark'))) ?>" alt="<?= e(setting('site_name')) ?>" height="52">
       <p><?= e(setting('footer_text')) ?></p>
       <div class="social">
         <?php if (setting('instagram')): ?><a href="<?= e(setting('instagram')) ?>" aria-label="Instagram" rel="noopener" target="_blank"><?= icon('instagram', 20) ?></a><?php endif; ?>
@@ -23,6 +23,7 @@ $o2 = [setting('owner2_name'), setting('owner2_role'), setting('owner2_phone')];
         <li><a href="<?= url('jawai.php') ?>"><?= et('footer.l4', 'Explore Jawai') ?></a></li>
         <li><a href="<?= url('gallery.php') ?>">Gallery</a></li>
         <li><a href="<?= url('book.php?type=event') ?>"><?= et('footer.l5', 'Party & events') ?></a></li>
+        <li><a href="<?= url('policies.php') ?>"><?= et('footer.l6', 'Policies & terms') ?></a></li>
       </ul>
     </div>
     <div>
@@ -48,7 +49,15 @@ $o2 = [setting('owner2_name'), setting('owner2_role'), setting('owner2_phone')];
   <a href="<?= url('restaurant.php') ?>" <?= ($active ?? '') === 'dining' ? 'aria-current="page"' : '' ?>><?= icon('utensils', 22) ?><?= et('mnav.dine', 'Dine') ?></a>
   <a href="<?= url('safari.php') ?>" <?= ($active ?? '') === 'safari' ? 'aria-current="page"' : '' ?>><?= icon('car', 22) ?><?= et('mnav.safari', 'Safari') ?></a>
 </nav>
-<a class="fab" href="<?= e(wa_link('Hello Jawai Mumal, I would like to know more.')) ?>" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><?= icon('whatsapp', 26) ?></a>
+<div class="sdial" id="sdial">
+  <div class="sdial__menu" id="sdialmenu" role="menu" aria-label="<?= et('sdial.label', 'Contact us') ?>">
+    <a role="menuitem" class="sd sd--call" href="<?= e(tel($o1[2])) ?>"><span><?= et('sdial.call', 'Call') ?> <?= e(strtok($o1[0], ' ')) ?></span><?= icon('phone', 20) ?></a>
+    <a role="menuitem" class="sd sd--call" href="<?= e(tel($o2[2])) ?>"><span><?= et('sdial.call', 'Call') ?> <?= e(strtok($o2[0], ' ')) ?></span><?= icon('phone', 20) ?></a>
+    <a role="menuitem" class="sd sd--wa" target="_blank" rel="noopener" href="<?= e(wa_link(t('sdial.msg', 'Hello Jawai Mumal, I would like to know more.'))) ?>"><span><?= et('sdial.chat', 'WhatsApp chat') ?></span><?= icon('whatsapp', 20) ?></a>
+    <a role="menuitem" class="sd sd--wa" target="_blank" rel="noopener" href="<?= e(wa_link(t('sdial.cbmsg', 'Hello Jawai Mumal, please call me back on WhatsApp or phone about a booking. My name is '))) ?>"><span><?= et('sdial.cb', 'Request a call-back') ?></span><?= icon('refresh', 20) ?></a>
+  </div>
+  <button type="button" class="sdial__btn" id="sdialbtn" aria-expanded="false" aria-controls="sdialmenu" aria-label="<?= et('sdial.open', 'Call or WhatsApp us') ?>"><?= icon('whatsapp', 26, 'i-open') ?><?= icon('x', 24, 'i-close') ?></button>
+</div>
 <script src="<?= url('assets/js/site.js') ?>?v=1" defer></script>
 </body>
 </html>

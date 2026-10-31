@@ -101,6 +101,54 @@
     if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (en) { en.isIntersecting ? svg.unpauseAnimations() : svg.pauseAnimations(); }); }).observe(svg);
   });
 
+  /* Real route map (Leaflet + OpenStreetMap) and tabs */
+  var rd = $('#routes-data');
+  if (rd) {
+    var RD = JSON.parse(rd.textContent), rmapEl = $('#routesmap'), rm = null, layers = {}, markers = {}, hotelMk = null;
+    var esc = function (t) { var d = document.createElement('div'); d.textContent = t == null ? '' : t; return d.innerHTML; };
+    var svgIcon = function (kind) { var m = { airport: 'plane', rail: 'train', city: 'building' }; var tpl = document.querySelector('[data-ico="' + (m[kind] || 'pin') + '"]'); return tpl ? tpl.innerHTML : ''; };
+    var buildMap = function () {
+      if (rm || !window.L || !rmapEl) return; rmapEl.innerHTML = '';
+      rm = L.map(rmapEl, { scrollWheelZoom: false, worldCopyJump: false }).setView([RD.hotel.lat, RD.hotel.lng], 9);
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(rm);
+      rmapEl.addEventListener('click', function () { rm.scrollWheelZoom.enable(); });
+      hotelMk = L.marker([RD.hotel.lat, RD.hotel.lng], { zIndexOffset: 1000, icon: L.divIcon({ className: '', iconSize: [52, 52], iconAnchor: [26, 26], html: '<div class="mk mk--hotel"><img src="' + esc(RD.hotel.img) + '" alt=""></div>' }) }).addTo(rm).bindPopup('<h4>' + esc(RD.hotel.name) + '</h4>Bera village, Pali');
+      RD.points.forEach(function (p) {
+        if (!p.has) return;
+        var pts = p.geom && p.geom.length > 1 ? p.geom.map(function (c) { return [c[1], c[0]]; }) : [[RD.hotel.lat, RD.hotel.lng], [p.lat, p.lng]];
+        var line = L.polyline(pts, p.geom ? { color: '#8a6420', weight: 4, opacity: .85 } : { color: '#8a6420', weight: 2, dashArray: '6 8', opacity: .9 }).addTo(rm);
+        var ic = '<div class="mk" data-mk="' + p.id + '">' + (document.querySelector('.jitem[data-r="' + p.id + '"] .jico').innerHTML.replace(/width="22"/, 'width="18"').replace(/height="22"/, 'height="18"')) + '<span class="mk__lbl">' + esc((p.code || p.name.replace(/ \(.*/, '')) + ' · ' + p.km + ' km') + '</span></div>';
+        var mk = L.marker([p.lat, p.lng], { icon: L.divIcon({ className: '', iconSize: [38, 38], iconAnchor: [19, 19], html: ic }) }).addTo(rm);
+        mk.bindPopup('<h4>' + esc(p.name) + '</h4><b>' + p.km + ' km</b> by road · ' + esc(p.time) + '<br>' + esc(p.compass) + ' of the hotel, ' + p.straight + ' km in a straight line<br><a href="' + esc(p.dir) + '" target="_blank" rel="noopener">Directions in Google Maps &rarr;</a>');
+        var hot = function (v) { return function () { line.setStyle({ weight: v ? 7 : (p.geom ? 4 : 2), opacity: 1, color: v ? '#c9973f' : '#8a6420' }); var m = rmapEl.querySelector('[data-mk="' + p.id + '"]'); if (m) m.classList.toggle('is-hot', v); }; };
+        mk.on('mouseover', hot(true)); mk.on('mouseout', hot(false)); mk.on('popupopen', hot(true)); mk.on('popupclose', hot(false));
+        layers[p.id] = { line: line, kind: p.kind }; markers[p.id] = mk;
+      });
+      fitKind('all');
+    };
+    var fitKind = function (k) {
+      if (!rm) return; var b = L.latLngBounds([[RD.hotel.lat, RD.hotel.lng]]), any = false;
+      RD.points.forEach(function (p) {
+        if (!p.has) return; var show = (k === 'all' || k === 'hotel' || p.kind === k);
+        [layers[p.id].line, markers[p.id]].forEach(function (l) { if (show) { if (!rm.hasLayer(l)) l.addTo(rm); } else if (rm.hasLayer(l)) rm.removeLayer(l); });
+        if (show && k !== 'hotel') { any = true; b.extend([p.lat, p.lng]); if (layers[p.id].line.getBounds) b.extend(layers[p.id].line.getBounds()); }
+      });
+      if (k === 'hotel' || !any) rm.setView([RD.hotel.lat, RD.hotel.lng], 12); else rm.fitBounds(b, { padding: [50, 50], maxZoom: 11 });
+    };
+    $$('.rfilter .chip').forEach(function (c) { c.addEventListener('click', function () { $$('.rfilter .chip').forEach(function (x) { x.setAttribute('aria-pressed', x === c); }); fitKind(c.dataset.kind); }); });
+    var showTab = function (k) {
+      $$('[data-rtab]').forEach(function (t) { var on = t.dataset.rtab === k; t.setAttribute('aria-selected', on); var pn = $('#rp-' + t.dataset.rtab); if (pn) pn.hidden = !on; });
+      if (k === 'map') { buildMap(); if (rm) setTimeout(function () { rm.invalidateSize(); }, 60); } else { var w = $('#rp-wheel'); if (w) w.classList.add('is-in'); }
+    };
+    $$('[data-rtab]').forEach(function (t) { t.addEventListener('click', function () { showTab(t.dataset.rtab); }); });
+    var tryBuild = function (n) { if (window.L) { buildMap(); } else if (n < 40) { setTimeout(function () { tryBuild(n + 1); }, 250); } };
+    if ('IntersectionObserver' in window) { new IntersectionObserver(function (es, o) { if (es[0].isIntersecting) { tryBuild(0); o.disconnect(); } }, { rootMargin: '300px' }).observe(rmapEl); } else { tryBuild(0); }
+    $$('[data-showmap]').forEach(function (b) { b.addEventListener('click', function () {
+      showTab('map'); $('#rp-map').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+      var id = b.dataset.showmap; setTimeout(function () { if (rm && markers[id]) { rm.setView(markers[id].getLatLng(), 10, { animate: !reduce }); markers[id].openPopup(); } }, 500);
+    }); });
+  }
+
   /* Route map <-> list highlighting */
   $$('[data-r]').forEach(function (el) {
     var id = el.dataset.r, on = function (v) { return function () { $$('[data-r="' + id + '"]').forEach(function (x) { x.classList.toggle('is-hot', v); }); }; };
@@ -116,6 +164,15 @@
     e.preventDefault(); document.body.classList.add('is-leaving'); setTimeout(function () { location.href = a.href; }, 200);
   });
   window.addEventListener('pageshow', function (e) { if (e.persisted) document.body.classList.remove('is-leaving'); });
+
+  /* Contact speed-dial */
+  var sd = $('#sdial'), sdb = $('#sdialbtn');
+  if (sd && sdb) {
+    var sdSet = function (o) { sd.classList.toggle('is-open', o); sdb.setAttribute('aria-expanded', o); };
+    sdb.addEventListener('click', function (e) { e.stopPropagation(); sdSet(!sd.classList.contains('is-open')); });
+    document.addEventListener('click', function (e) { if (!sd.contains(e.target)) sdSet(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { sdSet(false); } });
+  }
 
   /* Hide the floating WhatsApp button while a form is on screen (mobile) */
   var bb = $$('.bookbox');
@@ -156,11 +213,10 @@
   $$('input[type=date]').forEach(function (d) { d.min = iso(today); });
   var money = function (n) { return '₹' + Math.round(n).toString().replace(/\B(?=(\d{2})*\d{3}(?!\d))/g, ','); };
   var sIn = $('#s-in'), sOut = $('#s-out'), sRoom = $('#s-room');
-  var tax = parseFloat((document.body.dataset.tax || '12'));
   function estStay() {
     var f = sIn && sIn.closest('form'), est = f && $('[data-est]', f); if (!est) return;
     if (sIn.value) { var m = new Date(sIn.value); m.setDate(m.getDate() + 1); sOut.min = iso(m); if (sOut.value && sOut.value <= sIn.value) sOut.value = ''; }
-    var price = sRoom ? parseInt(sRoom.selectedOptions[0].dataset.price || 0, 10) : 0;
+    var opt = sRoom ? sRoom.selectedOptions[0] : null, price = opt ? parseInt(opt.dataset.price || 0, 10) : 0, tax = opt ? parseFloat(opt.dataset.tax || 0) : 0;
     if (sIn.value && sOut.value && price) {
       var n = Math.round((new Date(sOut.value) - new Date(sIn.value)) / 864e5);
       if (n > 0) { est.textContent = n + (n > 1 ? ' nights · ' : ' night · ') + 'approx. ' + money(price * n * (1 + tax / 100)) + ' incl. GST'; return; }
