@@ -53,3 +53,4 @@ assets/     css/, js/, brand/ (logo, favicon), images/, uploads/ (admin uploads)
 Add editable text anywhere in a template with `<?= et('page.section.key', 'Default text') ?>` or an image with `imgu('page.key', 'assets/images/x.jpg')` — it appears in *Admin → Page text & images* automatically. Structured settings (phones, rules) live in `includes/settings_schema.php`.
 Images are free stock photos used as placeholders; replace them with your own from the admin panel.
 <!-- sync-test 1793477259 -->
+<!-- auto-test 1793477280 -->
