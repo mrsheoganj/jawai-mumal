@@ -24,7 +24,7 @@ Every form has **Request booking** (saved in admin) and **Book on WhatsApp** (sa
 The “How far is Jawai?” section uses OpenStreetMap: real driving routes from the hotel, true compass bearings and real kilometres. Set the hotel latitude/longitude in *Contact, logo & rules*; add places in *Distances & travel* and press **Calculate** to measure real road distance and drive time.
 
 ## Admin panel — `/admin/login.php`
-First login: `admin` / `admin123` → **change it immediately** in *My account*.
+Username `admin`. The password is never in this repository: put `define('DEFAULT_ADMIN_PASS', '…');` in `config.local.php` on the server, or open `data/first-login.txt` (created automatically with a random password) in hPanel → File Manager, sign in and change it under *My account*.
 Everything is editable: bookings (status, notes, CSV export), **home banner slides**, rooms (price, photos, amenities), restaurant menu,
 safari packages, Explore Jawai places, gallery uploads, guest reviews, FAQs, **Page text & images** (every heading, paragraph and
 picture on every page — found automatically) and *Contact, logo & rules* (phone numbers, address, **hotel latitude/longitude**, GST %, time slots, logo) and **Distances & travel** (airports, stations, cities with km, time and optional coordinates — the map, “Get directions” and every Directions link update automatically).

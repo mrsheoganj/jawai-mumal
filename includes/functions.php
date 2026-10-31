@@ -283,7 +283,9 @@ function mode_cfg(string $key, string $fallback = ''): string {
     $v = get_setting_raw($key);
     if ($v !== null) return (string)$v;
     $const = ['site_mode' => 'DEFAULT_SITE_MODE', 'launch_at' => 'DEFAULT_LAUNCH_AT', 'maint_until' => 'DEFAULT_MAINT_UNTIL'][$key] ?? '';
-    return ($const !== '' && defined($const)) ? (string)constant($const) : $fallback;
+    if ($const !== '' && defined($const)) return (string)constant($const);
+    // Built-in default: Coming soon until the launch moment (Friday 6 Nov 2026, 12:00 AM IST), then live automatically
+    return ['site_mode' => 'coming_soon', 'launch_at' => '2026-11-06T00:00'][$key] ?? $fallback;
 }
 function site_mode(): string {
     $m = mode_cfg('site_mode', 'live');

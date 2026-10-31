@@ -22,6 +22,8 @@ defined('DB_PASS') || define('DB_PASS', '');
 defined('DB_NAME') || define('DB_NAME', 'jawai_mumal');
 defined('DB_PORT') || define('DB_PORT', 3306);
 
-// First-run admin account. Change the password from Admin > My account right after first login.
+// Admin account. The username is 'admin'. The password is NEVER stored in this public repository:
+//  - set it on the server in config.local.php:   define('DEFAULT_ADMIN_PASS', 'your password');
+//  - or, if you do nothing, a random password is created on first run and written to data/first-login.txt
+//    (open it with hPanel > File Manager, then delete the file after you have signed in and changed the password).
 defined('DEFAULT_ADMIN_USER') || define('DEFAULT_ADMIN_USER', 'admin');
-defined('DEFAULT_ADMIN_PASS') || define('DEFAULT_ADMIN_PASS', 'admin123');

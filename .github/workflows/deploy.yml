@@ -1,4 +1,4 @@
-# Hosts the website automatically: every push to main is copied to Hostinger over SFTP/SSH.
+# Optional manual deploy over SFTP/SSH (Hostinger's built-in Git deployment is the normal route).
 # Setup (once): GitHub repo > Settings > Secrets and variables > Actions > New repository secret:
 #   SSH_HOST, SSH_PORT, SSH_USER, SSH_PASSWORD   (Hostinger hPanel > Advanced > SSH Access)
 #   optional: DEPLOY_PATH (default domains/jawaimumal.com/public_html), ADMIN_PASSWORD (creates config.local.php if the server has none)
@@ -6,9 +6,7 @@
 # Your database (data/), uploaded photos (assets/uploads/) and config.local.php on the server are never overwritten.
 name: Deploy to Hostinger
 
-on:
-  push:
-    branches: [main]
+on:                                           # Manual only: Hostinger's own Git feature already deploys main
   workflow_dispatch:                          # Actions tab > Deploy to Hostinger > Run workflow
 
 concurrency:

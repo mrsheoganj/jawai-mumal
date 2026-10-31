@@ -1,5 +1,14 @@
 # Deploying Jawai Mumal on Hostinger
 
+## Recommended: Hostinger's built-in Git (no zip, no terminal)
+1. hPanel → **Advanced → Git** → Repository `https://github.com/mrsheoganj/jawai-mumal.git`, branch `main`, install path = your site root (`public_html`) → **Create**, then **Deploy**.
+2. For deploy-on-push, copy the *Auto deployment* webhook URL shown there into GitHub → repo **Settings → Webhooks**.
+3. **First login**: nothing secret lives in GitHub, so open hPanel → File Manager → `data/first-login.txt` (a random admin password is created on the first visit), sign in at `/admin/login.php`, change the password under *My account*, then delete that file.
+   Or create your own password first: in File Manager add a file `config.local.php` next to `index.php` containing
+   `<?php define('DEFAULT_ADMIN_PASS', 'your password');` — it is applied automatically and is never overwritten by deploys.
+4. The site starts in **Coming soon** mode until **6 Nov 2026, 12:00 AM IST**, then goes live by itself. Change it any time in Admin → *Site mode*. Your database (`data/`), photos (`assets/uploads/`) and `config.local.php` are not in Git, so deploys never overwrite them.
+
+
 ## Automatic hosting with GitHub Actions (recommended)
 Every push to `main` is copied to Hostinger by `.github/workflows/deploy.yml` over SFTP/SSH — nothing to run by hand.
 1. GitHub repo → **Settings → Secrets and variables → Actions → New repository secret**, add: `SSH_HOST`, `SSH_PORT` (65002), `SSH_USER`, `SSH_PASSWORD` (from hPanel → Advanced → SSH Access). Optional: `DEPLOY_PATH` (default `domains/jawaimumal.com/public_html`) and `ADMIN_PASSWORD` (creates the server-only `config.local.php` — Coming soon until 6 Nov 2026 12:00 AM IST — on the very first deploy).

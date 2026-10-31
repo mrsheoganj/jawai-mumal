@@ -62,11 +62,35 @@ jm_install_schema($pdo, $dbType);
 // Older databases: add the route geometry column
 try { $pdo->query('SELECT geom FROM jm_routes LIMIT 1'); } catch (Throwable $e) { try { $pdo->exec('ALTER TABLE jm_routes ADD COLUMN geom TEXT'); } catch (Throwable $e2) {} }
 
-// First run: seed demo content
-if ((int)$pdo->query('SELECT COUNT(*) FROM jm_admins')->fetchColumn() === 0) {
-    $pdo->prepare('INSERT INTO jm_admins (username, password_hash, full_name) VALUES (?,?,?)')
-        ->execute([DEFAULT_ADMIN_USER, password_hash(DEFAULT_ADMIN_PASS, PASSWORD_DEFAULT), 'Site Owner']);
+// Admin login: never a known password. Uses DEFAULT_ADMIN_PASS from config.local.php, otherwise a random one saved to data/first-login.txt
+function jm_random_password(): string { $c = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789'; $p = ''; for ($i = 0; $i < 14; $i++) $p .= $c[random_int(0, strlen($c) - 1)]; return $p; }
+function jm_set_admin_password(PDO $pdo, string $pw, bool $announce): void {
+    $id = (int)$pdo->query('SELECT MIN(id) FROM jm_admins')->fetchColumn();
+    $pdo->prepare('UPDATE jm_admins SET password_hash = ? WHERE id = ?')->execute([password_hash($pw, PASSWORD_DEFAULT), $id]);
+    if ($announce) {
+        $u = $pdo->query('SELECT username FROM jm_admins WHERE id = ' . $id)->fetchColumn();
+        @file_put_contents(__DIR__ . '/../data/first-login.txt', "Jawai Mumal admin login\nAddress : /admin/login.php\nUsername: $u\nPassword: $pw\n\nSign in, change the password under My account, then DELETE this file.\n");
+    }
 }
+if ((int)$pdo->query('SELECT COUNT(*) FROM jm_admins')->fetchColumn() === 0) {
+    $pdo->prepare('INSERT INTO jm_admins (username, password_hash, full_name) VALUES (?,?,?)')->execute([DEFAULT_ADMIN_USER, 'x', 'Site Owner']);
+    if (defined('DEFAULT_ADMIN_PASS') && DEFAULT_ADMIN_PASS !== '') jm_set_admin_password($pdo, DEFAULT_ADMIN_PASS, false); else jm_set_admin_password($pdo, jm_random_password(), true);
+}
+// A password set in config.local.php is (re)applied whenever you change it there
+if (defined('DEFAULT_ADMIN_PASS') && DEFAULT_ADMIN_PASS !== '') {
+    $fp = hash('sha256', 'jm-admin|' . DEFAULT_ADMIN_PASS);
+    if (get_setting_raw('admin_pw_fp') !== $fp) { jm_set_admin_password($pdo, DEFAULT_ADMIN_PASS, false); set_setting('admin_pw_fp', $fp); @unlink(__DIR__ . '/../data/first-login.txt'); }
+}
+// Safety net for databases that were created with the old public default password
+foreach ($pdo->query('SELECT id, password_hash FROM jm_admins')->fetchAll() as $__a) {
+    if (password_verify('admin123', $__a['password_hash'])) {
+        $np = (defined('DEFAULT_ADMIN_PASS') && DEFAULT_ADMIN_PASS !== '') ? DEFAULT_ADMIN_PASS : jm_random_password();
+        $pdo->prepare('UPDATE jm_admins SET password_hash = ? WHERE id = ?')->execute([password_hash($np, PASSWORD_DEFAULT), $__a['id']]);
+        if (!defined('DEFAULT_ADMIN_PASS') || DEFAULT_ADMIN_PASS === '') @file_put_contents(__DIR__ . '/../data/first-login.txt', "Jawai Mumal admin login\nAddress : /admin/login.php\nUsername: admin\nPassword: $np\n\nSign in, change the password under My account, then DELETE this file.\n");
+    }
+}
+
+// First run: seed demo content
 if ((int)$pdo->query('SELECT COUNT(*) FROM jm_rooms')->fetchColumn() === 0 && !get_setting_raw('seeded')) {
     require __DIR__ . '/seed.php';
     jm_seed($pdo);

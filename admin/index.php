@@ -1,13 +1,14 @@
 <?php
 require __DIR__ . '/_init.php'; require_once __DIR__ . '/_crud.php';
 $me = row('SELECT * FROM jm_admins WHERE id = ?', [$_SESSION['admin_id']]);
-$defaultPw = $me && password_verify(DEFAULT_ADMIN_PASS, $me['password_hash']);
+$defaultPw = false;
+if (is_file(__DIR__ . '/../data/first-login.txt')) $defaultPw = true;   // random first-run password file still on the server
 $c = fn($sql) => (int)val($sql);
 $latest = rows('SELECT * FROM jm_bookings ORDER BY id DESC LIMIT 8');
 admin_head('Dashboard', 'dashboard');
 ?>
 <?php $sm = site_mode(); if ($sm !== 'live'): ?><div class="alert alert--warn"><strong><?= $sm === 'coming_soon' ? 'Coming soon mode is on.' : 'Maintenance mode is on.' ?></strong> Visitors cannot see the website yet. <a href="mode.php">Manage / go live →</a></div><?php endif; ?>
-<?php if ($defaultPw): ?><div class="alert alert--warn"><strong>Change your password.</strong> You are still using the default password. <a href="account.php">Update it now →</a></div><?php endif; ?>
+<?php if ($defaultPw): ?><div class="alert alert--warn"><strong>Finish securing your login.</strong> Change your password, then delete <code>data/first-login.txt</code> from the server (hPanel → File Manager). <a href="account.php">Change password →</a></div><?php endif; ?>
 <div class="stats">
   <a class="stat" href="bookings.php?status=New"><span class="ic"><?= icon('bell', 24) ?></span><div><b><?= $c("SELECT COUNT(*) FROM jm_bookings WHERE status='New'") ?></b><span>New requests</span></div></a>
   <a class="stat" href="bookings.php?type=stay"><span class="ic"><?= icon('bed', 24) ?></span><div><b><?= $c("SELECT COUNT(*) FROM jm_bookings WHERE type='stay'") ?></b><span>Stay requests</span></div></a>
