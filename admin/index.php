@@ -1,9 +1,5 @@
 <?php
 require __DIR__ . '/_init.php'; require_once __DIR__ . '/_crud.php';
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'opening') {
-    set_setting('opening_soon', ($_POST['opening_soon'] ?? '1') === '1' ? '1' : '0');
-    flash('ok', opening_soon() ? 'Website is now in “Opening Soon” mode.' : 'Website is now in normal booking mode.'); redirect('index.php');
-}
 $me = row('SELECT * FROM jm_admins WHERE id = ?', [$_SESSION['admin_id']]);
 $defaultPw = $me && password_verify(DEFAULT_ADMIN_PASS, $me['password_hash']);
 $c = fn($sql) => (int)val($sql);
@@ -26,12 +22,12 @@ admin_head('Dashboard', 'dashboard');
     </tbody></table></div><?php else: ?><p class="muted">No requests yet. They will appear here as soon as someone submits the booking form.</p><?php endif; ?>
     <p style="margin:1rem 0 0"><a class="btn btn--line btn--sm" href="bookings.php">All bookings</a></p></div></div>
   <div class="c4">
-    <div class="card"><h2>Website mode</h2><p class="muted">Currently: <strong><?= opening_soon() ? 'Opening Soon (pre-booking)' : 'Open (normal booking)' ?></strong></p>
-      <form method="post"><?= csrf_field() ?><input type="hidden" name="action" value="opening"><input type="hidden" name="opening_soon" value="<?= opening_soon() ? '0' : '1' ?>"><button class="btn btn--gold btn--sm"><?= opening_soon() ? 'Mark hotel as open' : 'Switch back to Opening Soon' ?></button></form></div>
     <div class="card"><h2>Quick links</h2><div class="actions" style="flex-direction:column;align-items:stretch">
       <a class="btn btn--line btn--sm" href="rooms.php?new=1"><?= icon('plus', 16) ?> Add a room</a>
       <a class="btn btn--line btn--sm" href="menu.php?new=1"><?= icon('plus', 16) ?> Add a dish</a>
       <a class="btn btn--line btn--sm" href="gallery.php"><?= icon('upload', 16) ?> Upload photos</a>
+      <a class="btn btn--line btn--sm" href="texts.php"><?= icon('pencil', 16) ?> Edit page text &amp; images</a>
+      <a class="btn btn--line btn--sm" href="slides.php"><?= icon('image', 16) ?> Home banner slides</a>
       <a class="btn btn--line btn--sm" href="content.php"><?= icon('sliders', 16) ?> Edit website text &amp; logo</a>
       <a class="btn btn--line btn--sm" href="<?= url('index.php') ?>" target="_blank" rel="noopener"><?= icon('external', 16) ?> View website</a></div></div>
   </div>

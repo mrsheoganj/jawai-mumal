@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $done = isset($_GET['done']) ? preg_replace('/[^A-Z0-9\-]/', '', strtoupper($_GET['done'])) : '';
 $b = $done ? row('SELECT * FROM jm_bookings WHERE code = ?', [$done]) : null;
 
-$pageTitle = $done ? 'Request received' : (opening_soon() ? 'Pre-book your stay' : 'Book your stay');
+$pageTitle = $done ? 'Request received' : 'Book your stay';
 $pageDesc = 'Request a room, table, safari or party booking at ' . setting('site_name') . ', Bera, Jawai.';
 $active = '';
 $bodyClass = 'nav-solid';
@@ -106,9 +106,9 @@ include __DIR__ . '/includes/header.php';
       </div>
     <?php else: ?>
       <div class="sechead" style="margin-bottom:2rem">
-        <span class="eyebrow eyebrow--dark"><?= opening_soon() ? e(setting('opening_label')) : 'Reservations' ?></span>
-        <h1 style="font-size:clamp(2.2rem,5vw,3.6rem)"><?= opening_soon() ? 'Pre-book your stay' : 'Book your stay' ?></h1>
-        <p>Choose what you need and send a request. We reply personally — no payment is taken online.</p>
+        <span class="eyebrow eyebrow--dark"><?= et('bookpage.eyebrow', 'Reservations') ?></span>
+        <h1 style="font-size:clamp(2.2rem,5vw,3.6rem)"><?= et('bookpage.title', 'Book your stay') ?></h1>
+        <p><?= et('bookpage.sub', 'Choose what you need and send a request. We reply personally — no payment is taken online.') ?></p>
       </div>
       <?php foreach ($errors as $er): ?><div class="alert alert--err" role="alert"><?= e($er) ?></div><?php endforeach; ?>
       <?php include __DIR__ . '/includes/booking_panel.php'; ?>

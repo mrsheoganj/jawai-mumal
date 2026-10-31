@@ -13,42 +13,24 @@ function settings_schema(): array {
         'logo_dark'      => ['Brand', 'Logo for light backgrounds (transparent PNG)', 'image', 'assets/brand/wordmark-dark.png'],
         'logo_light'     => ['Brand', 'Logo for dark backgrounds (transparent PNG)', 'image', 'assets/brand/wordmark-light.png'],
         'logo_emblem'    => ['Brand', 'Round emblem logo', 'image', 'assets/brand/emblem-512.png'],
-        'meta_description' => ['Brand', 'Search engine description', 'textarea', 'Jawai Mumal — hotel, restaurant and leopard safari experiences in Bera, Pali, Rajasthan, the heart of Jawai leopard country.'],
+        'meta_description' => ['Brand', 'Search engine description', 'textarea', 'Jawai Mumal — hotel, pure-vegetarian Rajasthani restaurant and leopard safaris in Bera, Pali, Rajasthan, in the heart of Jawai leopard country.'],
 
-        // ---------------- Opening status
-        'opening_soon'   => ['Opening status', 'Show "Opening Soon" mode', 'select:1|0', '1', '1 = bookings are collected as pre-booking requests. Set to 0 once the hotel is open.'],
-        'opening_label'  => ['Opening status', 'Badge text', 'text', 'Opening Soon'],
-        'opening_note'   => ['Opening status', 'Notice shown near booking forms', 'textarea', 'We are putting the finishing touches on the property. Send a pre-booking request and our team will confirm availability and rates personally.'],
+        'show_open_badge' => ['Brand', 'Show the “Now Open” badge on the home banner', 'select:1|0', '1'],
+        'open_label'     => ['Brand', 'Badge text', 'text', 'Now Open'],
 
-        // ---------------- Hero
-        'hero_eyebrow'   => ['Home banner', 'Small line above title', 'text', 'Bera · Jawai · Rajasthan'],
-        'hero_title'     => ['Home banner', 'Main title', 'text', 'Stay close to the wild side of Rajasthan'],
-        'hero_text'      => ['Home banner', 'Short description', 'textarea', 'A new boutique hotel and restaurant at the edge of Jawai leopard country. Comfortable rooms, honest Rajasthani food and guided safaris through granite hills.'],
-        'hero_image'     => ['Home banner', 'Banner image', 'image', 'assets/images/hero-savanna.jpg'],
-
-        // ---------------- About
-        'about_title'    => ['About', 'Heading', 'text', 'A new home in Jawai country'],
-        'about_text'     => ['About', 'First paragraph', 'textarea', 'Jawai Mumal is a family-run hotel and restaurant in Bera village on the Bera–Bali road, a short drive from the granite hills where leopards share the land with Rabari herders. We built it for travellers, families and celebrations that want comfort without losing the character of the place.'],
-        'about_text2'    => ['About', 'Second paragraph', 'textarea', 'Good food, a comfortable stay and happy moments — a place where every guest feels special. Our team can also arrange your Jawai safari, village visits and private functions.'],
-        'about_image'    => ['About', 'Second hotel image (evening view)', 'image', 'assets/images/hotel-front.jpg'],
-        'property_image' => ['About', 'Main hotel photo (daytime, clean view)', 'image', 'assets/images/hotel-day.jpg'],
-        'founders_line'  => ['About', 'Founders line', 'text', 'Founded by Devendra Singh & Nilesh Singh Chouhan'],
-
+        
+        
         // ---------------- Stats
-        'stat1_value' => ['Highlights', 'Highlight 1 – number', 'text', '50+'],
-        'stat1_label' => ['Highlights', 'Highlight 1 – label', 'text', 'Leopards roam the Jawai hills'],
-        'stat2_value' => ['Highlights', 'Highlight 2 – number', 'text', '3'],
-        'stat2_label' => ['Highlights', 'Highlight 2 – label', 'text', 'Experiences under one roof'],
-        'stat3_value' => ['Highlights', 'Highlight 3 – number', 'text', 'Bera'],
-        'stat3_label' => ['Highlights', 'Highlight 3 – label', 'text', 'On the Bera–Bali road'],
-        'stat4_value' => ['Highlights', 'Highlight 4 – number', 'text', '24/7'],
-        'stat4_label' => ['Highlights', 'Highlight 4 – label', 'text', 'Guest support on call'],
+        'stat1_value' => ['Highlights', 'Highlight 1 – number', 'text', '50–70'],
+        'stat1_label' => ['Highlights', 'Highlight 1 – label', 'text', 'Estimated leopards in the Jawai hills (no official count)'],
+        'stat2_value' => ['Highlights', 'Highlight 2 – number', 'text', '1957'],
+        'stat2_label' => ['Highlights', 'Highlight 2 – label', 'text', 'Year Jawai Dam was completed'],
+        'stat3_value' => ['Highlights', 'Highlight 3 – number', 'text', '300+'],
+        'stat3_label' => ['Highlights', 'Highlight 3 – label', 'text', 'Bird species recorded around Jawai'],
+        'stat4_value' => ['Highlights', 'Highlight 4 – number', 'text', '2'],
+        'stat4_label' => ['Highlights', 'Highlight 4 – label', 'text', 'Safari drives a day: dawn & dusk'],
 
-        // ---------------- Events
-        'events_title' => ['Events', 'Heading', 'text', 'Parties, celebrations & private functions'],
-        'events_text'  => ['Events', 'Description', 'textarea', 'Birthdays, family get-togethers, small weddings, corporate meets or a quiet personal celebration — party and personal bookings are both available. Tell us your date, guest count and menu ideas and we will plan the rest.'],
-        'events_image' => ['Events', 'Image', 'image', 'assets/images/dining-hall.jpg'],
-
+        
         // ---------------- Contact
         'owner1_name'  => ['Contact', 'Owner 1 – name', 'text', 'Nilesh Singh Chouhan'],
         'owner1_role'  => ['Contact', 'Owner 1 – role', 'text', 'Owner'],
@@ -76,10 +58,10 @@ function settings_schema(): array {
         // ---------------- Facilities
         'facilities'    => ['Facilities', 'Facilities list (one per line: icon|Title|Text)', 'textarea',
 "bed|Comfortable rooms|Clean, well-lit rooms with proper beds and hot water
-utensils|Restaurant & café|Rajasthani classics, grills and all-day café
+utensils|Vegetarian restaurant & café|Pure-veg Rajasthani village food, tandoor dishes and café
 wifi|Free Wi-Fi|Stay connected across the property
 car-park|Parking|Safe parking for cars, jeeps and bikes
-compass|Safari desk|Leopard safari and village trips arranged
+compass|Safari desk|Leopard safaris and village visits arranged by us
 party|Party hall|Space for celebrations and private functions"],
 
         // ---------------- Footer

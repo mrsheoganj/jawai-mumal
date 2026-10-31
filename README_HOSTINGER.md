@@ -14,8 +14,7 @@
    (Without it the site still works using a SQLite file in `data/`, but MySQL is better for production.)
 3. **Permissions:** `assets/uploads/` and `data/` must be writable (755/775).
 4. Visit `https://jawaimumal.com/admin/login.php`, sign in with `admin` / `admin123` and **change the password** (My account).
-5. In *Site content*, set the email, Instagram/Facebook links, and replace demo rooms/prices/photos.
+5. In *Contact, logo & rules*, set the email, Instagram/Facebook links, and replace demo rooms/prices/photos.
 6. Enable free SSL in hPanel (force HTTPS).
-7. When the hotel opens: Dashboard → **Mark hotel as open**.
 
 Backups: download `data/` (if SQLite) or export the MySQL database from phpMyAdmin, plus `assets/uploads/`.

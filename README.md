@@ -9,13 +9,15 @@ PHP 8 + MySQL (falls back to SQLite automatically). No build step.
 Home (hero, booking & enquiry panel, about, rooms, safari, restaurant, Explore Jawai, events, gallery, FAQ, map) ·
 Rooms & room detail · Restaurant menu · Safari packages · Explore Jawai guide · Gallery with lightbox · Contact.
 The booking panel has five tabs: **Stay, Table, Safari, Party & Events, Enquiry**. Requests land in the admin panel.
-While `Opening Soon` mode is on (default), the site collects *pre-booking requests* only.
+The home banner is a gentle slideshow (1 to many slides) with a “Now Open” badge. Booking requests are confirmed personally by phone/WhatsApp; no online payment.
 
 ## Admin panel — `/admin/login.php`
 First login: `admin` / `admin123` → **change it immediately** in *My account*.
-Everything is editable: bookings (status, notes, CSV export), rooms (price, photos, amenities), restaurant menu, safari packages,
-Explore Jawai places, gallery uploads, guest reviews, FAQs, and *Site content & logo* (every heading, phone number, address,
-GST %, time slots, banner photo, logo). Dashboard has a one-click switch from *Opening Soon* to *Open*.
+Everything is editable: bookings (status, notes, CSV export), **home banner slides**, rooms (price, photos, amenities), restaurant menu,
+safari packages, Explore Jawai places, gallery uploads, guest reviews, FAQs, **Page text & images** (every heading, paragraph and
+picture on every page — found automatically) and *Contact, logo & rules* (phone numbers, address, GST %, time slots, logo).
+
+The restaurant is **100% vegetarian** (Rajasthani village food, tandoor, café). Safaris are Jawai Mumal's own, in open 4x4 jeeps at dawn and dusk.
 
 Rooms, prices, safari packages and menu items shipped with the site are **demo content** — replace them from the admin panel.
 Guest reviews are intentionally hidden until you add real ones.
@@ -36,5 +38,5 @@ includes/   db.php (schema + seed), functions.php, settings_schema.php (all edit
 admin/      login, dashboard, bookings, rooms, menu, safaris, attractions, gallery, testimonials, faqs, content, account
 assets/     css/, js/, brand/ (logo, favicon), images/, uploads/ (admin uploads)
 ```
-Add a new editable text by adding one line to `includes/settings_schema.php` — it appears in *Site content* automatically.
+Add editable text anywhere in a template with `<?= et('page.section.key', 'Default text') ?>` or an image with `imgu('page.key', 'assets/images/x.jpg')` — it appears in *Admin → Page text & images* automatically. Structured settings (phones, rules) live in `includes/settings_schema.php`.
 Images are free stock photos used as placeholders; replace them with your own from the admin panel.

@@ -51,7 +51,6 @@ function set_setting(string $k, string $v): void {
 function lines(string $t): array {
     return array_values(array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', $t)), 'strlen'));
 }
-function opening_soon(): bool { return setting('opening_soon', '1') === '1'; }
 
 // ---------- Formatting
 function money($n): string {
@@ -149,4 +148,44 @@ function amenity_icon(string $t): string {
     foreach (['wi-fi' => 'wifi', 'wifi' => 'wifi', 'air' => 'wind', 'hot water' => 'droplets', 'tea' => 'coffee', 'coffee' => 'coffee', 'terrace' => 'sunset', 'view' => 'mountain', 'window' => 'mountain', 'pool' => 'waves', 'desk' => 'list', 'fridge' => 'droplets', 'housekeeping' => 'sparkles', 'seating' => 'bed', 'lounge' => 'bed', 'parking' => 'car-park'] as $k => $i)
         if (strpos($t, $k) !== false) return $i;
     return 'check';
+}
+
+// =====================================================================
+// Editable page text & images.
+//   t('home.hero.title', 'Default text')      -> plain text (escape with e() or use et())
+//   et('home.hero.title', 'Default text')     -> HTML-escaped text
+//   im('home.about.image', 'assets/images/x.jpg')  -> image path
+//   imgu('home.about.image', 'assets/images/x.jpg') -> escaped image URL
+// Admin > "Page text & images" finds every call below by scanning the PHP files, so
+// anything written with these helpers is automatically editable. Empty value = default.
+// =====================================================================
+function t(string $key, string $default = ''): string {
+    $all = settings_all();
+    return (isset($all['txt.' . $key]) && $all['txt.' . $key] !== '') ? (string)$all['txt.' . $key] : $default;
+}
+function et(string $key, string $default = ''): string { return e(t($key, $default)); }
+function im(string $key, string $default = ''): string {
+    $all = settings_all();
+    return (isset($all['img.' . $key]) && $all['img.' . $key] !== '') ? (string)$all['img.' . $key] : $default;
+}
+function imgu(string $key, string $default = ''): string { return e(img(im($key, $default))); }
+
+/** Scan templates for t()/et()/im()/imgu() calls. Returns [ ['kind'=>'txt|img','key'=>..,'default'=>..,'file'=>..], ... ] */
+function content_registry(): array {
+    $root = realpath(__DIR__ . '/..');
+    $files = array_merge(glob($root . '/*.php'), glob($root . '/includes/*.php'));
+    $seen = []; $out = [];
+    foreach ($files as $f) {
+        if (basename($f) === 'functions.php') continue;
+        $src = file_get_contents($f);
+        if (!preg_match_all("/\\b(e?t|im|imgu)\\(\\s*'([a-z0-9_.]+)'\\s*,\\s*'((?:[^'\\\\]|\\\\.)*)'/s", $src, $m, PREG_SET_ORDER)) continue;
+        foreach ($m as $x) {
+            $kind = $x[1] === 'im' || $x[1] === 'imgu' ? 'img' : 'txt';
+            $id = $kind . '.' . $x[2];
+            if (isset($seen[$id])) continue;
+            $seen[$id] = true;
+            $out[] = ['kind' => $kind, 'key' => $x[2], 'default' => stripcslashes(str_replace(["\\'"], ["'"], $x[3])), 'file' => basename($f)];
+        }
+    }
+    return $out;
 }

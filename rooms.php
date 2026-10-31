@@ -5,13 +5,12 @@ $active = 'stay';
 $rooms = rows("SELECT * FROM jm_rooms WHERE status='active' ORDER BY sort_order, id");
 $cats = array_values(array_unique(array_column($rooms, 'category')));
 include __DIR__ . '/includes/header.php';
-page_head('Stay', 'Rooms & Suites', 'Quiet, clean and comfortable — a proper base for your Jawai trip.', 'assets/images/hotel-front.jpg');
+page_head(t('rooms.head.eyebrow', 'Stay'), t('rooms.head.title', 'Rooms & Suites'), t('rooms.head.sub', 'Quiet, clean and comfortable — a proper base for your Jawai trip.'), im('rooms.head.img', 'assets/images/hotel-front.jpg'));
 ?>
 <section class="sec">
   <div class="wrap">
-    <?php if (opening_soon()): ?><div class="note"><?= icon('bell', 20) ?><span><strong><?= e(setting('opening_label')) ?>.</strong> <?= e(setting('opening_note')) ?> Room photos are indicative until the property opens.</span></div><?php endif; ?>
     <div class="chips" data-filter-group=".card[data-cat]">
-      <button class="chip" data-filter="all" aria-pressed="true">All rooms</button>
+      <button class="chip" data-filter="all" aria-pressed="true"><?= et('rooms.all', 'All rooms') ?></button>
       <?php foreach ($cats as $c): ?><button class="chip" data-filter="<?= e($c) ?>" aria-pressed="false"><?= e($c) ?></button><?php endforeach; ?>
     </div>
     <div class="grid">
@@ -22,13 +21,13 @@ page_head('Stay', 'Rooms & Suites', 'Quiet, clean and comfortable — a proper b
             <h3><a href="<?= url('room.php?slug=' . urlencode($r['slug'])) ?>" style="text-decoration:none"><?= e($r['name']) ?></a></h3>
             <p><?= e($r['tagline']) ?></p>
             <ul class="meta"><li><?= icon('users', 16) ?><?= e($r['capacity']) ?></li><li><?= icon('bed', 16) ?><?= e($r['beds']) ?></li><li><?= icon('building', 16) ?><?= e($r['size']) ?></li><li><?= icon('mountain', 16) ?><?= e($r['view_type']) ?></li></ul>
-            <div class="card__foot"><div class="price"><small>from</small><?= money($r['price']) ?> <span>/ night</span></div>
-              <div style="display:flex;gap:.5rem"><a class="btn btn--line btn--sm" href="<?= url('room.php?slug=' . urlencode($r['slug'])) ?>">Details</a><a class="btn btn--gold btn--sm" href="<?= url('book.php?type=stay&room=' . (int)$r['id']) ?>"><?= opening_soon() ? 'Pre-book' : 'Book' ?></a></div></div>
+            <div class="card__foot"><div class="price"><small><?= et('rooms.from', 'from') ?></small><?= money($r['price']) ?> <span>/ <?= et('rooms.night', 'night') ?></span></div>
+              <div style="display:flex;gap:.5rem"><a class="btn btn--line btn--sm" href="<?= url('room.php?slug=' . urlencode($r['slug'])) ?>"><?= et('rooms.details', 'Details') ?></a><a class="btn btn--gold btn--sm" href="<?= url('book.php?type=stay&room=' . (int)$r['id']) ?>"><?= et('rooms.book', 'Book') ?></a></div></div>
           </div>
         </article>
       <?php endforeach; ?>
     </div>
-    <p class="demo-note" style="margin-top:1.5rem"><?= icon('shield-check', 16) ?> Rates are per room per night and exclude <?= e(setting('tax_percent')) ?>% GST. Final rates are confirmed by our team.</p>
+    <p class="demo-note" style="margin-top:1.5rem"><?= icon('shield-check', 16) ?> <?= et('rooms.note', 'Rates are per room per night, before GST. Our team confirms the final rate for your dates.') ?></p>
   </div>
 </section>
 <?php include __DIR__ . '/includes/footer.php'; ?>

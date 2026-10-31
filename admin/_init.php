@@ -16,7 +16,9 @@ function admin_nav(): array {
         ['gallery.php', 'gallery', 'Gallery', 'image'],
         ['testimonials.php', 'testimonials', 'Guest reviews', 'star'],
         ['faqs.php', 'faqs', 'FAQs', 'help'],
-        ['content.php', 'content', 'Site content & logo', 'sliders'],
+        ['slides.php', 'slides', 'Home banner slides', 'image'],
+        ['texts.php', 'texts', 'Page text & images', 'pencil'],
+        ['content.php', 'content', 'Contact, logo & rules', 'sliders'],
         ['account.php', 'account', 'My account', 'lock'],
     ];
 }

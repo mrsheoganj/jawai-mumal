@@ -35,6 +35,27 @@
     rv.forEach(function (n) { io.observe(n); });
   } else rv.forEach(function (n) { n.classList.add('is-in'); });
 
+  /* Hero slider */
+  var hero = $('#hero');
+  if (hero && +hero.dataset.count > 1) {
+    var slides = $$('.hslide', hero), dots = $$('.hdots button', hero), cur = 0, timer = null, paused = reduce, pb = $('[data-hero=pause]', hero);
+    var go = function (i) {
+      cur = (i + slides.length) % slides.length;
+      slides.forEach(function (s, k) { s.classList.toggle('is-active', k === cur); s.setAttribute('aria-hidden', k === cur ? 'false' : 'true'); });
+      dots.forEach(function (d, k) { d.setAttribute('aria-selected', k === cur); });
+    };
+    var play = function () { clearInterval(timer); if (!paused) timer = setInterval(function () { go(cur + 1); }, 7000); };
+    $$('[data-hero=prev]', hero).forEach(function (b) { b.addEventListener('click', function () { go(cur - 1); play(); }); });
+    $$('[data-hero=next]', hero).forEach(function (b) { b.addEventListener('click', function () { go(cur + 1); play(); }); });
+    dots.forEach(function (d, k) { d.addEventListener('click', function () { go(k); play(); }); });
+    if (pb) pb.addEventListener('click', function () { paused = !paused; pb.setAttribute('aria-label', paused ? 'Play slideshow' : 'Pause slideshow'); play(); });
+    hero.addEventListener('mouseenter', function () { clearInterval(timer); });
+    hero.addEventListener('mouseleave', play);
+    hero.addEventListener('focusin', function () { clearInterval(timer); });
+    hero.addEventListener('focusout', play);
+    play();
+  }
+
   /* Booking tabs */
   var tabs = $$('.tab');
   function showTab(k, focus) {

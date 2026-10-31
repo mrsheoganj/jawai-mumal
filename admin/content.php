@@ -33,7 +33,7 @@ admin_head('Site content & logo', 'content');
       <?php elseif ($type === 'textarea'): ?>
         <label for="v_<?= $k ?>"><?= e($s[1]) ?></label><textarea id="v_<?= $k ?>" name="v_<?= $k ?>" rows="<?= $k === 'facilities' ? 8 : 3 ?>"><?= e($v) ?></textarea>
       <?php elseif (strpos($type, 'select:') === 0): ?>
-        <label for="v_<?= $k ?>"><?= e($s[1]) ?></label><select id="v_<?= $k ?>" name="v_<?= $k ?>"><?php foreach (explode('|', substr($type, 7)) as $o): ?><option value="<?= e($o) ?>" <?= $v === $o ? 'selected' : '' ?>><?= $k === 'opening_soon' ? ($o === '1' ? 'Yes – Opening Soon mode' : 'No – hotel is open') : e($o) ?></option><?php endforeach; ?></select>
+        <label for="v_<?= $k ?>"><?= e($s[1]) ?></label><select id="v_<?= $k ?>" name="v_<?= $k ?>"><?php foreach (explode('|', substr($type, 7)) as $o): ?><option value="<?= e($o) ?>" <?= $v === $o ? 'selected' : '' ?>><?= $k === 'show_open_badge' ? ($o === '1' ? 'Yes – show badge' : 'No – hide badge') : e($o) ?></option><?php endforeach; ?></select>
       <?php else: ?>
         <label for="v_<?= $k ?>"><?= e($s[1]) ?></label><input id="v_<?= $k ?>" name="v_<?= $k ?>" type="<?= $type === 'number' ? 'number' : 'text' ?>" value="<?= e($v) ?>">
       <?php endif; ?>

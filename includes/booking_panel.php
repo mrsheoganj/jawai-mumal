@@ -6,11 +6,10 @@ $bRooms = rows("SELECT id,name,price FROM jm_rooms WHERE status='active' ORDER B
 $bSafaris = rows("SELECT id,title,price_pp,private_price FROM jm_safaris WHERE status='active' ORDER BY sort_order,id");
 $slots = array_values(array_filter(array_map('trim', explode(',', setting('dine_slots')))));
 $maxG = max(1, (int)setting('max_guests', '12'));
-$soon = opening_soon();
 $sel = fn($a, $b) => (string)$a === (string)$b ? ' selected' : '';
 $preRoom = (int)($_GET['room'] ?? ($bookRoom ?? 0));
 $preSaf  = (int)($_GET['safari'] ?? ($bookSafari ?? 0));
-$tabs = ['stay' => ['bed', 'Stay'], 'dine' => ['utensils', 'Table'], 'safari' => ['car', 'Safari'], 'event' => ['party', 'Party & Events'], 'enquiry' => ['message', 'Enquiry']];
+$tabs = ['stay' => ['bed', t('book.tab.stay', 'Stay')], 'dine' => ['utensils', t('book.tab.dine', 'Table')], 'safari' => ['car', t('book.tab.safari', 'Safari')], 'event' => ['party', t('book.tab.event', 'Party & Events')], 'enquiry' => ['message', t('book.tab.enquiry', 'Enquiry')]];
 $guestOpts = function ($def = 2) use ($maxG) { $o = ''; for ($i = 1; $i <= $maxG; $i++) $o .= '<option value="' . $i . '"' . ($i === $def ? ' selected' : '') . '>' . $i . ' ' . ($i === 1 ? 'guest' : 'guests') . '</option>'; return $o; };
 $formHead = function ($type) { return '<form method="post" action="' . e(url('book.php')) . '" class="bform" data-type="' . $type . '" novalidate>' . csrf_field() . '<input type="hidden" name="type" value="' . $type . '"><div class="hp" aria-hidden="true"><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>'; };
 ?>
@@ -36,8 +35,8 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
       <div class="f f--4"><label for="s-e">Email (optional)</label><input id="s-e" name="email" type="email" autocomplete="email"></div>
       <div class="f f--12"><label for="s-no">Requests (optional)</label><input id="s-no" name="notes" placeholder="Arrival time, extra bed, celebration…"></div>
     </div>
-    <div class="formfoot"><p><?= icon('shield-check', 18) ?><span><?= $soon ? e(setting('opening_note')) : 'No payment now. Our team confirms availability and the final rate by call or WhatsApp.' ?></span></p>
-      <div><span class="est" data-est></span> <button class="btn btn--gold" type="submit"><?= $soon ? 'Send pre-booking request' : 'Request booking' ?> <?= icon('arrow-right', 18) ?></button></div></div>
+    <div class="formfoot"><p><?= icon('shield-check', 18) ?><span><?= et('book.stay.note', 'No payment online. Our team confirms availability and the final rate by call or WhatsApp.') ?></span></p>
+      <div><span class="est" data-est></span> <button class="btn btn--gold" type="submit"><?= et('book.stay.btn', 'Request booking') ?> <?= icon('arrow-right', 18) ?></button></div></div>
     </form>
   </section>
 
@@ -53,7 +52,7 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
       <div class="f f--4"><label for="d-p">Phone / WhatsApp</label><input id="d-p" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></div>
       <div class="f f--4"><label for="d-no">Requests (optional)</label><input id="d-no" name="notes" placeholder="Jain / vegetarian, birthday cake…"></div>
     </div>
-    <div class="formfoot"><p><?= icon('clock', 18) ?><span>Table requests are confirmed by call or WhatsApp.</span></p>
+    <div class="formfoot"><p><?= icon('clock', 18) ?><span><?= et('book.dine.note', 'Table requests are confirmed by call or WhatsApp. Our kitchen is 100% vegetarian; Jain options on request.') ?></span></p>
       <button class="btn btn--gold" type="submit">Request a table <?= icon('arrow-right', 18) ?></button></div>
     </form>
   </section>
@@ -71,7 +70,7 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
       <div class="f f--4"><label for="f-p">Phone / WhatsApp</label><input id="f-p" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></div>
       <div class="f f--4"><label for="f-no">Requests (optional)</label><input id="f-no" name="notes" placeholder="Photography, pick-up point…"></div>
     </div>
-    <div class="formfoot"><p><?= icon('compass', 18) ?><span>Safari slots depend on weather and guide availability. We confirm timing when we call.</span></p>
+    <div class="formfoot"><p><?= icon('compass', 18) ?><span><?= et('book.safari.note', 'Safari timings depend on weather and tracker availability. We confirm the exact slot when we call.') ?></span></p>
       <div><span class="est" data-est></span> <button class="btn btn--gold" type="submit">Request safari <?= icon('arrow-right', 18) ?></button></div></div>
     </form>
   </section>
@@ -87,7 +86,7 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
       <div class="f f--6"><label for="e-n">Your name</label><input id="e-n" name="name" autocomplete="name" required></div>
       <div class="f f--6"><label for="e-no">Plans & menu ideas (optional)</label><input id="e-no" name="notes" placeholder="Decoration, veg / non-veg, music…"></div>
     </div>
-    <div class="formfoot"><p><?= icon('party', 18) ?><span>Party and personal functions are both available. We will call to discuss menu, space and budget.</span></p>
+    <div class="formfoot"><p><?= icon('party', 18) ?><span><?= et('book.event.note', 'Party and personal functions are both available. We will call to discuss menu, space and budget.') ?></span></p>
       <button class="btn btn--gold" type="submit">Plan my event <?= icon('arrow-right', 18) ?></button></div>
     </form>
   </section>
@@ -101,7 +100,7 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
       <div class="f f--4"><label for="q-e">Email (optional)</label><input id="q-e" name="email" type="email" autocomplete="email"></div>
       <div class="f f--12"><label for="q-m">How can we help?</label><textarea id="q-m" name="notes" required placeholder="Dates, number of guests, anything you would like to know…"></textarea></div>
     </div>
-    <div class="formfoot"><p><?= icon('message', 18) ?><span>We usually reply the same day.</span></p>
+    <div class="formfoot"><p><?= icon('message', 18) ?><span><?= et('book.enquiry.note', 'We usually reply the same day.') ?></span></p>
       <button class="btn btn--gold" type="submit">Send enquiry <?= icon('send', 18) ?></button></div>
     </form>
   </section>

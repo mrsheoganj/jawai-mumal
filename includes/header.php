@@ -4,10 +4,10 @@ $siteName = setting('site_name');
 $pageTitle = isset($pageTitle) ? $pageTitle . ' | ' . $siteName : $siteName . ' — ' . setting('site_tagline') . ' | Bera, Jawai';
 $pageDesc  = $pageDesc ?? setting('meta_description');
 $active    = $active ?? '';
-$ogImage   = img($ogImage ?? setting('hero_image'));
+$ogImage   = img($ogImage ?? 'assets/images/hotel-day.jpg');
 $nav = [
-    'home' => ['Home', 'index.php'], 'stay' => ['Stay', 'rooms.php'], 'dining' => ['Dining', 'restaurant.php'],
-    'safari' => ['Safari', 'safari.php'], 'jawai' => ['Explore Jawai', 'jawai.php'], 'gallery' => ['Gallery', 'gallery.php'], 'contact' => ['Contact', 'contact.php'],
+    'home' => [t('nav.home', 'Home'), 'index.php'], 'stay' => [t('nav.stay', 'Stay'), 'rooms.php'], 'dining' => [t('nav.dining', 'Dining'), 'restaurant.php'],
+    'safari' => [t('nav.safari', 'Safari'), 'safari.php'], 'jawai' => [t('nav.jawai', 'Explore Jawai'), 'jawai.php'], 'gallery' => [t('nav.gallery', 'Gallery'), 'gallery.php'], 'contact' => [t('nav.contact', 'Contact'), 'contact.php'],
 ];
 ?><!DOCTYPE html>
 <html lang="en">
@@ -52,7 +52,7 @@ $nav = [
       <?php foreach ($nav as $k => $n): ?>
         <a href="<?= url($n[1]) ?>" <?= $active === $k ? 'aria-current="page"' : '' ?>><?= e($n[0]) ?></a>
       <?php endforeach; ?>
-      <a class="btn btn--gold nav__cta" href="<?= url('book.php') ?>"><?= opening_soon() ? 'Pre-book' : 'Book now' ?></a>
+      <a class="btn btn--gold nav__cta" href="<?= url('book.php') ?>"><?= et('nav.cta', 'Book now') ?></a>
     </nav>
     <button class="nav__toggle" id="navtoggle" aria-label="Open menu" aria-expanded="false" aria-controls="navlinks"><?= icon('menu', 24) ?></button>
   </div>

@@ -4,33 +4,47 @@ $active = 'home';
 $bookTab = 'stay';
 include __DIR__ . '/includes/header.php';
 
+$slides    = rows("SELECT * FROM jm_slides WHERE status='active' ORDER BY sort_order, id");
+if (!$slides) $slides = [['image' => 'assets/images/hero-savanna.jpg', 'eyebrow' => 'Bera · Jawai · Rajasthan', 'title' => setting('site_name'), 'text' => setting('site_tagline'), 'cta_label' => 'Book your stay', 'cta_url' => '#book', 'cta2_label' => '', 'cta2_url' => '']];
 $featRooms = rows("SELECT * FROM jm_rooms WHERE status='active' ORDER BY featured DESC, sort_order, id LIMIT 3");
 $safaris   = rows("SELECT * FROM jm_safaris WHERE status='active' ORDER BY sort_order, id LIMIT 3");
-$dishes    = rows("SELECT * FROM jm_menu WHERE available=1 AND image<>'' ORDER BY sort_order, id LIMIT 3");
 $attrs     = rows("SELECT * FROM jm_attractions WHERE status='active' ORDER BY sort_order, id LIMIT 6");
 $gallery   = rows("SELECT * FROM jm_gallery ORDER BY sort_order, id LIMIT 6");
 $quotes    = rows("SELECT * FROM jm_testimonials WHERE status='visible' ORDER BY sort_order, id LIMIT 3");
 $faqs      = rows("SELECT * FROM jm_faqs ORDER BY sort_order, id LIMIT 6");
-$soon = opening_soon();
 $fac = array_map(fn($l) => array_pad(explode('|', $l, 3), 3, ''), lines(setting('facilities')));
 $lowest = (int)val("SELECT MIN(price) FROM jm_rooms WHERE status='active'");
+$link = fn($u) => ($u === '' ? '#' : (preg_match('#^(https?:|\#|mailto:|tel:)#', $u) ? $u : url($u)));
+$n = count($slides);
 ?>
 
-<!-- ============ HERO ============ -->
-<section class="hero">
-  <img class="hero__bg" src="<?= e(img(setting('hero_image'))) ?>" alt="" fetchpriority="high">
-  <div class="wrap">
-    <div class="hero__in">
-      <?php if ($soon): ?><div class="badge-soon"><i></i><?= e(setting('opening_label')) ?></div><?php endif; ?>
-      <span class="eyebrow"><?= e(setting('hero_eyebrow')) ?></span>
-      <h1><?= e(setting('hero_title')) ?></h1>
-      <p><?= e(setting('hero_text')) ?></p>
-      <div class="hero__cta">
-        <a class="btn btn--gold" href="#book"><?= $soon ? 'Pre-book your stay' : 'Book your stay' ?> <?= icon('arrow-right', 18) ?></a>
-        <a class="btn btn--ghost" href="<?= url('safari.php') ?>"><?= icon('compass', 18) ?> Jawai safari</a>
+<!-- ============ HERO (slides are managed in Admin > Home banner slides) ============ -->
+<section class="hero" id="hero" data-count="<?= $n ?>" aria-roledescription="carousel" aria-label="Featured">
+  <?php foreach ($slides as $i => $s): ?>
+  <div class="hslide<?= $i === 0 ? ' is-active' : '' ?>" role="group" aria-roledescription="slide" aria-label="<?= $i + 1 ?> of <?= $n ?>"<?= $i ? ' aria-hidden="true"' : '' ?>>
+    <img class="hslide__bg" src="<?= e(img($s['image'])) ?>" alt=""<?= $i ? ' loading="lazy"' : ' fetchpriority="high"' ?>>
+    <div class="wrap">
+      <div class="hero__in">
+        <?php if (setting('show_open_badge') === '1' && $i === 0): ?><div class="badge-soon"><i></i><?= e(setting('open_label')) ?></div><?php endif; ?>
+        <?php if ($s['eyebrow']): ?><span class="eyebrow"><?= e($s['eyebrow']) ?></span><?php endif; ?>
+        <<?= $i === 0 ? 'h1' : 'h2 class="h1"' ?>><?= e($s['title']) ?></<?= $i === 0 ? 'h1' : 'h2' ?>>
+        <?php if ($s['text']): ?><p><?= e($s['text']) ?></p><?php endif; ?>
+        <div class="hero__cta">
+          <?php if ($s['cta_label']): ?><a class="btn btn--gold" href="<?= e($link($s['cta_url'])) ?>"><?= e($s['cta_label']) ?> <?= icon('arrow-right', 18) ?></a><?php endif; ?>
+          <?php if ($s['cta2_label']): ?><a class="btn btn--ghost" href="<?= e($link($s['cta2_url'])) ?>"><?= e($s['cta2_label']) ?></a><?php endif; ?>
+        </div>
       </div>
     </div>
   </div>
+  <?php endforeach; ?>
+  <?php if ($n > 1): ?>
+  <div class="hero__ctl">
+    <button type="button" class="hctl" data-hero="prev" aria-label="Previous slide"><?= icon('chevron-left', 20) ?></button>
+    <div class="hdots" role="tablist" aria-label="Choose slide"><?php for ($i = 0; $i < $n; $i++): ?><button type="button" role="tab" data-slide="<?= $i ?>" aria-label="Slide <?= $i + 1 ?>" aria-selected="<?= $i === 0 ? 'true' : 'false' ?>"></button><?php endfor; ?></div>
+    <button type="button" class="hctl" data-hero="next" aria-label="Next slide"><?= icon('chevron-right', 20) ?></button>
+    <button type="button" class="hctl" data-hero="pause" aria-label="Pause slideshow"><?= icon('minus', 18) ?></button>
+  </div>
+  <?php endif; ?>
 </section>
 
 <!-- ============ BOOKING / ENQUIRY ============ -->
@@ -43,16 +57,16 @@ $lowest = (int)val("SELECT MIN(price) FROM jm_rooms WHERE status='active'");
   <div class="wrap">
     <div class="split">
       <div class="rv">
-        <span class="eyebrow eyebrow--dark">Welcome</span>
-        <h2><?= e(setting('about_title')) ?></h2>
-        <p><?= e(setting('about_text')) ?></p>
-        <p><?= e(setting('about_text2')) ?></p>
-        <p style="color:var(--gold-d);font-weight:500"><?= e(setting('founders_line')) ?></p>
-        <div class="hero__cta"><a class="link" href="<?= url('contact.php') ?>">Meet the team &amp; find us <?= icon('arrow-right', 18) ?></a></div>
+        <span class="eyebrow eyebrow--dark"><?= et('home.about.eyebrow', 'Welcome') ?></span>
+        <h2><?= et('home.about.title', 'A hotel and kitchen in the heart of Jawai') ?></h2>
+        <p><?= et('home.about.p1', 'Jawai Mumal is a family-run hotel and restaurant in Bera village on the Bera–Bali road, in Pali district of Rajasthan. Granite hills, village lanes, Rabari herders and wild leopards all share this landscape — and we are right in the middle of it.') ?></p>
+        <p><?= et('home.about.p2', 'Stay in a comfortable room, eat a pure-vegetarian Rajasthani meal cooked the village way, and head out for a sunrise or sunset leopard safari with local trackers. Good food, comfortable stay, happy moments — a place where every guest feels special.') ?></p>
+        <p style="color:var(--gold-d);font-weight:500"><?= et('home.about.founders', 'Founded by Devendra Singh & Nilesh Singh Chouhan') ?></p>
+        <div class="hero__cta"><a class="link" href="<?= url('contact.php') ?>"><?= et('home.about.link', 'Meet the team & find us') ?> <?= icon('arrow-right', 18) ?></a></div>
       </div>
       <div class="duo rv d1">
-        <figure class="frame"><img src="<?= e(img(setting('property_image'))) ?>" alt="The Jawai Mumal building in Bera village" loading="lazy"><figcaption>Jawai Mumal, Bera</figcaption></figure>
-        <figure class="frame"><img src="<?= e(img(setting('about_image'))) ?>" alt="Jawai Mumal hotel entrance at dusk" loading="lazy"><figcaption>Evening view</figcaption></figure>
+        <figure class="frame"><img src="<?= imgu('home.about.img1', 'assets/images/hotel-day.jpg') ?>" alt="<?= et('home.about.alt1', 'Jawai Mumal hotel in Bera village') ?>" loading="lazy"><figcaption><?= et('home.about.cap1', 'Jawai Mumal, Bera') ?></figcaption></figure>
+        <figure class="frame"><img src="<?= imgu('home.about.img2', 'assets/images/hotel-front.jpg') ?>" alt="<?= et('home.about.alt2', 'Jawai Mumal hotel entrance in the evening') ?>" loading="lazy"><figcaption><?= et('home.about.cap2', 'Evening view') ?></figcaption></figure>
       </div>
     </div>
     <div class="stats rv">
@@ -64,11 +78,11 @@ $lowest = (int)val("SELECT MIN(price) FROM jm_rooms WHERE status='active'");
 <!-- ============ THREE PILLARS ============ -->
 <section class="sec sec--sand">
   <div class="wrap">
-    <div class="sechead rv"><span class="eyebrow eyebrow--dark">One address, three experiences</span><h2>Stay. Dine. Explore.</h2><p>Everything for a Jawai trip, looked after by one local team.</p></div>
+    <div class="sechead rv"><span class="eyebrow eyebrow--dark"><?= et('home.pillars.eyebrow', 'One address, three experiences') ?></span><h2><?= et('home.pillars.title', 'Stay. Dine. Explore.') ?></h2><p><?= et('home.pillars.sub', 'Everything for a Jawai trip, looked after by one local team.') ?></p></div>
     <div class="cards3">
-      <a class="pillar rv" href="<?= url('rooms.php') ?>"><img src="<?= e(img('assets/images/room-heritage.jpg')) ?>" alt="" loading="lazy"><div class="pillar__in"><div class="pillar__ic"><?= icon('bed', 24) ?></div><h3>Hotel</h3><p>Comfortable air-conditioned rooms and suites<?= $lowest ? ' from ' . money($lowest) . ' a night' : '' ?>.</p><span class="link">View rooms <?= icon('arrow-right', 16) ?></span></div></a>
-      <a class="pillar rv d1" href="<?= url('restaurant.php') ?>"><img src="<?= e(img('assets/images/food-thali.jpg')) ?>" alt="" loading="lazy"><div class="pillar__in"><div class="pillar__ic"><?= icon('utensils', 24) ?></div><h3>Restaurant</h3><p>Rajasthani classics, tandoor grills and a relaxed all-day café.</p><span class="link">See the menu <?= icon('arrow-right', 16) ?></span></div></a>
-      <a class="pillar rv d2" href="<?= url('safari.php') ?>"><img src="<?= e(img('assets/images/leopard-log.jpg')) ?>" alt="" loading="lazy"><div class="pillar__in"><div class="pillar__ic"><?= icon('car', 24) ?></div><h3>Jawai Safari</h3><p>Sunrise and sunset leopard drives with local trackers.</p><span class="link">Explore safaris <?= icon('arrow-right', 16) ?></span></div></a>
+      <a class="pillar rv" href="<?= url('rooms.php') ?>"><img src="<?= imgu('home.pillar1.img', 'assets/images/room-heritage.jpg') ?>" alt="" loading="lazy"><div class="pillar__in"><div class="pillar__ic"><?= icon('bed', 24) ?></div><h3><?= et('home.pillar1.title', 'Hotel') ?></h3><p><?= et('home.pillar1.text', 'Comfortable air-conditioned rooms and suites in Bera village.') ?><?= $lowest ? ' ' . et('home.pillar1.from', 'From') . ' ' . money($lowest) . ' ' . et('home.pillar1.night', 'a night.') : '' ?></p><span class="link"><?= et('home.pillar1.link', 'View rooms') ?> <?= icon('arrow-right', 16) ?></span></div></a>
+      <a class="pillar rv d1" href="<?= url('restaurant.php') ?>"><img src="<?= imgu('home.pillar2.img', 'assets/images/food-thali.jpg') ?>" alt="" loading="lazy"><div class="pillar__in"><div class="pillar__ic"><?= icon('utensils', 24) ?></div><h3><?= et('home.pillar2.title', 'Restaurant') ?></h3><p><?= et('home.pillar2.text', '100% vegetarian Rajasthani village food, tandoor and a relaxed café.') ?></p><span class="link"><?= et('home.pillar2.link', 'See the menu') ?> <?= icon('arrow-right', 16) ?></span></div></a>
+      <a class="pillar rv d2" href="<?= url('safari.php') ?>"><img src="<?= imgu('home.pillar3.img', 'assets/images/leopard-log.jpg') ?>" alt="" loading="lazy"><div class="pillar__in"><div class="pillar__ic"><?= icon('car', 24) ?></div><h3><?= et('home.pillar3.title', 'Jawai Safari') ?></h3><p><?= et('home.pillar3.text', 'Dawn and dusk leopard drives in open 4x4 jeeps with local trackers.') ?></p><span class="link"><?= et('home.pillar3.link', 'Explore safaris') ?> <?= icon('arrow-right', 16) ?></span></div></a>
     </div>
   </div>
 </section>
@@ -76,7 +90,7 @@ $lowest = (int)val("SELECT MIN(price) FROM jm_rooms WHERE status='active'");
 <!-- ============ ROOMS ============ -->
 <section class="sec">
   <div class="wrap">
-    <div class="sechead rv"><span class="eyebrow eyebrow--dark">Rooms &amp; suites</span><h2>A comfortable base in Bera</h2><p>Clean, quiet and well-equipped. Rates shown are indicative and confirmed by our team.</p></div>
+    <div class="sechead rv"><span class="eyebrow eyebrow--dark"><?= et('home.rooms.eyebrow', 'Rooms & suites') ?></span><h2><?= et('home.rooms.title', 'A comfortable base in Bera') ?></h2><p><?= et('home.rooms.sub', 'Clean, quiet and well-equipped, minutes from the Jawai hills. Rates are per room per night; our team confirms the final rate.') ?></p></div>
     <div class="grid">
       <?php foreach ($featRooms as $i => $r): ?>
         <article class="card rv d<?= $i ?>">
@@ -85,19 +99,19 @@ $lowest = (int)val("SELECT MIN(price) FROM jm_rooms WHERE status='active'");
             <h3><a href="<?= url('room.php?slug=' . urlencode($r['slug'])) ?>" style="text-decoration:none"><?= e($r['name']) ?></a></h3>
             <p><?= e($r['tagline']) ?></p>
             <ul class="meta"><li><?= icon('users', 16) ?><?= e($r['capacity']) ?></li><li><?= icon('bed', 16) ?><?= e($r['beds']) ?></li><li><?= icon('mountain', 16) ?><?= e($r['view_type']) ?></li></ul>
-            <div class="card__foot"><div class="price"><small>from</small><?= money($r['price']) ?> <span>/ night</span></div><a class="btn btn--dark btn--sm" href="<?= url('room.php?slug=' . urlencode($r['slug'])) ?>">Details</a></div>
+            <div class="card__foot"><div class="price"><small><?= et('home.rooms.from', 'from') ?></small><?= money($r['price']) ?> <span>/ <?= et('home.rooms.night', 'night') ?></span></div><a class="btn btn--dark btn--sm" href="<?= url('room.php?slug=' . urlencode($r['slug'])) ?>"><?= et('home.rooms.details', 'Details') ?></a></div>
           </div>
         </article>
       <?php endforeach; ?>
     </div>
-    <p style="text-align:center;margin-top:2.2rem"><a class="btn btn--line" href="<?= url('rooms.php') ?>">See all rooms <?= icon('arrow-right', 18) ?></a></p>
+    <p style="text-align:center;margin-top:2.2rem"><a class="btn btn--line" href="<?= url('rooms.php') ?>"><?= et('home.rooms.all', 'See all rooms') ?> <?= icon('arrow-right', 18) ?></a></p>
   </div>
 </section>
 
 <!-- ============ FACILITIES ============ -->
 <section class="sec sec--sand">
   <div class="wrap">
-    <div class="sechead rv"><span class="eyebrow eyebrow--dark">Good to know</span><h2>Comfort, without the fuss</h2></div>
+    <div class="sechead rv"><span class="eyebrow eyebrow--dark"><?= et('home.fac.eyebrow', 'Good to know') ?></span><h2><?= et('home.fac.title', 'Comfort, without the fuss') ?></h2></div>
     <div class="fac">
       <?php foreach ($fac as $i => $f): ?>
         <div class="fac__item rv d<?= $i % 3 ?>"><span class="fac__ic"><?= icon(trim($f[0]), 24) ?></span><div><h3><?= e($f[1]) ?></h3><p><?= e($f[2]) ?></p></div></div>
@@ -106,10 +120,30 @@ $lowest = (int)val("SELECT MIN(price) FROM jm_rooms WHERE status='active'");
   </div>
 </section>
 
+<!-- ============ RESTAURANT / VILLAGE FOOD ============ -->
+<section class="sec">
+  <div class="wrap split split--rev">
+    <div class="duo rv">
+      <figure class="frame"><img src="<?= imgu('home.food.img1', 'assets/images/food-thali.jpg') ?>" alt="" loading="lazy"></figure>
+      <figure class="frame"><img src="<?= imgu('home.food.img2', 'assets/images/food-paneer.jpg') ?>" alt="" loading="lazy"></figure>
+    </div>
+    <div class="rv d1">
+      <span class="eyebrow eyebrow--dark"><?= et('home.food.eyebrow', 'Restaurant & café · 100% vegetarian') ?></span>
+      <h2><?= et('home.food.title', 'Rajasthani food, the Jawai village way') ?></h2>
+      <p><?= et('home.food.p1', 'Dal baati churma dunked in ghee, ker sangri from the desert, gatte ki sabzi, kadhi and bajra roti hot off the griddle with garlic chutney — the food of the villages around Jawai, cooked fresh in our kitchen.') ?></p>
+      <p><?= et('home.food.p2', 'Add tandoor classics, mirchi vada and pyaaz kachori, kulhad chai and cold chaas, and finish with moong dal halwa or malpua. Jain options on request.') ?></p>
+      <ul class="checks" style="color:var(--ink-2)">
+        <li><?= icon('check', 16) ?><?= et('home.food.c1', 'Pure vegetarian kitchen') ?></li><li><?= icon('check', 16) ?><?= et('home.food.c2', 'Village-style thali') ?></li><li><?= icon('check', 16) ?><?= et('home.food.c3', 'Café, chai & fresh drinks') ?></li><li><?= icon('check', 16) ?><?= et('home.food.c4', 'Group & party menus') ?></li>
+      </ul>
+      <div class="hero__cta"><a class="btn btn--dark" href="<?= url('restaurant.php') ?>"><?= et('home.food.b1', 'View the menu') ?></a><a class="btn btn--line" href="<?= url('book.php?type=dine') ?>"><?= et('home.food.b2', 'Reserve a table') ?></a></div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ SAFARI ============ -->
 <section class="sec sec--dark">
   <div class="wrap">
-    <div class="sechead rv"><span class="eyebrow">Jawai Safari</span><h2>Leopards, granite hills &amp; open skies</h2><p>Jawai is one of the few places where leopards can regularly be seen living among rocky hills and village life. We arrange guided drives with local trackers.</p></div>
+    <div class="sechead rv"><span class="eyebrow"><?= et('home.safari.eyebrow', 'Jawai Safari') ?></span><h2><?= et('home.safari.title', 'Leopards, granite hills & open skies') ?></h2><p><?= et('home.safari.sub', 'Jawai is one of the few places where leopards are regularly seen resting on open granite hills, beside villages and farms. Our drives use open 4x4 jeeps, a driver and a local tracker, at dawn and at dusk.') ?></p></div>
     <?php foreach ($safaris as $s): ?>
       <article class="row rv">
         <div class="row__img"><img src="<?= e(img($s['image'])) ?>" alt="<?= e($s['title']) ?>" loading="lazy"></div>
@@ -117,37 +151,19 @@ $lowest = (int)val("SELECT MIN(price) FROM jm_rooms WHERE status='active'");
           <h3><?= e($s['title']) ?></h3>
           <ul class="meta"><li><?= icon('clock', 16) ?><?= e($s['duration']) ?></li><li><?= icon('sun', 16) ?><?= e($s['timing']) ?></li><li><?= icon('car', 16) ?><?= e($s['vehicle']) ?></li></ul>
           <p><?= e($s['description']) ?></p>
-          <div class="row__foot"><div class="price"><small>from</small><?= money($s['price_pp']) ?> <span>/ person</span></div>
-            <a class="btn btn--gold btn--sm" href="<?= url('book.php?type=safari&safari=' . (int)$s['id']) ?>">Request this safari</a></div>
+          <div class="row__foot"><div class="price"><small><?= et('home.safari.from', 'from') ?></small><?= money($s['price_pp']) ?> <span>/ <?= et('home.safari.pp', 'person') ?></span></div>
+            <a class="btn btn--gold btn--sm" href="<?= url('book.php?type=safari&safari=' . (int)$s['id']) ?>"><?= et('home.safari.btn', 'Request this safari') ?></a></div>
         </div>
       </article>
     <?php endforeach; ?>
-    <p style="text-align:center;margin-top:2rem"><a class="btn btn--ghost" href="<?= url('safari.php') ?>">All safari experiences <?= icon('arrow-right', 18) ?></a></p>
-  </div>
-</section>
-
-<!-- ============ RESTAURANT ============ -->
-<section class="sec">
-  <div class="wrap split split--rev">
-    <div class="duo rv">
-      <?php foreach (array_slice($dishes, 0, 2) as $d): ?><figure class="frame"><img src="<?= e(img($d['image'])) ?>" alt="<?= e($d['name']) ?>" loading="lazy"></figure><?php endforeach; ?>
-    </div>
-    <div class="rv d1">
-      <span class="eyebrow eyebrow--dark">Restaurant &amp; café</span>
-      <h2>Honest Rajasthani food, cooked fresh</h2>
-      <p>From slow-cooked laal maas and dal baati churma to tandoor grills, breads and desserts — plus an easy all-day café for chai, coffee and snacks. Vegetarian and non-vegetarian menus, with Jain options on request.</p>
-      <ul class="checks" style="color:var(--ink-2)">
-        <li><?= icon('check', 16) ?>Veg &amp; non-veg menus</li><li><?= icon('check', 16) ?>Café &amp; fresh drinks</li><li><?= icon('check', 16) ?>Group &amp; party menus</li><li><?= icon('check', 16) ?>Table reservations</li>
-      </ul>
-      <div class="hero__cta"><a class="btn btn--dark" href="<?= url('restaurant.php') ?>">View the menu</a><a class="btn btn--line" href="<?= url('book.php?type=dine') ?>">Reserve a table</a></div>
-    </div>
+    <p style="text-align:center;margin-top:2rem"><a class="btn btn--ghost" href="<?= url('safari.php') ?>"><?= et('home.safari.all', 'All safari experiences') ?> <?= icon('arrow-right', 18) ?></a></p>
   </div>
 </section>
 
 <!-- ============ EXPLORE JAWAI ============ -->
 <section class="sec sec--sand">
   <div class="wrap">
-    <div class="sechead rv"><span class="eyebrow eyebrow--dark">Explore Jawai</span><h2>Wild hills, ancient forts, living culture</h2><p>Base yourself in Bera and reach leopard hills, a reservoir full of birds and some of Rajasthan's finest heritage.</p></div>
+    <div class="sechead rv"><span class="eyebrow eyebrow--dark"><?= et('home.explore.eyebrow', 'Explore Jawai') ?></span><h2><?= et('home.explore.title', 'Wild hills, village life, ancient forts') ?></h2><p><?= et('home.explore.sub', 'Base yourself in Bera and reach the leopard hills, a reservoir full of birds, Rabari villages and some of Rajasthan\'s finest heritage.') ?></p></div>
     <div class="grid">
       <?php foreach ($attrs as $i => $a): ?>
         <article class="card attr rv d<?= $i % 3 ?>">
@@ -156,7 +172,7 @@ $lowest = (int)val("SELECT MIN(price) FROM jm_rooms WHERE status='active'");
         </article>
       <?php endforeach; ?>
     </div>
-    <p style="text-align:center;margin-top:2.2rem"><a class="btn btn--line" href="<?= url('jawai.php') ?>">The complete Jawai guide <?= icon('arrow-right', 18) ?></a></p>
+    <p style="text-align:center;margin-top:2.2rem"><a class="btn btn--line" href="<?= url('jawai.php') ?>"><?= et('home.explore.all', 'The complete Jawai guide') ?> <?= icon('arrow-right', 18) ?></a></p>
   </div>
 </section>
 
@@ -164,11 +180,11 @@ $lowest = (int)val("SELECT MIN(price) FROM jm_rooms WHERE status='active'");
 <section class="sec">
   <div class="wrap">
     <div class="cta rv">
-      <img src="<?= e(img(setting('events_image'))) ?>" alt="" loading="lazy">
-      <span class="eyebrow">Party &amp; personal bookings</span>
-      <h2><?= e(setting('events_title')) ?></h2>
-      <p><?= e(setting('events_text')) ?></p>
-      <div class="hero__cta"><a class="btn btn--gold" href="<?= url('book.php?type=event') ?>">Plan an event <?= icon('arrow-right', 18) ?></a><a class="btn btn--ghost" href="<?= e(tel(setting('owner1_phone'))) ?>"><?= icon('phone', 18) ?> <?= e(setting('owner1_phone')) ?></a></div>
+      <img src="<?= imgu('home.events.img', 'assets/images/dining-hall.jpg') ?>" alt="" loading="lazy">
+      <span class="eyebrow"><?= et('home.events.eyebrow', 'Party & personal bookings') ?></span>
+      <h2><?= et('home.events.title', 'Parties, celebrations & private functions') ?></h2>
+      <p><?= et('home.events.text', 'Birthdays, family get-togethers, small weddings, corporate meets or a quiet personal celebration — party and personal bookings are both available. Tell us your date, guest count and menu ideas and we will plan the rest.') ?></p>
+      <div class="hero__cta"><a class="btn btn--gold" href="<?= url('book.php?type=event') ?>"><?= et('home.events.btn', 'Plan an event') ?> <?= icon('arrow-right', 18) ?></a><a class="btn btn--ghost" href="<?= e(tel(setting('owner1_phone'))) ?>"><?= icon('phone', 18) ?> <?= e(setting('owner1_phone')) ?></a></div>
     </div>
   </div>
 </section>
@@ -177,11 +193,11 @@ $lowest = (int)val("SELECT MIN(price) FROM jm_rooms WHERE status='active'");
 <?php if ($gallery): ?>
 <section class="sec sec--sand">
   <div class="wrap">
-    <div class="sechead rv"><span class="eyebrow eyebrow--dark">Gallery</span><h2>A look around</h2></div>
+    <div class="sechead rv"><span class="eyebrow eyebrow--dark"><?= et('home.gallery.eyebrow', 'Gallery') ?></span><h2><?= et('home.gallery.title', 'A look around') ?></h2></div>
     <div class="mason rv">
       <?php foreach ($gallery as $g): ?><a href="<?= e(img($g['image'])) ?>" data-title="<?= e($g['title']) ?>"><img src="<?= e(img($g['image'])) ?>" alt="<?= e($g['title']) ?>" loading="lazy"><span><?= e($g['title']) ?></span></a><?php endforeach; ?>
     </div>
-    <p style="text-align:center;margin-top:2rem"><a class="btn btn--line" href="<?= url('gallery.php') ?>">Open the gallery</a></p>
+    <p style="text-align:center;margin-top:2rem"><a class="btn btn--line" href="<?= url('gallery.php') ?>"><?= et('home.gallery.btn', 'Open the gallery') ?></a></p>
   </div>
 </section>
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image viewer"><button class="lb__x" aria-label="Close"><?= icon('x', 22) ?></button><button class="lb__p" aria-label="Previous"><?= icon('chevron-left', 22) ?></button><img alt=""><button class="lb__n" aria-label="Next"><?= icon('chevron-right', 22) ?></button><p></p></div>
@@ -191,10 +207,10 @@ $lowest = (int)val("SELECT MIN(price) FROM jm_rooms WHERE status='active'");
 <?php if ($quotes): ?>
 <section class="sec">
   <div class="wrap">
-    <div class="sechead rv"><span class="eyebrow eyebrow--dark">Guest words</span><h2>What guests say</h2></div>
+    <div class="sechead rv"><span class="eyebrow eyebrow--dark"><?= et('home.reviews.eyebrow', 'Guest words') ?></span><h2><?= et('home.reviews.title', 'What guests say') ?></h2></div>
     <div class="grid">
       <?php foreach ($quotes as $i => $t): ?>
-        <figure class="quote rv d<?= $i ?>" style="margin:0"><div class="stars" aria-label="<?= (int)$t['rating'] ?> out of 5"><?php for ($s = 0; $s < (int)$t['rating']; $s++) echo icon('star', 16); ?></div><blockquote style="margin:0 0 1rem"><?= e($t['quote']) ?></blockquote><figcaption><strong><?= e($t['name']) ?></strong><br><small style="color:var(--muted)"><?= e($t['origin']) ?></small></figcaption></figure>
+        <figure class="quote rv d<?= $i ?>"><div class="stars" aria-label="<?= (int)$t['rating'] ?> out of 5"><?php for ($s = 0; $s < (int)$t['rating']; $s++) echo icon('star', 16); ?></div><blockquote style="margin:0 0 1rem"><?= e($t['quote']) ?></blockquote><figcaption><strong><?= e($t['name']) ?></strong><br><small style="color:var(--muted)"><?= e($t['origin']) ?></small></figcaption></figure>
       <?php endforeach; ?>
     </div>
   </div>
@@ -204,7 +220,7 @@ $lowest = (int)val("SELECT MIN(price) FROM jm_rooms WHERE status='active'");
 <!-- ============ FAQ ============ -->
 <section class="sec <?= $quotes ? 'sec--sand' : '' ?>">
   <div class="wrap">
-    <div class="sechead rv"><span class="eyebrow eyebrow--dark">Questions</span><h2>Before you book</h2></div>
+    <div class="sechead rv"><span class="eyebrow eyebrow--dark"><?= et('home.faq.eyebrow', 'Questions') ?></span><h2><?= et('home.faq.title', 'Before you book') ?></h2></div>
     <div class="faq rv">
       <?php foreach ($faqs as $f): ?><details><summary><?= e($f['question']) ?><?= icon('chevron-down', 22) ?></summary><p><?= e($f['answer']) ?></p></details><?php endforeach; ?>
     </div>
@@ -215,15 +231,15 @@ $lowest = (int)val("SELECT MIN(price) FROM jm_rooms WHERE status='active'");
 <section class="sec sec--dark">
   <div class="wrap split">
     <div class="rv">
-      <span class="eyebrow">Find us</span>
-      <h2>Bera, on the road to Jawai</h2>
+      <span class="eyebrow"><?= et('home.find.eyebrow', 'Find us') ?></span>
+      <h2><?= et('home.find.title', 'Bera, on the road to Jawai') ?></h2>
       <p style="white-space:pre-line"><?= e(setting('address')) ?></p>
       <ul class="footer__contact" style="list-style:none;padding:0;display:grid;gap:1rem;margin:1.5rem 0">
-        <?php foreach ([['owner1', 'phone'], ['owner2', 'phone']] as $o): ?>
-          <li style="display:flex;gap:.8rem"><?= icon('phone', 20) ?><span><a style="font:600 1.4rem var(--serif);text-decoration:none" href="<?= e(tel(setting($o[0] . '_phone'))) ?>"><?= e(setting($o[0] . '_phone')) ?></a><br><small style="opacity:.7"><?= e(setting($o[0] . '_name')) ?> · <?= e(setting($o[0] . '_role')) ?></small></span></li>
+        <?php foreach (['owner1', 'owner2'] as $o): ?>
+          <li style="display:flex;gap:.8rem"><?= icon('phone', 20) ?><span><a style="font:600 1.4rem var(--serif);text-decoration:none" href="<?= e(tel(setting($o . '_phone'))) ?>"><?= e(setting($o . '_phone')) ?></a><br><small style="opacity:.7"><?= e(setting($o . '_name')) ?> · <?= e(setting($o . '_role')) ?></small></span></li>
         <?php endforeach; ?>
       </ul>
-      <div class="hero__cta"><a class="btn btn--gold" href="<?= e(wa_link('Hello Jawai Mumal')) ?>" target="_blank" rel="noopener"><?= icon('whatsapp', 18) ?> WhatsApp</a><a class="btn btn--ghost" href="<?= url('contact.php') ?>">Directions &amp; contact</a></div>
+      <div class="hero__cta"><a class="btn btn--gold" href="<?= e(wa_link('Hello Jawai Mumal')) ?>" target="_blank" rel="noopener"><?= icon('whatsapp', 18) ?> WhatsApp</a><a class="btn btn--ghost" href="<?= url('contact.php') ?>"><?= et('home.find.btn', 'Directions & contact') ?></a></div>
     </div>
     <iframe class="map rv d1" title="Map to <?= e(setting('site_name')) ?>" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=<?= urlencode(setting('map_query')) ?>&output=embed"></iframe>
   </div>
@@ -231,7 +247,7 @@ $lowest = (int)val("SELECT MIN(price) FROM jm_rooms WHERE status='active'");
 
 <script type="application/ld+json"><?= json_encode([
   '@context' => 'https://schema.org', '@type' => 'Hotel', 'name' => setting('site_name'), 'url' => setting('site_url'),
-  'image' => img(setting('hero_image')), 'telephone' => setting('owner1_phone'), 'description' => setting('meta_description'),
+  'image' => img($slides[0]['image']), 'telephone' => setting('owner1_phone'), 'description' => setting('meta_description'),
   'address' => ['@type' => 'PostalAddress', 'addressLocality' => 'Bera', 'addressRegion' => 'Rajasthan', 'addressCountry' => 'IN'],
 ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?></script>
 <?php include __DIR__ . '/includes/footer.php'; ?>

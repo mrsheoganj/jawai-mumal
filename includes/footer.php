@@ -15,18 +15,18 @@ $o2 = [setting('owner2_name'), setting('owner2_role'), setting('owner2_phone')];
       </div>
     </div>
     <div>
-      <h3>Explore</h3>
+      <h3><?= et('footer.explore', 'Explore') ?></h3>
       <ul>
-        <li><a href="<?= url('rooms.php') ?>">Rooms &amp; stays</a></li>
-        <li><a href="<?= url('restaurant.php') ?>">Restaurant &amp; café</a></li>
-        <li><a href="<?= url('safari.php') ?>">Jawai safari</a></li>
-        <li><a href="<?= url('jawai.php') ?>">Explore Jawai</a></li>
+        <li><a href="<?= url('rooms.php') ?>"><?= et('footer.l1', 'Rooms & stays') ?></a></li>
+        <li><a href="<?= url('restaurant.php') ?>"><?= et('footer.l2', 'Restaurant & café') ?></a></li>
+        <li><a href="<?= url('safari.php') ?>"><?= et('footer.l3', 'Jawai safari') ?></a></li>
+        <li><a href="<?= url('jawai.php') ?>"><?= et('footer.l4', 'Explore Jawai') ?></a></li>
         <li><a href="<?= url('gallery.php') ?>">Gallery</a></li>
-        <li><a href="<?= url('book.php?type=event') ?>">Party &amp; events</a></li>
+        <li><a href="<?= url('book.php?type=event') ?>"><?= et('footer.l5', 'Party & events') ?></a></li>
       </ul>
     </div>
     <div>
-      <h3>Contact</h3>
+      <h3><?= et('footer.contact', 'Contact') ?></h3>
       <ul class="footer__contact">
         <li><?= icon('phone', 18) ?><span><a href="<?= e(tel($o1[2])) ?>"><?= e($o1[2]) ?></a><small><?= e($o1[0]) ?> · <?= e($o1[1]) ?></small></span></li>
         <li><?= icon('phone', 18) ?><span><a href="<?= e(tel($o2[2])) ?>"><?= e($o2[2]) ?></a><small><?= e($o2[0]) ?> · <?= e($o2[1]) ?></small></span></li>
@@ -36,7 +36,7 @@ $o2 = [setting('owner2_name'), setting('owner2_role'), setting('owner2_phone')];
     </div>
   </div>
   <div class="wrap footer__bar">
-    <span>© <?= date('Y') ?> <?= e(setting('site_name')) ?>. All rights reserved.</span>
+    <span>© <?= date('Y') ?> <?= e(setting('site_name')) ?>. <?= et('footer.rights', 'All rights reserved.') ?></span>
     <span><?= e(preg_replace('#^https?://#', '', setting('site_url'))) ?></span>
   </div>
 </footer>

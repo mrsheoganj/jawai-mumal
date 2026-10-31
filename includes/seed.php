@@ -18,24 +18,38 @@ function jm_seed(PDO $pdo): void {
         $st->execute([$r[0], $r[1], $r[2], $r[3], $r[4], $r[5], $r[6], $r[7], $r[8], $r[9], $r[10], $r[11], $r[12], $r[13], $r[14], 'active', $r[15]]);
     }
 
-    // ---------- Menu
+    // ---------- Menu (100% vegetarian; prices are demo – edit in admin)
     $st = $pdo->prepare('INSERT INTO jm_menu (name,category,price,veg,spice,description,image,tag,available,sort_order) VALUES (?,?,?,?,?,?,?,?,?,?)');
     $menu = [
-        ['Dal Baati Churma', 'Rajasthani Classics', 380, 1, 'Medium', 'Wheat baati baked and dunked in ghee, five-lentil dal and sweet churma.', $I.'food-thali.jpg', 'House special'],
-        ['Laal Maas', 'Rajasthani Classics', 520, 0, 'Hot', 'Mutton slow-cooked with Mathania red chillies, garlic and whole spices.', $I.'food-curry.jpg', 'Signature'],
-        ['Ker Sangri', 'Rajasthani Classics', 320, 1, 'Medium', 'Desert beans and berries tempered with cumin, amchur and mustard oil.', '', 'Local'],
-        ['Gatte ki Sabzi', 'Rajasthani Classics', 290, 1, 'Medium', 'Gram-flour dumplings in a spiced yoghurt gravy.', '', ''],
-        ['Paneer Tikka', 'Grill & Tandoor', 340, 1, 'Mild', 'Cottage cheese marinated in hung curd and spices, grilled in the tandoor.', $I.'food-paneer.jpg', 'Popular'],
-        ['Chicken Tikka', 'Grill & Tandoor', 420, 0, 'Medium', 'Juicy chicken pieces marinated overnight, charred on skewers.', '', ''],
-        ['Butter Chicken', 'Mains', 450, 0, 'Mild', 'Tandoori chicken in a silky tomato-butter gravy.', $I.'food-bowls.jpg', ''],
-        ['Dal Tadka', 'Mains', 240, 1, 'Mild', 'Yellow lentils tempered with ghee, garlic and cumin.', '', ''],
+        ['Jawai Village Thali', 'Village Rajasthani', 450, 1, 'Medium', 'The full village-style meal: dal, seasonal sabzi, kadhi, bajra roti with ghee, rice, papad, chutney, salad and a sweet.', $I.'food-thali.jpg', 'House special'],
+        ['Dal Baati Churma', 'Village Rajasthani', 380, 1, 'Medium', 'Wheat baati baked and dunked in ghee, five-lentil panchmel dal, garlic chutney and sweet churma.', $I.'food-bowls.jpg', 'Signature'],
+        ['Ker Sangri', 'Village Rajasthani', 320, 1, 'Medium', 'Desert beans and berries tempered with cumin, dry mango and mustard oil — a classic of the Marwar villages.', '', 'Local'],
+        ['Gatte ki Sabzi', 'Village Rajasthani', 290, 1, 'Medium', 'Gram-flour dumplings simmered in a spiced yoghurt gravy.', '', ''],
+        ['Rajasthani Kadhi', 'Village Rajasthani', 220, 1, 'Mild', 'Tangy buttermilk and gram-flour curry with whole spices.', '', ''],
+        ['Bajra Roti with Ghee & Lasun Chutney', 'Village Rajasthani', 90, 1, 'Medium', 'Pearl-millet flatbread cooked on a griddle, served with white butter, ghee and red garlic chutney.', '', 'Village favourite'],
+        ['Raab (winter special)', 'Village Rajasthani', 160, 1, '', 'Warm millet porridge cooked in buttermilk with jaggery and ghee — a winter morning comfort. Available in season.', '', 'Seasonal'],
+        ['Mirchi Vada', 'Snacks & Chaat', 120, 1, 'Hot', 'Large green chilli stuffed with spiced potato, dipped in gram-flour batter and fried.', '', 'Popular'],
+        ['Pyaaz Kachori', 'Snacks & Chaat', 90, 1, 'Medium', 'Flaky kachori filled with spiced onion, served with tamarind and mint chutneys.', '', ''],
+        ['Dahi Vada', 'Snacks & Chaat', 130, 1, 'Mild', 'Soft lentil dumplings in whisked curd with sweet and tangy chutneys.', '', ''],
+        ['Paneer Tikka', 'Tandoor', 340, 1, 'Mild', 'Cottage cheese marinated in hung curd and spices, grilled in the tandoor.', $I.'food-paneer.jpg', 'Popular'],
+        ['Hariyali Kebab', 'Tandoor', 280, 1, 'Mild', 'Spinach, peas and herb kebabs, crisp outside and soft within.', '', ''],
+        ['Tandoori Aloo', 'Tandoor', 240, 1, 'Medium', 'Baby potatoes marinated in yoghurt and spices, roasted till charred.', '', ''],
         ['Paneer Butter Masala', 'Mains', 360, 1, 'Mild', 'Soft paneer in a rich tomato-cashew gravy.', '', ''],
+        ['Kadai Paneer', 'Mains', 350, 1, 'Medium', 'Paneer and peppers tossed in freshly ground kadai masala.', '', ''],
+        ['Dal Tadka', 'Mains', 240, 1, 'Mild', 'Yellow lentils tempered with ghee, garlic and cumin.', '', ''],
+        ['Dal Makhani', 'Mains', 280, 1, 'Mild', 'Black lentils simmered overnight with butter and cream.', '', ''],
+        ['Mix Vegetable', 'Mains', 260, 1, 'Medium', 'Seasonal vegetables in an onion-tomato masala.', '', ''],
         ['Butter Naan', 'Breads & Rice', 70, 1, '', 'Soft tandoor-baked bread brushed with butter.', '', ''],
-        ['Bajra Roti', 'Breads & Rice', 60, 1, '', 'Pearl-millet flatbread with white butter and jaggery.', '', 'Local'],
+        ['Tandoori Roti', 'Breads & Rice', 35, 1, '', 'Whole-wheat bread from the clay oven.', '', ''],
         ['Jeera Rice', 'Breads & Rice', 180, 1, '', 'Basmati rice tempered with cumin.', '', ''],
+        ['Vegetable Pulao', 'Breads & Rice', 220, 1, 'Mild', 'Fragrant basmati cooked with vegetables and whole spices.', '', ''],
+        ['Moong Dal Halwa', 'Desserts', 180, 1, '', 'Slow-roasted lentil halwa with ghee, cardamom and almonds.', '', 'Winter favourite'],
+        ['Malpua with Rabdi', 'Desserts', 200, 1, '', 'Crisp-edged pancakes soaked in syrup, topped with thickened milk.', '', ''],
+        ['Churma Ladoo', 'Desserts', 120, 1, '', 'Crumbled wheat and ghee rolled with jaggery.', '', 'Local'],
         ['Gulab Jamun', 'Desserts', 150, 1, '', 'Warm milk dumplings in cardamom syrup.', '', ''],
-        ['Rabdi Ghevar', 'Desserts', 220, 1, '', 'Honeycomb sweet topped with thickened milk and saffron.', '', 'Seasonal'],
-        ['Masala Chai', 'Café & Drinks', 60, 1, '', 'Strong milk tea with ginger and cardamom.', '', ''],
+        ['Kulhad Masala Chai', 'Café & Drinks', 60, 1, '', 'Strong milk tea with ginger and cardamom, served in a clay kulhad.', '', ''],
+        ['Masala Chaas', 'Café & Drinks', 70, 1, '', 'Spiced buttermilk with roasted cumin and mint — the village summer drink.', '', ''],
+        ['Sweet Lassi', 'Café & Drinks', 110, 1, '', 'Thick chilled curd drink, sweet or salted.', '', ''],
         ['Cold Coffee', 'Café & Drinks', 140, 1, '', 'Chilled coffee with ice cream.', '', ''],
         ['Fresh Lime Soda', 'Café & Drinks', 90, 1, '', 'Sweet, salted or mixed.', '', ''],
     ];
@@ -43,31 +57,32 @@ function jm_seed(PDO $pdo): void {
         $st->execute([$m[0], $m[1], $m[2], $m[3], $m[4], $m[5], $m[6], $m[7], 1, $i]);
     }
 
-    // ---------- Safari packages (DEMO prices)
+    // ---------- Safari packages (DEMO prices – edit in admin)
     $st = $pdo->prepare('INSERT INTO jm_safaris (slug,title,duration,timing,price_pp,private_price,vehicle,difficulty,image,description,highlights,badge,status,sort_order) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
     $safaris = [
-        ['sunrise-leopard-safari', 'Sunrise Leopard Safari', '3 hours', '5:30 AM – 8:30 AM', 3500, 12000, 'Open 4x4 jeep', 'Easy', $I.'leopard-log.jpg', 'Head out with a local tracker while the granite hills glow. Early morning is when leopards are most active on the rocks.', "Local naturalist guide\nBest light for photography\nTea & snacks on the hill\nBinoculars on request", 'Most popular', 1],
-        ['sunset-leopard-safari', 'Sunset Leopard Safari', '3 hours', '4:00 PM – 7:00 PM', 3500, 12000, 'Open 4x4 jeep', 'Easy', $I.'safari-sunset.jpg', 'Golden hour across the hills — watch for leopards moving down the rocks as the day cools, and end with a sundowner view.', "Local naturalist guide\nGolden hour photography\nSundowner stop\nReturn before dark", 'Golden hour', 2],
-        ['jawai-dam-trail', 'Jawai Dam Birding & Crocodile Trail', '3 hours', '7:30 AM – 10:30 AM', 2500, 9000, 'Jeep + walking', 'Easy', $I.'hills-green.jpg', 'Explore the reservoir edge for migratory birds, marsh crocodiles on the banks, and wide views of the Aravalli hills.', "Birdwatching with guide\nMarsh crocodile spotting\nLakeside breakfast option\nIdeal for families", 'Wildlife', 3],
-        ['rabari-village-visit', 'Rabari Village & Culture Visit', '2.5 hours', '9:00 AM – 11:30 AM', 1800, 6500, 'Jeep + walking', 'Easy', $I.'culture-hawamahal.jpg', 'Meet the Rabari herding families whose lives are woven with the hills. Village chai, crafts and stories.', "Village walk\nMasala chai with a family\nLocal craft stops\nRespectful, small groups", 'Culture', 4],
-        ['full-day-explorer', 'Full-Day Jawai Explorer', '8 hours', '6:00 AM – 2:00 PM', 7500, 24000, 'Open 4x4 jeep', 'Moderate', $I.'hills-terrace.jpg', 'Sunrise leopard track, a village visit and the dam in one unhurried day, with breakfast and lunch stops.', "Leopard track at sunrise\nVillage & dam stops\nBreakfast and lunch included\nPrivate guide", 'Best value', 5],
+        ['classic-leopard-tracking-safari', 'Classic Leopard Tracking Safari', 'About 3 hours', 'Morning 6:00–9:00 AM · Evening 4:00–7:00 PM', 3500, 12000, 'Open 4x4 jeep, up to 6 guests', 'Easy', $I.'leopard-log.jpg', 'Follow alarm calls, pugmarks and the warmth of sun-struck granite with a local tracker as the hills\' resident leopards come out onto the rocks at first and last light. Jawai\'s leopards live on open granite domes, not in dense forest, so the land itself shows you where to look.', "Open 4x4 jeep with driver and local tracker\nTracking by langur and peafowl alarm calls\nEngine off during sightings, at a respectful distance\nBinoculars on board, hot tea in the field", 'Most popular', 'active', 1],
+        ['jawai-dam-wetland-birding-drive', 'Jawai Dam Wetland & Birding Drive', 'About 3 hours', 'Morning 7:00–10:00 AM', 2500, 9000, 'Open 4x4 jeep, up to 6 guests', 'Easy', $I.'hills-green.jpg', 'A slower, scope-led drive along the Jawai Dam shoreline. In winter look for flamingos, demoiselle cranes and bar-headed geese; raptors circle the hills and mugger crocodiles bask on the banks. More than 300 bird species have been recorded around Jawai.', "Shoreline birdwatching with a guide\nWinter flocks of flamingos and cranes\nMugger crocodiles on the sandbanks\nGentle pace, ideal for families", 'Birds & wildlife', 'active', 2],
+        ['private-4x4-expedition', 'Private 4x4 Expedition', 'Half day or full day', 'Flexible timings', 6000, 20000, 'Private open 4x4 jeep', 'Easy–Moderate', $I.'safari-sunset.jpg', 'Your own jeep and tracker, with the day shaped around you: longer sightings, unhurried breaks, a boulder-top sundowner or a breakfast picnic on the rocks. Good for families with children, couples marking an occasion and serious wildlife watchers.', "Whole jeep for your group only\nFlexible start time and unhurried sightings\nOptional sundowner on the granite hills\nCombine the leopard hills and the dam in one day", 'Private', 'active', 3],
+        ['wildlife-photography-safari', 'Wildlife Photography Safari', 'Multi-drive programmes', 'Dawn and dusk drives', 7000, 22000, 'Open 4x4 jeep, max 3 photographers', 'Easy', $I.'hero-savanna.jpg', 'Planned around the light: low-angle positioning, camera beanbags and a tracker who understands composition. Small groups of up to three photographers per jeep so everyone gets a clear line of sight.', "Maximum 3 photographers per jeep\nBeanbag camera mounts on request\nPlanned around golden-hour light\nPatient, no-chase approach", 'Photography', 'active', 4],
+        ['rabari-village-culture-visit', 'Rabari Village & Culture Visit', '2 to 2.5 hours', 'Morning 9:00–11:30 AM', 1800, 6500, 'Jeep + walking', 'Easy', $I.'culture-hawamahal.jpg', 'Meet the Rabari herding families who have shared these hills with leopards for generations. Walk through a village, sip chai in a courtyard and hear how people and big cats live side by side.', "Village walk with a local guide\nMasala chai with a family\nStories of living alongside leopards\nRespectful, small groups", 'Culture', 'active', 5],
     ];
-    foreach ($safaris as $s) { $st->execute([$s[0], $s[1], $s[2], $s[3], $s[4], $s[5], $s[6], $s[7], $s[8], $s[9], $s[10], $s[11], 'active', $s[12]]); }
+    foreach ($safaris as $s) { $st->execute([$s[0], $s[1], $s[2], $s[3], $s[4], $s[5], $s[6], $s[7], $s[8], $s[9], $s[10], $s[11], $s[12], $s[13]]); }
 
     // ---------- Explore Jawai (distances are approximate – edit in admin)
     $st = $pdo->prepare('INSERT INTO jm_attractions (name,category,distance,description,image,status,sort_order) VALUES (?,?,?,?,?,?,?)');
     $att = [
-        ['Jawai Leopard Hills', 'Wildlife', 'Nearby', 'Granite hillocks and caves where leopards live alongside herding communities — one of India\'s best places to see them in the open.', $I.'leopard-log.jpg'],
-        ['Jawai Dam', 'Nature', 'Short drive', 'A large reservoir on the Jawai river with marsh crocodiles, migratory birds and sunset views over the Aravallis.', $I.'hills-green.jpg'],
-        ['Rabari Villages', 'Culture', 'Nearby', 'Meet the Rabari herders, known for red turbans, silver jewellery and a long tradition of living with leopards.', $I.'culture-hawamahal.jpg'],
-        ['Granite Hill Sunrise Point', 'Nature', 'Nearby', 'Climb or drive to a viewpoint over the boulder-strewn hills for sunrise with tea.', $I.'hills-terrace.jpg'],
-        ['Bera Village & Local Market', 'Culture', 'In Bera', 'Everyday Rajasthani village life — textiles, sweets and local crafts.', $I.'culture-fort.jpg'],
-        ['Stargazing & Campfire', 'Experience', 'At the hotel', 'Clear desert skies, away from city light. Ask the team to arrange an evening campfire.', $I.'resort-night.jpg'],
-        ['Ranakpur Jain Temples', 'Heritage', 'Approx. 1.5–2 hrs', 'Marble temple complex with 1,444 carved pillars, set in a forest valley.', $I.'culture-hawamahal.jpg'],
-        ['Kumbhalgarh Fort', 'Heritage', 'Approx. 2 hrs', 'A 15th-century fort with one of the longest continuous walls in the world.', $I.'culture-fort.jpg'],
-        ['Mount Abu', 'Nature', 'Approx. 2.5–3 hrs', 'Rajasthan\'s only hill station, with lakes, Dilwara temples and cool air.', $I.'hills-green.jpg'],
-        ['Jodhpur — Mehrangarh Fort', 'Heritage', 'Approx. 3 hrs', 'The Blue City and its giant fortress above the old town.', $I.'culture-fort.jpg'],
-        ['Udaipur — City of Lakes', 'Heritage', 'Approx. 3 hrs', 'City Palace, Lake Pichola and royal-era havelis.', $I.'resort-deck.jpg'],
+        ['Jawai Leopard Hills', 'Wildlife', 'Nearby', 'Granite domes, caves and boulder fields where leopards rest by day. A short walk from villages, farms and hill temples. Estimates put the wider Jawai area at roughly 50–70 leopards; there is no official count.', $I.'leopard-log.jpg'],
+        ['Jawai Bandh Leopard Conservation Reserve', 'Wildlife', 'Nearby', 'A notified conservation reserve around the Jawai hills that helps protect leopards and their habitat while local herding communities continue to graze their animals nearby.', $I.'hills-terrace.jpg'],
+        ['Jawai Dam (Jawai Bandh)', 'Nature', 'Short drive', 'Completed in 1957 on the Jawai river, one of western Rajasthan\'s largest reservoirs. Mugger crocodiles, winter flamingos, cranes and raptors, with granite hills all around.', $I.'hills-green.jpg'],
+        ['Rabari Villages', 'Culture', 'Nearby', 'Meet the Rabari herders, known for their red turbans and silver jewellery, whose long tradition of living beside leopards is the heart of Jawai\'s story.', $I.'culture-hawamahal.jpg'],
+        ['Village Food & Chai Stops', 'Experience', 'In and around Bera', 'Bajra roti with ghee, buttermilk, ker sangri and kulhad chai — ask us to arrange a village-style meal or a chai halt on your drive.', $I.'food-thali.jpg'],
+        ['Granite Hill Sunrise & Sunset Points', 'Nature', 'Nearby', 'Quiet viewpoints over the boulder-strewn hills, perfect for golden-hour photographs and a flask of tea.', $I.'hero-savanna.jpg'],
+        ['Stargazing & Campfire', 'Experience', 'At the hotel', 'Clear desert skies away from city light. Ask the team to arrange an evening campfire.', $I.'resort-night.jpg'],
+        ['Ranakpur Jain Temples', 'Heritage', 'Approx. 1.5–2 hrs', 'A marble temple complex with 1,444 carved pillars set in a forested valley.', $I.'culture-hawamahal.jpg'],
+        ['Kumbhalgarh Fort', 'Heritage', 'Approx. 2 hrs', 'A 15th-century hill fort with one of the longest continuous walls in the world.', $I.'culture-fort.jpg'],
+        ['Mount Abu', 'Nature', 'Approx. 2.5–3 hrs', 'Rajasthan\'s only hill station, with Nakki Lake, the Dilwara temples and cool air.', $I.'hills-green.jpg'],
+        ['Udaipur — City of Lakes', 'Heritage', 'Approx. 2.5 hrs', 'City Palace, Lake Pichola and royal-era havelis.', $I.'resort-deck.jpg'],
+        ['Jodhpur — Mehrangarh Fort', 'Heritage', 'Approx. 3.5 hrs', 'The Blue City and its giant fortress above the old town.', $I.'culture-fort.jpg'],
     ];
     foreach ($att as $i => $a) { $st->execute([$a[0], $a[1], $a[2], $a[3], $a[4], 'active', $i]); }
 
@@ -75,9 +90,9 @@ function jm_seed(PDO $pdo): void {
     $st = $pdo->prepare('INSERT INTO jm_gallery (title,category,image,sort_order) VALUES (?,?,?,?)');
     $gal = [
         ['Jawai Mumal, Bera', 'Hotel', $I.'hotel-day.jpg'], ['Jawai Mumal at dusk', 'Hotel', $I.'hotel-front.jpg'], ['Leopard on the rocks', 'Safari', $I.'leopard-log.jpg'], ['Heritage suite', 'Rooms', $I.'room-heritage.jpg'],
-        ['Safari at sunset', 'Safari', $I.'safari-sunset.jpg'], ['Rajasthani thali', 'Dining', $I.'food-thali.jpg'], ['Granite Hill Room', 'Rooms', $I.'room-desert-suite.jpg'],
+        ['Safari at sunset', 'Safari', $I.'safari-sunset.jpg'], ['Village-style curry', 'Dining', $I.'food-thali.jpg'], ['Granite Hill Room', 'Rooms', $I.'room-desert-suite.jpg'],
         ['Savanna light', 'Landscape', $I.'hero-savanna.jpg'], ['Restaurant hall', 'Dining', $I.'dining-hall.jpg'], ['Terrace Suite', 'Rooms', $I.'villa-pool.jpg'],
-        ['Hills of Jawai', 'Landscape', $I.'hills-green.jpg'], ['Curry & naan', 'Dining', $I.'food-curry.jpg'], ['Hilltop view', 'Landscape', $I.'hills-terrace.jpg'],
+        ['Hills of Jawai', 'Landscape', $I.'hills-green.jpg'], ['Hilltop view', 'Landscape', $I.'hills-terrace.jpg'],
         ['Deluxe Room', 'Rooms', $I.'room-modern.jpg'], ['Evening lights', 'Hotel', $I.'resort-night.jpg'], ['Paneer tikka', 'Dining', $I.'food-paneer.jpg'], ['Rajasthan heritage', 'Culture', $I.'culture-hawamahal.jpg'],
     ];
     foreach ($gal as $i => $g) { $st->execute([$g[0], $g[1], $g[2], $i]); }
@@ -89,13 +104,29 @@ function jm_seed(PDO $pdo): void {
     // ---------- FAQs
     $st = $pdo->prepare('INSERT INTO jm_faqs (question,answer,sort_order) VALUES (?,?,?)');
     $faq = [
-        ['Where is Jawai Mumal located?', 'In Bera village on the Bera–Bali road, near the Up-Tehsil office, in Pali district, Rajasthan — close to Jawai leopard country.'],
-        ['Can I book party or personal functions?', 'Yes. Both party and personal bookings are available. Use the Party / Event form or call us with your date and guest count.'],
+        ['Where is Jawai Mumal?', 'In Bera village on the Bera–Bali road, near the Up-Tehsil office, in Pali district, Rajasthan — in the middle of Jawai leopard country.'],
+        ['Are leopard sightings guaranteed?', 'No honest operator can guarantee a wild animal sighting. Jawai\'s leopards live on open granite hills rather than in thick forest, so the chances over a stay of two or three days are very good — and our trackers read the signs to help you find them.'],
+        ['What is the best time to visit Jawai?', 'November to February is the most comfortable: cool, clear mornings (often 8–12°C at dawn), basking leopards and migratory birds on the dam. March to June is hot but rewarding for sightings. July to September is green and dramatic, with fewer visitors.'],
+        ['How many safari drives should we book?', 'Three or four drives (morning and evening on two days) give a fair chance of good sightings. Photographers often book more.'],
+        ['How is Jawai different from a national park?', 'Jawai is an open, lived-in landscape of granite hills, villages and farms rather than a fenced park. Drives are in private open jeeps on village tracks, with no crowded convoys or fixed zones.'],
+        ['Is the restaurant vegetarian?', 'Yes — our kitchen is 100% vegetarian, with Rajasthani village food, tandoor dishes and a café. Jain options are available on request.'],
+        ['Can I book party or personal functions?', 'Yes. Birthdays, family functions, small weddings, corporate meets and personal celebrations are all welcome. Use the Party & Events tab or call us with your date and guest count.'],
         ['What are check-in and check-out times?', 'Check-in is from 12:00 PM and check-out is by 11:00 AM. Early check-in or late check-out can be arranged on request.'],
-        ['Do you arrange leopard safaris?', 'Yes. Our team books jeep safaris with local trackers at sunrise and sunset, plus dam and village trips.'],
-        ['Is there parking and Wi-Fi?', 'Yes — free Wi-Fi and safe parking are available for guests.'],
-        ['What is the best time to visit Jawai?', 'October to March is the most comfortable. Leopards are seen year-round; summer is hot but wildlife sightings can be very good.'],
-        ['How do I confirm a booking?', 'Send a request on the site. Our team will call or WhatsApp you to confirm availability and the final rate.'],
+        ['Is it suitable for children and older travellers?', 'Very much. Private jeeps let us set a gentle pace, shorten drives and plan comfortable breaks.'],
+        ['What should I wear on safari?', 'Neutral colours such as khaki and olive, warm layers for winter mornings, a hat, sunscreen and closed shoes. Modest clothing is appreciated on village visits.'],
+        ['How do I reach Bera?', 'Udaipur airport is about 130 km (2.5–3 hours by road) and Jodhpur airport about 175 km. The nearest railway station is Sumerpur Jawai Bandh (about 18 km); Falna is about 37 km. Please call us for pick-up options.'],
+        ['How do I confirm a booking?', 'Send a request on the website or WhatsApp us. Our team confirms availability and the final rate personally, usually within a few hours.'],
     ];
     foreach ($faq as $i => $f) { $st->execute([$f[0], $f[1], $i]); }
+}
+
+function jm_seed_slides(PDO $pdo): void {
+    $I = 'assets/images/';
+    $st = $pdo->prepare('INSERT INTO jm_slides (image,eyebrow,title,text,cta_label,cta_url,cta2_label,cta2_url,status,sort_order) VALUES (?,?,?,?,?,?,?,?,?,?)');
+    $rows = [
+        [$I.'hero-savanna.jpg', 'Bera · Jawai · Rajasthan', 'Stay in the heart of Jawai leopard country', 'A comfortable hotel, a pure-vegetarian Rajasthani kitchen and guided leopard safaris — all in Bera village, Pali.', 'Book your stay', '#book', 'Jawai safari', 'safari.php', 'active', 1],
+        [$I.'leopard-log.jpg', 'Jawai Safari', 'Leopards on the granite hills', 'Sunrise and sunset drives in open 4x4 jeeps with local trackers who read every alarm call and pugmark.', 'See safaris', 'safari.php', 'Request a safari', 'book.php?type=safari', 'active', 2],
+        [$I.'food-thali.jpg', 'Village flavours', 'Rajasthani food, the village way', 'Dal baati churma, ker sangri, bajra roti with ghee and more — a 100% vegetarian kitchen.', 'View the menu', 'restaurant.php', 'Reserve a table', 'book.php?type=dine', 'active', 3],
+    ];
+    foreach ($rows as $r) { $st->execute($r); }
 }
