@@ -1,4 +1,14 @@
-# Deploying Jawai Mumal on Hostinger (SSH + live sync with GitHub)
+# Deploying Jawai Mumal on Hostinger
+
+## Easiest: no terminal needed (File Manager + built-in GitHub sync)
+1. Build the package: `JM_ADMIN_PASS='your-password' BRANCH=main python3 deploy/build_package.py` → `dist/jawai-mumal-hosting.zip` (contains your private `config.local.php`; never commit it).
+2. hPanel → Websites → *Manage* → **File Manager** → `public_html` → delete `default.php` → **Upload** the zip → right-click it → **Extract** (extract *here*) → delete the zip.
+3. Open the site. It starts in the mode set in the package (Coming soon until the launch time). Admin: `/admin/login.php`.
+4. **Live sync**: Admin → *Update from GitHub*. The site checks GitHub every few minutes and updates itself; *Update now* does it instantly. Optional instant mode: add the GitHub webhook shown on that page.
+
+The SSH route below does the same thing if your plan has a terminal.
+
+# Deploying with SSH (live sync with GitHub)
 
 The site runs on plain PHP 8 — no build step. One setup script downloads it from GitHub, creates the database and
 admin login, and installs a cron job that pulls new changes **every minute** (live sync).
