@@ -206,6 +206,7 @@ function route_link(array $r): string {
     return 'https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=' . rawurlencode($o) . '&destination=' . rawurlencode(hotel_point());
 }
 function route_kind_icon(string $k): string { return ['airport' => 'plane', 'rail' => 'train', 'city' => 'building', 'bus' => 'car'][$k] ?? 'map-pin'; }
+function route_kind_plural(string $k): string { return ['airport' => 'Airports', 'rail' => 'Railway stations', 'city' => 'Cities', 'bus' => 'Bus stands'][$k] ?? 'Other places'; }
 function route_kind_label(string $k): string { return ['airport' => 'Airport', 'rail' => 'Railway station', 'city' => 'City', 'bus' => 'Bus stand'][$k] ?? 'Place'; }
 
 

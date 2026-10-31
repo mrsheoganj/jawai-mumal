@@ -104,49 +104,63 @@
   /* Real route map (Leaflet + OpenStreetMap) and tabs */
   var rd = $('#routes-data');
   if (rd) {
-    var RD = JSON.parse(rd.textContent), rmapEl = $('#routesmap'), rm = null, layers = {}, markers = {}, hotelMk = null;
+    var RD = JSON.parse(rd.textContent), rmapEl = $('#routesmap'), rm = null, layers = {}, markers = {}, selected = null;
     var esc = function (t) { var d = document.createElement('div'); d.textContent = t == null ? '' : t; return d.innerHTML; };
-    var svgIcon = function (kind) { var m = { airport: 'plane', rail: 'train', city: 'building' }; var tpl = document.querySelector('[data-ico="' + (m[kind] || 'pin') + '"]'); return tpl ? tpl.innerHTML : ''; };
+    var setHot = function (id, v) { $$('[data-r="' + id + '"]').forEach(function (x) { x.classList.toggle('is-hot', v); }); var m = rmapEl.querySelector('[data-mk="' + id + '"]'); if (m) m.classList.toggle('is-hot', v); };
+    var restyle = function (id) { var l = layers[id]; if (!l) return; var on = (selected === id); l.line.setStyle({ weight: on ? 7 : (l.geom ? 4 : 2), opacity: on ? 1 : .85, color: on ? '#c9973f' : '#8a6420' }); if (on) l.line.bringToFront(); };
     var buildMap = function () {
       if (rm || !window.L || !rmapEl) return; rmapEl.innerHTML = '';
-      rm = L.map(rmapEl, { scrollWheelZoom: false, worldCopyJump: false }).setView([RD.hotel.lat, RD.hotel.lng], 9);
+      rm = L.map(rmapEl, { scrollWheelZoom: false }).setView([RD.hotel.lat, RD.hotel.lng], 10);
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(rm);
       rmapEl.addEventListener('click', function () { rm.scrollWheelZoom.enable(); });
-      hotelMk = L.marker([RD.hotel.lat, RD.hotel.lng], { zIndexOffset: 1000, icon: L.divIcon({ className: '', iconSize: [52, 52], iconAnchor: [26, 26], html: '<div class="mk mk--hotel"><img src="' + esc(RD.hotel.img) + '" alt=""></div>' }) }).addTo(rm).bindPopup('<h4>' + esc(RD.hotel.name) + '</h4>Bera village, Pali');
+      L.marker([RD.hotel.lat, RD.hotel.lng], { zIndexOffset: 1000, icon: L.divIcon({ className: '', iconSize: [50, 50], iconAnchor: [25, 25], html: '<div class="mk mk--hotel"><img src="' + esc(RD.hotel.img) + '" alt=""></div>' }) }).addTo(rm)
+        .bindTooltip(esc(RD.hotel.name), { direction: 'top', offset: [0, -24] });
       RD.points.forEach(function (p) {
         if (!p.has) return;
         var pts = p.geom && p.geom.length > 1 ? p.geom.map(function (c) { return [c[1], c[0]]; }) : [[RD.hotel.lat, RD.hotel.lng], [p.lat, p.lng]];
-        var line = L.polyline(pts, p.geom ? { color: '#8a6420', weight: 4, opacity: .85 } : { color: '#8a6420', weight: 2, dashArray: '6 8', opacity: .9 }).addTo(rm);
-        var ic = '<div class="mk" data-mk="' + p.id + '">' + (document.querySelector('.jitem[data-r="' + p.id + '"] .jico').innerHTML.replace(/width="22"/, 'width="18"').replace(/height="22"/, 'height="18"')) + '<span class="mk__lbl">' + esc((p.code || p.name.replace(/ \(.*/, '')) + ' · ' + p.km + ' km') + '</span></div>';
-        var mk = L.marker([p.lat, p.lng], { icon: L.divIcon({ className: '', iconSize: [38, 38], iconAnchor: [19, 19], html: ic }) }).addTo(rm);
+        var line = L.polyline(pts, p.geom ? { color: '#8a6420', weight: 4, opacity: .85 } : { color: '#8a6420', weight: 2, dashArray: '6 8' }).addTo(rm);
+        var mk = L.marker([p.lat, p.lng], { icon: L.divIcon({ className: '', iconSize: [32, 32], iconAnchor: [16, 16], html: '<div class="mk mk--n" data-mk="' + p.id + '">' + p.n + '</div>' }) }).addTo(rm);
+        mk.bindTooltip('<b>' + esc(p.name.replace(/ \(.*/, '')) + '</b><br>' + p.km + ' km · ' + esc(p.time), { direction: 'top', offset: [0, -14] });
         mk.bindPopup('<h4>' + esc(p.name) + '</h4><b>' + p.km + ' km</b> by road · ' + esc(p.time) + '<br>' + esc(p.compass) + ' of the hotel, ' + p.straight + ' km in a straight line<br><a href="' + esc(p.dir) + '" target="_blank" rel="noopener">Directions in Google Maps &rarr;</a>');
-        var hot = function (v) { return function () { line.setStyle({ weight: v ? 7 : (p.geom ? 4 : 2), opacity: 1, color: v ? '#c9973f' : '#8a6420' }); var m = rmapEl.querySelector('[data-mk="' + p.id + '"]'); if (m) m.classList.toggle('is-hot', v); }; };
-        mk.on('mouseover', hot(true)); mk.on('mouseout', hot(false)); mk.on('popupopen', hot(true)); mk.on('popupclose', hot(false));
-        layers[p.id] = { line: line, kind: p.kind }; markers[p.id] = mk;
+        mk.on('mouseover', function () { setHot(p.id, true); }); mk.on('mouseout', function () { setHot(p.id, false); });
+        mk.on('click', function () { selectPlace(p.id, true); });
+        layers[p.id] = { line: line, kind: p.kind, geom: !!p.geom }; markers[p.id] = mk;
       });
-      fitKind('all');
+      fitKind(RD.defKind || 'all');
     };
     var fitKind = function (k) {
       if (!rm) return; var b = L.latLngBounds([[RD.hotel.lat, RD.hotel.lng]]), any = false;
       RD.points.forEach(function (p) {
-        if (!p.has) return; var show = (k === 'all' || k === 'hotel' || p.kind === k);
+        if (!p.has) return; var show = (k === 'all' || p.kind === k);
         [layers[p.id].line, markers[p.id]].forEach(function (l) { if (show) { if (!rm.hasLayer(l)) l.addTo(rm); } else if (rm.hasLayer(l)) rm.removeLayer(l); });
-        if (show && k !== 'hotel') { any = true; b.extend([p.lat, p.lng]); if (layers[p.id].line.getBounds) b.extend(layers[p.id].line.getBounds()); }
+        if (show) { any = true; b.extend([p.lat, p.lng]); b.extend(layers[p.id].line.getBounds()); }
       });
-      if (k === 'hotel' || !any) rm.setView([RD.hotel.lat, RD.hotel.lng], 12); else rm.fitBounds(b, { padding: [50, 50], maxZoom: 11 });
+      $$('.ritem').forEach(function (it) { it.classList.toggle('is-dim', !(k === 'all' || it.dataset.kind === k)); });
+      if (!any) rm.setView([RD.hotel.lat, RD.hotel.lng], 12); else rm.fitBounds(b, { padding: [60, 60], maxZoom: 12 });
     };
-    $$('.rfilter .chip').forEach(function (c) { c.addEventListener('click', function () { $$('.rfilter .chip').forEach(function (x) { x.setAttribute('aria-pressed', x === c); }); fitKind(c.dataset.kind); }); });
+    var setChip = function (k) { $$('.rfilter .chip').forEach(function (x) { x.setAttribute('aria-pressed', x.dataset.kind === k); }); };
     var showTab = function (k) {
       $$('[data-rtab]').forEach(function (t) { var on = t.dataset.rtab === k; t.setAttribute('aria-selected', on); var pn = $('#rp-' + t.dataset.rtab); if (pn) pn.hidden = !on; });
       if (k === 'map') { buildMap(); if (rm) setTimeout(function () { rm.invalidateSize(); }, 60); } else { var w = $('#rp-wheel'); if (w) w.classList.add('is-in'); }
     };
+    var selectPlace = function (id, fromMap) {
+      var prev = selected; selected = id; if (prev) restyle(prev); $$('.ritem').forEach(function (it) { it.classList.toggle('is-sel', it.dataset.r === String(id)); });
+      showTab('map'); if (!rm) return;
+      var p = RD.points.filter(function (x) { return String(x.id) === String(id); })[0]; if (!p) return;
+      if (!rm.hasLayer(markers[id])) { setChip('all'); fitKind('all'); }
+      restyle(id);
+      var b = L.latLngBounds([[RD.hotel.lat, RD.hotel.lng], [p.lat, p.lng]]); b.extend(layers[id].line.getBounds());
+      if (!fromMap) rm.flyToBounds(b, { padding: [70, 70], maxZoom: 12, duration: .8 });
+      markers[id].openPopup();
+    };
+    $$('.rfilter .chip').forEach(function (c) { c.addEventListener('click', function () { setChip(c.dataset.kind); if (selected) { var o = selected; selected = null; restyle(o); $$('.ritem').forEach(function (it) { it.classList.remove('is-sel'); }); } fitKind(c.dataset.kind); }); });
     $$('[data-rtab]').forEach(function (t) { t.addEventListener('click', function () { showTab(t.dataset.rtab); }); });
     var tryBuild = function (n) { if (window.L) { buildMap(); } else if (n < 40) { setTimeout(function () { tryBuild(n + 1); }, 250); } };
     if ('IntersectionObserver' in window) { new IntersectionObserver(function (es, o) { if (es[0].isIntersecting) { tryBuild(0); o.disconnect(); } }, { rootMargin: '300px' }).observe(rmapEl); } else { tryBuild(0); }
-    $$('[data-showmap]').forEach(function (b) { b.addEventListener('click', function () {
-      showTab('map'); $('#rp-map').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
-      var id = b.dataset.showmap; setTimeout(function () { if (rm && markers[id]) { rm.setView(markers[id].getLatLng(), 10, { animate: !reduce }); markers[id].openPopup(); } }, 500);
-    }); });
+    var focusMap = function (id) { if (window.matchMedia('(max-width: 900px)').matches) { $('#rp-map').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); } setTimeout(function () { selectPlace(id, false); }, window.L ? 50 : 600); };
+    $$('[data-showmap]').forEach(function (b) { b.addEventListener('click', function () { focusMap(b.dataset.showmap); }); });
+    $$('.ritem').forEach(function (it) { it.addEventListener('click', function (e) { if (e.target.closest('a,button')) return; var b = it.querySelector('[data-showmap]'); if (b) focusMap(b.dataset.showmap); }); });
+    $$('.rnode').forEach(function (n) { n.addEventListener('click', function () { focusMap(n.dataset.r); }); });
   }
 
   /* Route map <-> list highlighting */
