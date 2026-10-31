@@ -91,4 +91,6 @@ if (!get_setting_raw('routes_seeded')) {
     set_setting('routes_seeded', '1');
 }
 
+require_once __DIR__ . '/updater.php';
+upd_maybe_auto();   // live sync with GitHub (if enabled)
 jm_gate();

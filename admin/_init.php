@@ -21,6 +21,7 @@ function admin_nav(): array {
         ['texts.php', 'texts', 'Page text & images', 'pencil'],
         ['content.php', 'content', 'Contact, logo & rules', 'sliders'],
         ['mode.php', 'mode', 'Site mode (launch / maintenance)', 'bell'],
+        ['update.php', 'update', 'Update from GitHub', 'refresh'],
         ['account.php', 'account', 'My account', 'lock'],
     ];
 }

@@ -308,6 +308,7 @@ function preview_url(): string { return rtrim(setting('site_url'), '/') . '/?pre
 function jm_gate(): void {
     if (PHP_SAPI === 'cli') return;
     if (strpos($_SERVER['SCRIPT_NAME'] ?? '', '/admin/') !== false) return;
+    if (basename($_SERVER['SCRIPT_NAME'] ?? '') === 'deploy-hook.php') return;   // GitHub webhook must always work
     $mode = site_mode(); if ($mode === 'live') return;
     if (admin_logged_in()) { $GLOBALS['jm_preview'] = $mode; return; }
     $key = preview_key(); $tok = preview_token($key);
