@@ -9,7 +9,7 @@ $name = setting('site_name');
 $whenText = $target ? (new DateTime('@' . $target))->setTimezone(new DateTimeZone('Asia/Kolkata'))->format('l, j F Y \a\t g:i A') . ' IST' : '';
 ?><!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title><?= e($isCS ? t('gate.cs.pagetitle', 'Coming soon') : t('gate.mt.pagetitle', 'Back soon')) ?> | <?= e($name) ?></title>
+<title><?= e($isCS ? t('gate.cs.pagetitle', 'Launching soon') : t('gate.mt.pagetitle', 'Back soon')) ?> | <?= e($name) ?></title>
 <meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#ffffff"><meta name="format-detection" content="telephone=no">
 <link rel="icon" href="<?= url('assets/brand/favicon.ico') ?>" sizes="any"><link rel="apple-touch-icon" href="<?= url('assets/brand/icon-180.png') ?>">
 <?= font_head() ?>
@@ -41,17 +41,17 @@ $whenText = $target ? (new DateTime('@' . $target))->setTimezone(new DateTimeZon
 <div class="gate" id="gate">
   <div class="gate__main"><div class="gate__in">
     <div class="gate__mark" aria-hidden="true"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="56" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><img src="<?= e(img(setting('logo_emblem'))) ?>" alt="" width="136" height="136"></div>
-    <span class="eyebrow eyebrow--dark" style="justify-content:center"><?= $isCS ? et('gate.cs.eyebrow', 'Opening soon') : et('gate.mt.eyebrow', 'Scheduled maintenance') ?></span>
-    <h1><?= $isCS ? et('gate.cs.title', 'Something wonderful is coming to Jawai') : et('gate.mt.title', 'We are making things better') ?></h1>
-    <p class="lead"><?= $isCS ? et('gate.cs.text', 'Jawai Mumal — hotel, pure-vegetarian Rajasthani restaurant and leopard safaris in Bera, Pali. Our new website is almost ready.') : et('gate.mt.text', 'Our website is briefly down for maintenance. Thank you for your patience — we will be back shortly.') ?></p>
+    <span class="eyebrow eyebrow--dark" style="justify-content:center"><?= $isCS ? et('gate.cs.eyebrow', 'Hotel · Restaurant · Safari') : et('gate.mt.eyebrow', 'Scheduled maintenance') ?></span>
+    <h1><?= $isCS ? et('gate.cs.title', 'Stay, dine and explore Jawai') : et('gate.mt.title', 'We will be right back') ?></h1>
+    <p class="lead"><?= $isCS ? et('gate.cs.text', 'Comfortable rooms, pure-vegetarian Rajasthani cooking and leopard safaris in Bera, Pali. Online booking opens in') : et('gate.mt.text', 'The website is briefly unavailable while we carry out scheduled maintenance. Thank you for your patience.') ?></p>
     <?php if ($target): ?>
-      <div class="cd" role="timer" aria-label="<?= $isCS ? et('gate.cs.cdlabel', 'Time until launch') : et('gate.mt.cdlabel', 'Time until we are back') ?>" data-target="<?= (int)$target ?>">
+      <div class="cd" role="timer" aria-label="<?= $isCS ? et('gate.cs.cdlabel', 'Time until online booking opens') : et('gate.mt.cdlabel', 'Time until we are back') ?>" data-target="<?= (int)$target ?>">
         <div><b data-u="d">00</b><span><?= et('gate.days', 'Days') ?></span></div><div><b data-u="h">00</b><span><?= et('gate.hours', 'Hours') ?></span></div><div><b data-u="m">00</b><span><?= et('gate.mins', 'Minutes') ?></span></div><div><b data-u="s">00</b><span><?= et('gate.secs', 'Seconds') ?></span></div>
       </div>
-      <p class="gate__when"><?= $isCS ? et('gate.cs.when', 'Launching on') : et('gate.mt.when', 'Expected back on') ?> <?= e($whenText) ?></p>
-      <p class="gate__live"><strong><?= $isCS ? et('gate.cs.live', 'We are live!') : et('gate.mt.live', 'We should be back now.') ?></strong> <a class="link" href="">Refresh the page</a></p>
+      <p class="gate__when"><?= $isCS ? et('gate.cs.when', 'Online booking opens on') : et('gate.mt.when', 'Expected back on') ?> <?= e($whenText) ?></p>
+      <p class="gate__live"><strong><?= $isCS ? et('gate.cs.live', 'Online booking is now open.') : et('gate.mt.live', 'We should be back now.') ?></strong> <a class="link" href="">Refresh the page</a></p>
     <?php endif; ?>
-    <div class="gate__wa"><a class="wa-ico wa-ico--lg" href="<?= e(wa_link(t('gate.wamsg', 'Hello Jawai Mumal, I would like to ask about a booking.'))) ?>" target="_blank" rel="noopener" aria-label="<?= et('wa.aria', 'Chat on WhatsApp') ?>" title="<?= et('wa.aria', 'Chat on WhatsApp') ?>"><?= icon('whatsapp', 34) ?></a><span><?= et('gate.wa', 'Questions or bookings? Message us on WhatsApp') ?></span></div>
+    <div class="gate__wa"><a class="wa-ico wa-ico--lg" href="<?= e(wa_link(t('gate.wamsg', 'Hello Jawai Mumal, I would like to ask about a booking.'))) ?>" target="_blank" rel="noopener" aria-label="<?= et('wa.aria', 'Chat on WhatsApp') ?>" title="<?= et('wa.aria', 'Chat on WhatsApp') ?>"><?= icon('whatsapp', 34) ?></a><span><?= et('gate.wa', 'For enquiries and bookings, message us on WhatsApp') ?></span></div>
   </div></div>
   <div class="gate__scene"><?php include __DIR__ . '/scene.php'; ?>
     <div class="gate__foot">© <?= date('Y') ?> <?= e($name) ?> · <?= e(preg_replace('/\s+/', ' ', str_replace("\n", ', ', setting('address')))) ?></div></div>

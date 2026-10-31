@@ -81,25 +81,15 @@
   }
 
   /* Scroll progress + parallax (one rAF-throttled handler) */
-  var prog = $('#progress'), pxs = $$('.px'), heroBgs = $$('.hslide__bg'), ticking = false;
+  var prog = $('#progress'), heroBgs = $$('.hslide__bg'), ticking = false;
   function onFrame() {
     ticking = false; var y = window.scrollY, h = document.documentElement.scrollHeight - window.innerHeight;
     if (prog) prog.style.transform = 'scaleX(' + (h > 0 ? Math.min(1, y / h) : 0) + ')';
     if (reduce) return;
     heroBgs.forEach(function (b) { if (y < window.innerHeight * 1.2) b.style.translate = '0 ' + (y * .22) + 'px'; });
-    pxs.forEach(function (g) {
-      var sc = g.closest('.jscene'); if (!sc) return; var r = sc.getBoundingClientRect(); if (r.bottom < 0 || r.top > window.innerHeight) return;
-      var off = (r.top + r.height / 2 - window.innerHeight / 2); g.style.transform = 'translateY(' + (off * parseFloat(g.dataset.speed || 0) * -0.35).toFixed(1) + 'px)';
-    });
   }
   window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onFrame); } }, { passive: true }); onFrame();
 
-  /* Jawai scene: pause the animation while off-screen / for reduced motion */
-  $$('.jscene svg').forEach(function (svg) {
-    if (!svg.pauseAnimations) return;
-    if (reduce) { svg.pauseAnimations(); return; }
-    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (en) { en.isIntersecting ? svg.unpauseAnimations() : svg.pauseAnimations(); }); }).observe(svg);
-  });
 
   /* Real route map (Leaflet + OpenStreetMap) and tabs */
   var rd = $('#routes-data');

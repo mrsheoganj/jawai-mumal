@@ -261,7 +261,7 @@ function notify_booking(array $b): void {
 function font_presets(): array {
     return [
         'playfair-inter' => ['label' => 'Playfair Display + Inter (classic hotel, recommended)', 'serif' => "'Playfair Display',Georgia,'Times New Roman',serif", 'sans' => "'Inter',system-ui,-apple-system,'Segoe UI',sans-serif",
-            'url' => 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap'],
+            'url' => '', 'local' => true],   // self-hosted in assets/fonts (no Google request)
         'baskerville-source' => ['label' => 'Libre Baskerville + Source Sans 3 (editorial)', 'serif' => "'Libre Baskerville',Georgia,serif", 'sans' => "'Source Sans 3',system-ui,sans-serif",
             'url' => 'https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Sans+3:wght@400;500;600;700&display=swap'],
         'dmserif-dmsans' => ['label' => 'DM Serif Display + DM Sans (modern boutique)', 'serif' => "'DM Serif Display',Georgia,serif", 'sans' => "'DM Sans',system-ui,sans-serif",
@@ -272,8 +272,14 @@ function font_presets(): array {
 }
 function font_head(): string {
     $p = font_presets(); $k = setting('font_pair', 'playfair-inter'); $f = $p[$k] ?? $p['playfair-inter'];
-    return '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="' . e($f['url']) . '" rel="stylesheet">'
-         . '<style>:root{--serif:' . $f['serif'] . ';--sans:' . $f['sans'] . '}</style>';
+    $vars = '<style>:root{--serif:' . $f['serif'] . ';--sans:' . $f['sans'] . '}</style>';
+    if (!empty($f['local'])) {
+        $b = url('assets/fonts/');
+        return '<link rel="preload" href="' . e($b) . 'Inter-normal-latin.woff2" as="font" type="font/woff2" crossorigin>'
+             . '<link rel="preload" href="' . e($b) . 'PlayfairDisplay-normal-latin.woff2" as="font" type="font/woff2" crossorigin>'
+             . '<link rel="stylesheet" href="' . e($b) . 'fonts.css?v=1">' . $vars;
+    }
+    return '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="' . e($f['url']) . '" rel="stylesheet">' . $vars;
 }
 
 
