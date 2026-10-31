@@ -165,17 +165,8 @@
   });
   window.addEventListener('pageshow', function (e) { if (e.persisted) document.body.classList.remove('is-leaving'); });
 
-  /* Contact speed-dial */
-  var sd = $('#sdial'), sdb = $('#sdialbtn');
-  if (sd && sdb) {
-    var sdSet = function (o) { sd.classList.toggle('is-open', o); sdb.setAttribute('aria-expanded', o); };
-    sdb.addEventListener('click', function (e) { e.stopPropagation(); sdSet(!sd.classList.contains('is-open')); });
-    document.addEventListener('click', function (e) { if (!sd.contains(e.target)) sdSet(false); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { sdSet(false); } });
-  }
-
   /* Hide the floating WhatsApp button while a form is on screen (mobile) */
-  var bb = $$('.bookbox');
+  var bb = $$('.bookbox, .hero');
   if (bb.length && 'IntersectionObserver' in window) {
     var onScreen = new Set(); var fio = new IntersectionObserver(function (es) { es.forEach(function (en) { en.isIntersecting ? onScreen.add(en.target) : onScreen.delete(en.target); }); document.body.classList.toggle('fab-hide', onScreen.size > 0); }, { threshold: .08 });
     bb.forEach(function (b) { fio.observe(b); });

@@ -33,11 +33,10 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
       <div class="f f--4"><label for="s-n">Your name</label><input id="s-n" name="name" autocomplete="name" required></div>
       <div class="f f--4"><label for="s-p">Phone / WhatsApp</label><input id="s-p" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></div>
       <div class="f f--4"><label for="s-e">Email (optional)</label><input id="s-e" name="email" type="email" autocomplete="email"></div>
-      <div class="f f--4"><label for="s-c">Contact me by</label><select id="s-c" name="contact_pref"><option>WhatsApp</option><option>Phone call</option><option>Either</option></select></div>
       <div class="f f--12"><label for="s-no">Requests (optional)</label><input id="s-no" name="notes" placeholder="Arrival time, extra bed, celebration…"></div>
     </div>
-    <div class="formfoot"><p><?= icon('shield-check', 18) ?><span><?= et('book.stay.note', 'No payment online. Our team confirms availability and the final rate by call or WhatsApp.') ?></span></p>
-      <div><span class="est" data-est></span> <button class="btn btn--gold" type="submit"><?= et('book.stay.btn', 'Request booking') ?> <?= icon('arrow-right', 18) ?></button> <button class="btn btn--wa" type="submit" name="via" value="wa" title="Saves your request and opens WhatsApp with all the details filled in"><?= icon('whatsapp', 18) ?> <?= et('book.wa', 'Book on WhatsApp') ?></button></div></div>
+    <div class="formfoot"><p><?= icon('shield-check', 18) ?><span><?= et('book.stay.note', 'No payment online. Our team confirms availability and the final rate on WhatsApp.') ?></span></p>
+      <div><span class="est" data-est></span> <button class="btn btn--gold" type="submit"><?= et('book.stay.btn', 'Request booking') ?> <?= icon('arrow-right', 18) ?></button> <button class="wa-ico wa-ico--submit" type="submit" name="via" value="wa" aria-label="<?= e(t('book.wa', 'Book on WhatsApp')) ?>" title="<?= e(t('book.wa', 'Book on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?></button></div></div>
     </form>
   </section>
 
@@ -51,11 +50,10 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
       <div class="f"><label for="d-w">Seating</label><select id="d-w" name="item_name"><option>Restaurant</option><option>Café</option><option>Outdoor / terrace</option></select></div>
       <div class="f f--4"><label for="d-n">Your name</label><input id="d-n" name="name" autocomplete="name" required></div>
       <div class="f f--4"><label for="d-p">Phone / WhatsApp</label><input id="d-p" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></div>
-      <div class="f f--4"><label for="d-c">Contact me by</label><select id="d-c" name="contact_pref"><option>WhatsApp</option><option>Phone call</option><option>Either</option></select></div>
       <div class="f f--4"><label for="d-no">Requests (optional)</label><input id="d-no" name="notes" placeholder="Jain / vegetarian, birthday cake…"></div>
     </div>
-    <div class="formfoot"><p><?= icon('clock', 18) ?><span><?= et('book.dine.note', 'Table requests are confirmed by call or WhatsApp. Our kitchen is 100% vegetarian; Jain options on request.') ?></span></p>
-      <button class="btn btn--gold" type="submit">Request a table <?= icon('arrow-right', 18) ?></button> <button class="btn btn--wa" type="submit" name="via" value="wa" title="Saves your request and opens WhatsApp with all the details filled in"><?= icon('whatsapp', 18) ?> <?= et('book.wa', 'Book on WhatsApp') ?></button></div>
+    <div class="formfoot"><p><?= icon('clock', 18) ?><span><?= et('book.dine.note', 'Table requests are confirmed on WhatsApp. Our kitchen is 100% vegetarian; Jain options on request.') ?></span></p>
+      <button class="btn btn--gold" type="submit">Request a table <?= icon('arrow-right', 18) ?></button> <button class="wa-ico wa-ico--submit" type="submit" name="via" value="wa" aria-label="<?= e(t('book.wa', 'Book on WhatsApp')) ?>" title="<?= e(t('book.wa', 'Book on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?></button></div>
     </form>
   </section>
 
@@ -70,11 +68,10 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
       <div class="f f--12"><span class="lbl">Jeep type</span><div class="seg"><label><input type="radio" name="mode" value="shared" checked> Per person (shared jeep)</label><label><input type="radio" name="mode" value="private"> Private jeep</label></div></div>
       <div class="f f--4"><label for="f-n">Your name</label><input id="f-n" name="name" autocomplete="name" required></div>
       <div class="f f--4"><label for="f-p">Phone / WhatsApp</label><input id="f-p" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></div>
-      <div class="f f--4"><label for="f-c">Contact me by</label><select id="f-c" name="contact_pref"><option>WhatsApp</option><option>Phone call</option><option>Either</option></select></div>
       <div class="f f--4"><label for="f-no">Requests (optional)</label><input id="f-no" name="notes" placeholder="Photography, pick-up point…"></div>
     </div>
-    <div class="formfoot"><p><?= icon('compass', 18) ?><span><?= et('book.safari.note', 'Safari timings depend on weather and tracker availability. We confirm the exact slot when we call.') ?></span></p>
-      <div><span class="est" data-est></span> <button class="btn btn--gold" type="submit">Request safari <?= icon('arrow-right', 18) ?></button> <button class="btn btn--wa" type="submit" name="via" value="wa" title="Saves your request and opens WhatsApp with all the details filled in"><?= icon('whatsapp', 18) ?> <?= et('book.wa', 'Book on WhatsApp') ?></button></div></div>
+    <div class="formfoot"><p><?= icon('compass', 18) ?><span><?= et('book.safari.note', 'Safari timings depend on weather and tracker availability. We confirm the exact slot on WhatsApp.') ?></span></p>
+      <div><span class="est" data-est></span> <button class="btn btn--gold" type="submit">Request safari <?= icon('arrow-right', 18) ?></button> <button class="wa-ico wa-ico--submit" type="submit" name="via" value="wa" aria-label="<?= e(t('book.wa', 'Book on WhatsApp')) ?>" title="<?= e(t('book.wa', 'Book on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?></button></div></div>
     </form>
   </section>
 
@@ -87,11 +84,10 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
       <div class="f"><label for="e-g">Guests</label><input type="number" id="e-g" name="guests" min="2" max="500" value="20" required></div>
       <div class="f"><label for="e-p">Phone / WhatsApp</label><input id="e-p" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></div>
       <div class="f f--6"><label for="e-n">Your name</label><input id="e-n" name="name" autocomplete="name" required></div>
-      <div class="f f--4"><label for="e-c">Contact me by</label><select id="e-c" name="contact_pref"><option>WhatsApp</option><option>Phone call</option><option>Either</option></select></div>
       <div class="f f--6"><label for="e-no">Plans & menu ideas (optional)</label><input id="e-no" name="notes" placeholder="Decoration, veg / non-veg, music…"></div>
     </div>
-    <div class="formfoot"><p><?= icon('party', 18) ?><span><?= et('book.event.note', 'Party and personal functions are both available. We will call to discuss menu, space and budget.') ?></span></p>
-      <button class="btn btn--gold" type="submit">Plan my event <?= icon('arrow-right', 18) ?></button> <button class="btn btn--wa" type="submit" name="via" value="wa" title="Saves your request and opens WhatsApp with all the details filled in"><?= icon('whatsapp', 18) ?> <?= et('book.wa', 'Book on WhatsApp') ?></button></div>
+    <div class="formfoot"><p><?= icon('party', 18) ?><span><?= et('book.event.note', 'Party and personal functions are both available. We will message you on WhatsApp to discuss menu, space and budget.') ?></span></p>
+      <button class="btn btn--gold" type="submit">Plan my event <?= icon('arrow-right', 18) ?></button> <button class="wa-ico wa-ico--submit" type="submit" name="via" value="wa" aria-label="<?= e(t('book.wa', 'Book on WhatsApp')) ?>" title="<?= e(t('book.wa', 'Book on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?></button></div>
     </form>
   </section>
 
@@ -102,11 +98,10 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
       <div class="f f--4"><label for="q-n">Your name</label><input id="q-n" name="name" autocomplete="name" required></div>
       <div class="f f--4"><label for="q-p">Phone / WhatsApp</label><input id="q-p" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></div>
       <div class="f f--4"><label for="q-e">Email (optional)</label><input id="q-e" name="email" type="email" autocomplete="email"></div>
-      <div class="f f--4"><label for="q-c">Contact me by</label><select id="q-c" name="contact_pref"><option>WhatsApp</option><option>Phone call</option><option>Either</option></select></div>
       <div class="f f--12"><label for="q-m">How can we help?</label><textarea id="q-m" name="notes" required placeholder="Dates, number of guests, anything you would like to know…"></textarea></div>
     </div>
     <div class="formfoot"><p><?= icon('message', 18) ?><span><?= et('book.enquiry.note', 'We usually reply the same day.') ?></span></p>
-      <button class="btn btn--gold" type="submit">Send enquiry <?= icon('send', 18) ?></button> <button class="btn btn--wa" type="submit" name="via" value="wa" title="Saves your request and opens WhatsApp with all the details filled in"><?= icon('whatsapp', 18) ?> <?= et('book.wa', 'Book on WhatsApp') ?></button></div>
+      <button class="btn btn--gold" type="submit">Send enquiry <?= icon('send', 18) ?></button> <button class="wa-ico wa-ico--submit" type="submit" name="via" value="wa" aria-label="<?= e(t('book.wa', 'Book on WhatsApp')) ?>" title="<?= e(t('book.wa', 'Book on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?></button></div>
     </form>
   </section>
 </div>

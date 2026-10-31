@@ -17,6 +17,7 @@ $nav = [
 <title><?= e($pageTitle) ?></title>
 <meta name="description" content="<?= e($pageDesc) ?>">
 <meta name="theme-color" content="#ffffff">
+<meta name="format-detection" content="telephone=no">
 <link rel="icon" href="<?= url('assets/brand/favicon.ico') ?>" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="<?= url('assets/brand/icon-32.png') ?>">
 <link rel="icon" type="image/png" sizes="192x192" href="<?= url('assets/brand/icon-192.png') ?>">
@@ -26,9 +27,7 @@ $nav = [
 <meta property="og:title" content="<?= e($pageTitle) ?>">
 <meta property="og:description" content="<?= e($pageDesc) ?>">
 <meta property="og:image" content="<?= e($ogImage) ?>">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<?= font_head() ?>
 <link rel="stylesheet" href="<?= url('assets/css/site.css') ?>?v=1">
 <script>try{if(sessionStorage.getItem('jmPre'))document.documentElement.classList.add('no-pre')}catch(e){}</script>
 </head>
@@ -56,8 +55,7 @@ $nav = [
       <?php endforeach; ?>
       <a class="btn btn--gold nav__cta" href="<?= url('book.php') ?>"><?= et('nav.cta', 'Book now') ?></a>
       <div class="nav__extra">
-        <a href="<?= e(tel(setting('owner1_phone'))) ?>"><?= icon('phone', 20) ?> <?= e(setting('owner1_phone')) ?></a>
-        <a href="<?= e(wa_link('Hello Jawai Mumal')) ?>" target="_blank" rel="noopener"><?= icon('whatsapp', 20) ?> WhatsApp</a>
+        <a class="wa-ico" href="<?= e(wa_link(t('sdial.msg', 'Hello Jawai Mumal, I would like to know more.'))) ?>" target="_blank" rel="noopener" aria-label="<?= et('wa.aria', 'Chat on WhatsApp') ?>" title="<?= et('wa.aria', 'Chat on WhatsApp') ?>"><?= icon('whatsapp', 26) ?></a>
         <a href="<?= e(maps_open_url()) ?>" target="_blank" rel="noopener"><?= icon('map-pin', 20) ?> <?= et('nav.directions', 'Get directions') ?></a>
       </div>
     </nav>

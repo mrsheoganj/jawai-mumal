@@ -6,6 +6,7 @@ $c = fn($sql) => (int)val($sql);
 $latest = rows('SELECT * FROM jm_bookings ORDER BY id DESC LIMIT 8');
 admin_head('Dashboard', 'dashboard');
 ?>
+<?php $sm = site_mode(); if ($sm !== 'live'): ?><div class="alert alert--warn"><strong><?= $sm === 'coming_soon' ? 'Coming soon mode is on.' : 'Maintenance mode is on.' ?></strong> Visitors cannot see the website yet. <a href="mode.php">Manage / go live →</a></div><?php endif; ?>
 <?php if ($defaultPw): ?><div class="alert alert--warn"><strong>Change your password.</strong> You are still using the default password. <a href="account.php">Update it now →</a></div><?php endif; ?>
 <div class="stats">
   <a class="stat" href="bookings.php?status=New"><span class="ic"><?= icon('bell', 24) ?></span><div><b><?= $c("SELECT COUNT(*) FROM jm_bookings WHERE status='New'") ?></b><span>New requests</span></div></a>

@@ -2,7 +2,7 @@
 require __DIR__ . '/_init.php';
 $reg = content_registry();
 $names = ['nav' => 'Menu & header', 'home' => 'Home page', 'rooms' => 'Rooms page', 'room' => 'Room detail page', 'restaurant' => 'Restaurant page', 'safari' => 'Safari page', 'jawai' => 'Explore Jawai page',
-          'gallery' => 'Gallery page', 'contact' => 'Contact page', 'book' => 'Booking forms', 'bookpage' => 'Booking page', 'footer' => 'Footer'];
+          'gallery' => 'Gallery page', 'contact' => 'Contact page', 'book' => 'Booking forms', 'bookpage' => 'Booking page', 'footer' => 'Footer', 'gate' => 'Coming soon / Maintenance page', 'wa' => 'WhatsApp button labels', 'done' => 'Booking confirmation', 'routes' => 'How to reach (map)', 'scene' => 'Animated Jawai scene', 'mnav' => 'Mobile bottom bar', 'policies' => 'Policies page', 'e404' => '404 page', 'sdial' => 'WhatsApp messages'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errs = []; $n = 0;
     foreach ($reg as $r) {

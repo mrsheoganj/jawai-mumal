@@ -26,7 +26,7 @@ You can ask us to delete your request at any time.')],
     <?php foreach ($blocks as $i => $b): ?>
       <div class="fac__item rv" style="margin:0 0 2.2rem"><span class="fac__ic"><?= icon($b[0], 24) ?></span><div><h3><?= e($b[1]) ?></h3><?php foreach (lines($b[2]) as $para): ?><p><?= e($para) ?></p><?php endforeach; ?></div></div>
     <?php endforeach; ?>
-    <p class="muted"><?= et('policies.contact', 'Questions? Call') ?> <a href="<?= e(tel(setting('owner1_phone'))) ?>"><?= e(setting('owner1_phone')) ?></a> <?= et('policies.or', 'or') ?> <a href="<?= e(wa_link('Hello Jawai Mumal')) ?>" target="_blank" rel="noopener">WhatsApp</a>.</p>
+    <p class="muted"><?= et('policies.contact', 'Questions? Message us on WhatsApp') ?> <a class="wa-ico wa-ico--sm" href="<?= e(wa_link('Hello Jawai Mumal')) ?>" target="_blank" rel="noopener" aria-label="<?= e(t('wa.aria', 'Chat on WhatsApp')) ?>" title="<?= e(t('wa.aria', 'Chat on WhatsApp')) ?>"><?= icon('whatsapp', 20) ?></a></p>
   </div>
 </section>
 <?php include __DIR__ . '/includes/footer.php'; ?>

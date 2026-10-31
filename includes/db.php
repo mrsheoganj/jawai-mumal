@@ -89,3 +89,5 @@ if (!get_setting_raw('routes_seeded')) {
     }
     set_setting('routes_seeded', '1');
 }
+
+jm_gate();

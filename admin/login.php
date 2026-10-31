@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sign in · <?= e(setting('site_name')) ?> admin</title><meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="<?= url('assets/brand/favicon.ico') ?>">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<?= font_head() ?>
 <link rel="stylesheet" href="<?= url('assets/css/admin.css') ?>?v=1"></head>
 <body class="login" id="loginbody">
 <div class="login__art" aria-hidden="true">

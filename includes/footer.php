@@ -29,8 +29,8 @@ $o2 = [setting('owner2_name'), setting('owner2_role'), setting('owner2_phone')];
     <div>
       <h3><?= et('footer.contact', 'Contact') ?></h3>
       <ul class="footer__contact">
-        <li><?= icon('phone', 18) ?><span><a href="<?= e(tel($o1[2])) ?>"><?= e($o1[2]) ?></a><small><?= e($o1[0]) ?> · <?= e($o1[1]) ?></small></span></li>
-        <li><?= icon('phone', 18) ?><span><a href="<?= e(tel($o2[2])) ?>"><?= e($o2[2]) ?></a><small><?= e($o2[0]) ?> · <?= e($o2[1]) ?></small></span></li>
+        <li><?= icon('user', 18) ?><span><?= e($o1[0]) ?> <small><?= e($o1[1]) ?> · <?= e($o1[2]) ?></small></span><a class="wa-ico wa-ico--sm" href="<?= e(wa_to($o1[2], t('footer.wamsg', 'Hello, I would like to know more about Jawai Mumal.'))) ?>" target="_blank" rel="noopener" aria-label="<?= e(t('wa.aria', 'Chat on WhatsApp')) ?> — <?= e($o1[0]) ?>" title="WhatsApp <?= e($o1[0]) ?>"><?= icon('whatsapp', 20) ?></a></li>
+        <li><?= icon('user', 18) ?><span><?= e($o2[0]) ?> <small><?= e($o2[1]) ?> · <?= e($o2[2]) ?></small></span><a class="wa-ico wa-ico--sm" href="<?= e(wa_to($o2[2], t('footer.wamsg', 'Hello, I would like to know more about Jawai Mumal.'))) ?>" target="_blank" rel="noopener" aria-label="<?= e(t('wa.aria', 'Chat on WhatsApp')) ?> — <?= e($o2[0]) ?>" title="WhatsApp <?= e($o2[0]) ?>"><?= icon('whatsapp', 20) ?></a></li>
         <?php if (setting('email')): ?><li><?= icon('mail', 18) ?><span><a href="mailto:<?= e(setting('email')) ?>"><?= e(setting('email')) ?></a></span></li><?php endif; ?>
         <li><?= icon('map-pin', 18) ?><span><?= nl2br(e(setting('address'))) ?></span></li>
       </ul>
@@ -49,15 +49,8 @@ $o2 = [setting('owner2_name'), setting('owner2_role'), setting('owner2_phone')];
   <a href="<?= url('restaurant.php') ?>" <?= ($active ?? '') === 'dining' ? 'aria-current="page"' : '' ?>><?= icon('utensils', 22) ?><?= et('mnav.dine', 'Dine') ?></a>
   <a href="<?= url('safari.php') ?>" <?= ($active ?? '') === 'safari' ? 'aria-current="page"' : '' ?>><?= icon('car', 22) ?><?= et('mnav.safari', 'Safari') ?></a>
 </nav>
-<div class="sdial" id="sdial">
-  <div class="sdial__menu" id="sdialmenu" role="menu" aria-label="<?= et('sdial.label', 'Contact us') ?>">
-    <a role="menuitem" class="sd sd--call" href="<?= e(tel($o1[2])) ?>"><span><?= et('sdial.call', 'Call') ?> <?= e(strtok($o1[0], ' ')) ?></span><?= icon('phone', 20) ?></a>
-    <a role="menuitem" class="sd sd--call" href="<?= e(tel($o2[2])) ?>"><span><?= et('sdial.call', 'Call') ?> <?= e(strtok($o2[0], ' ')) ?></span><?= icon('phone', 20) ?></a>
-    <a role="menuitem" class="sd sd--wa" target="_blank" rel="noopener" href="<?= e(wa_link(t('sdial.msg', 'Hello Jawai Mumal, I would like to know more.'))) ?>"><span><?= et('sdial.chat', 'WhatsApp chat') ?></span><?= icon('whatsapp', 20) ?></a>
-    <a role="menuitem" class="sd sd--wa" target="_blank" rel="noopener" href="<?= e(wa_link(t('sdial.cbmsg', 'Hello Jawai Mumal, please call me back on WhatsApp or phone about a booking. My name is '))) ?>"><span><?= et('sdial.cb', 'Request a call-back') ?></span><?= icon('refresh', 20) ?></a>
-  </div>
-  <button type="button" class="sdial__btn" id="sdialbtn" aria-expanded="false" aria-controls="sdialmenu" aria-label="<?= et('sdial.open', 'Call or WhatsApp us') ?>"><?= icon('whatsapp', 26, 'i-open') ?><?= icon('x', 24, 'i-close') ?></button>
-</div>
+<?php if (!empty($GLOBALS['jm_preview'])): ?><div class="prevpill" role="status"><?= icon('eye', 16) ?> <?= $GLOBALS['jm_preview'] === 'coming_soon' ? 'Preview · visitors see Coming soon' : 'Preview · visitors see Maintenance' ?> <a href="?exit_preview=1">Exit preview</a></div><?php endif; ?>
+<a class="wa-float" href="<?= e(wa_link(t('sdial.msg', 'Hello Jawai Mumal, I would like to know more.'))) ?>" target="_blank" rel="noopener" aria-label="<?= et('wa.aria', 'Chat on WhatsApp') ?>" title="<?= et('wa.aria', 'Chat on WhatsApp') ?>"><?= icon('whatsapp', 28) ?></a>
 <script src="<?= url('assets/js/site.js') ?>?v=1" defer></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/db.php';
-$pageTitle = 'Contact & Directions'; $pageDesc = 'Call, WhatsApp or visit Jawai Mumal in Bera village, Bera–Bali road, Pali, Rajasthan.';
+$pageTitle = 'Contact & Directions'; $pageDesc = 'Message or visit Jawai Mumal in Bera village, Bera–Bali road, Pali, Rajasthan.';
 $active = 'contact'; $bookTab = 'enquiry';
 include __DIR__ . '/includes/header.php';
 page_head(t('contact.head.eyebrow', 'Contact'), t('contact.head.title', 'Contact & Directions'), t('contact.head.sub', 'Talk to the owners directly — we are happy to help plan your stay, safari or celebration.'), im('contact.head.img', 'assets/images/hotel-front.jpg'));
@@ -10,11 +10,11 @@ $owners = [['owner1_name', 'owner1_role', 'owner1_phone'], ['owner2_name', 'owne
   <div class="wrap">
     <div class="ccards">
       <?php foreach ($owners as $i => $o): ?>
-        <div class="ccard rv d<?= $i ?>"><div class="pillar__ic"><?= icon('phone', 24) ?></div><h3><?= e(setting($o[0])) ?></h3><p><?= e(setting($o[1])) ?></p><a class="big" href="<?= e(tel(setting($o[2]))) ?>"><?= e(setting($o[2])) ?></a>
-          <div class="cbtns"><a class="btn btn--dark" href="<?= e(tel(setting($o[2]))) ?>"><?= icon('phone', 18) ?> <?= et('contact.call', 'Call now') ?></a><a class="btn btn--wa" target="_blank" rel="noopener" href="<?= e(wa_to(setting($o[2]), t('contact.chatmsg', 'Hello, I would like to know more about Jawai Mumal.'))) ?>"><?= icon('whatsapp', 18) ?> <?= et('contact.chat', 'WhatsApp chat') ?></a><a class="btn btn--line" target="_blank" rel="noopener" href="<?= e(wa_to(setting($o[2]), t('contact.cbmsg', 'Hello, please call me back on WhatsApp or phone about a booking. My name is '))) ?>"><?= icon('refresh', 18) ?> <?= et('contact.cb', 'Call-back') ?></a></div></div>
+        <div class="ccard rv d<?= $i ?>"><div class="pillar__ic"><?= icon('user', 24) ?></div><h3><?= e(setting($o[0])) ?></h3><p><?= e(setting($o[1])) ?></p><span class="big"><?= e(setting($o[2])) ?></span>
+          <div class="cbtns"><a class="wa-ico" target="_blank" rel="noopener" href="<?= e(wa_to(setting($o[2]), t('contact.chatmsg', 'Hello, I would like to know more about Jawai Mumal.'))) ?>" aria-label="<?= e(t('wa.aria', 'Chat on WhatsApp')) ?> — <?= e(setting($o[0])) ?>" title="WhatsApp <?= e(setting($o[0])) ?>"><?= icon('whatsapp', 26) ?></a></div></div>
       <?php endforeach; ?>
-      <div class="ccard rv d2"><div class="pillar__ic" style="background:#1f8f4e;color:#fff"><?= icon('whatsapp', 24) ?></div><h3><?= et('contact.wa.title', 'WhatsApp') ?></h3><p><?= et('contact.wa.text', 'Fastest way to share dates and get rates.') ?></p><a class="big" href="<?= e(wa_link('Hello Jawai Mumal')) ?>" target="_blank" rel="noopener"><?= et('contact.wa.big', 'Chat with us') ?></a><span class="demo-note"><?= e(setting('reception_hours')) ?></span>
-        <div class="cbtns"><a class="btn btn--wa" target="_blank" rel="noopener" href="<?= e(wa_link(t('contact.wa.msg2', 'Hello Jawai Mumal, I would like to book. Please share availability and rates.'))) ?>"><?= icon('whatsapp', 18) ?> <?= et('contact.wa.book', 'Book on WhatsApp') ?></a></div></div>
+      <div class="ccard rv d2"><div class="pillar__ic" style="background:#1f8f4e;color:#fff"><?= icon('whatsapp', 24) ?></div><h3><?= et('contact.wa.title', 'WhatsApp') ?></h3><p><?= et('contact.wa.text', 'Fastest way to share dates and get rates.') ?></p><span class="demo-note"><?= e(setting('reception_hours')) ?></span>
+        <div class="cbtns"><a class="wa-ico" target="_blank" rel="noopener" href="<?= e(wa_link(t('contact.wa.msg2', 'Hello Jawai Mumal, I would like to book. Please share availability and rates.'))) ?>" aria-label="<?= et('wa.aria', 'Chat on WhatsApp') ?>" title="<?= et('wa.aria', 'Chat on WhatsApp') ?>"><?= icon('whatsapp', 26) ?></a></div></div>
     </div>
     <div class="split" style="margin-top:3.5rem;align-items:stretch">
       <div class="rv">

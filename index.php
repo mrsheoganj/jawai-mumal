@@ -193,7 +193,7 @@ $n = count($slides);
       <span class="eyebrow"><?= et('home.events.eyebrow', 'Party & personal bookings') ?></span>
       <h2><?= et('home.events.title', 'Parties, celebrations & private functions') ?></h2>
       <p><?= et('home.events.text', 'Birthdays, family get-togethers, small weddings, corporate meets or a quiet personal celebration — party and personal bookings are both available. Tell us your date, guest count and menu ideas and we will plan the rest.') ?></p>
-      <div class="hero__cta"><a class="btn btn--gold" href="<?= url('book.php?type=event') ?>"><?= et('home.events.btn', 'Plan an event') ?> <?= icon('arrow-right', 18) ?></a><a class="btn btn--ghost" href="<?= e(tel(setting('owner1_phone'))) ?>"><?= icon('phone', 18) ?> <?= e(setting('owner1_phone')) ?></a></div>
+      <div class="hero__cta"><a class="btn btn--gold" href="<?= url('book.php?type=event') ?>"><?= et('home.events.btn', 'Plan an event') ?> <?= icon('arrow-right', 18) ?></a><a class="wa-ico wa-ico--light" target="_blank" rel="noopener" href="<?= e(wa_link(t('home.events.wamsg', 'Hello Jawai Mumal, I would like to plan a party or function.'))) ?>" aria-label="<?= e(t('wa.aria', 'Chat on WhatsApp')) ?>" title="<?= e(t('wa.aria', 'Chat on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?></a></div>
     </div>
   </div>
 </section>
@@ -245,10 +245,10 @@ $n = count($slides);
       <p style="white-space:pre-line"><?= e(setting('address')) ?></p>
       <ul class="footer__contact" style="list-style:none;padding:0;display:grid;gap:1rem;margin:1.5rem 0">
         <?php foreach (['owner1', 'owner2'] as $o): ?>
-          <li style="display:flex;gap:.8rem"><?= icon('phone', 20) ?><span><a style="font:600 1.4rem var(--serif);text-decoration:none" href="<?= e(tel(setting($o . '_phone'))) ?>"><?= e(setting($o . '_phone')) ?></a><br><small style="opacity:.7"><?= e(setting($o . '_name')) ?> · <?= e(setting($o . '_role')) ?></small></span></li>
+          <li style="display:flex;gap:.9rem;align-items:center"><span style="flex:1"><strong style="font:600 1.15rem var(--serif)"><?= e(setting($o . '_name')) ?></strong><br><small style="color:var(--muted)"><?= e(setting($o . '_role')) ?> · <?= e(setting($o . '_phone')) ?></small></span><a class="wa-ico wa-ico--sm" target="_blank" rel="noopener" href="<?= e(wa_to(setting($o . '_phone'), t('home.find.wamsg', 'Hello, I would like to know more about Jawai Mumal.'))) ?>" aria-label="<?= e(t('wa.aria', 'Chat on WhatsApp')) ?> — <?= e(setting($o . '_name')) ?>" title="WhatsApp <?= e(setting($o . '_name')) ?>"><?= icon('whatsapp', 22) ?></a></li>
         <?php endforeach; ?>
       </ul>
-      <div class="hero__cta"><a class="btn btn--gold" href="<?= e(wa_link('Hello Jawai Mumal')) ?>" target="_blank" rel="noopener"><?= icon('whatsapp', 18) ?> WhatsApp</a><a class="btn btn--line" href="<?= e(maps_open_url()) ?>" target="_blank" rel="noopener"><?= icon('navigation', 18) ?> <?= et('home.find.btn', 'Get directions') ?></a></div>
+      <div class="hero__cta"><a class="btn btn--line" href="<?= e(maps_open_url()) ?>" target="_blank" rel="noopener"><?= icon('navigation', 18) ?> <?= et('home.find.btn', 'Get directions') ?></a></div>
     </div>
     <iframe class="map rv d1" title="Map to <?= e(setting('site_name')) ?>" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="<?= e(map_embed_src()) ?>"></iframe>
   </div>

@@ -110,11 +110,11 @@ function jm_seed(PDO $pdo): void {
         ['How many safari drives should we book?', 'Three or four drives (morning and evening on two days) give a fair chance of good sightings. Photographers often book more.'],
         ['How is Jawai different from a national park?', 'Jawai is an open, lived-in landscape of granite hills, villages and farms rather than a fenced park. Drives are in private open jeeps on village tracks, with no crowded convoys or fixed zones.'],
         ['Is the restaurant vegetarian?', 'Yes — our kitchen is 100% vegetarian, with Rajasthani village food, tandoor dishes and a café. Jain options are available on request.'],
-        ['Can I book party or personal functions?', 'Yes. Birthdays, family functions, small weddings, corporate meets and personal celebrations are all welcome. Use the Party & Events tab or call us with your date and guest count.'],
+        ['Can I book party or personal functions?', 'Yes. Birthdays, family functions, small weddings, corporate meets and personal celebrations are all welcome. Use the Party & Events tab or message us on WhatsApp with your date and guest count.'],
         ['What are check-in and check-out times?', 'Check-in is from 12:00 PM and check-out is by 11:00 AM. Early check-in or late check-out can be arranged on request.'],
         ['Is it suitable for children and older travellers?', 'Very much. Private jeeps let us set a gentle pace, shorten drives and plan comfortable breaks.'],
         ['What should I wear on safari?', 'Neutral colours such as khaki and olive, warm layers for winter mornings, a hat, sunscreen and closed shoes. Modest clothing is appreciated on village visits.'],
-        ['How do I reach Bera?', 'By road, Udaipur airport is about 129 km (roughly 2 hr 15 min), Jodhpur airport about 173 km (around 2 hr 50 min), Sumerpur Jawai Bandh railway station about 18 km and Falna station about 37 km. See the live map on the Contact page, or call us for pick-up options.'],
+        ['How do I reach Bera?', 'By road, Udaipur airport is about 129 km (roughly 2 hr 15 min), Jodhpur airport about 173 km (around 2 hr 50 min), Sumerpur Jawai Bandh railway station about 18 km and Falna station about 37 km. See the live map on the Contact page, or message us on WhatsApp for pick-up options.'],
         ['How do I confirm a booking?', 'Send a request on the website or WhatsApp us. Our team confirms availability and the final rate personally, usually within a few hours.'],
     ];
     foreach ($faq as $i => $f) { $st->execute([$f[0], $f[1], $i]); }

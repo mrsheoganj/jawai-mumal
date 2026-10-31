@@ -20,6 +20,7 @@ function admin_nav(): array {
         ['slides.php', 'slides', 'Home banner slides', 'image'],
         ['texts.php', 'texts', 'Page text & images', 'pencil'],
         ['content.php', 'content', 'Contact, logo & rules', 'sliders'],
+        ['mode.php', 'mode', 'Site mode (launch / maintenance)', 'bell'],
         ['account.php', 'account', 'My account', 'lock'],
     ];
 }
@@ -28,7 +29,7 @@ function admin_head(string $title, string $active = ''): void {
     ?><!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title><?= e($title) ?> · Admin · <?= e(setting('site_name')) ?></title><meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="<?= url('assets/brand/favicon.ico') ?>">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<?= font_head() ?>
 <link rel="stylesheet" href="<?= url('assets/css/admin.css') ?>?v=1"></head>
 <body><div class="shell">
 <aside class="side" id="side">
@@ -39,7 +40,7 @@ function admin_head(string $title, string $active = ''): void {
   <div class="side__foot"><a href="<?= url('index.php') ?>" target="_blank" rel="noopener"><?= icon('external', 18) ?><span>View website</span></a><a href="logout.php"><?= icon('log-out', 18) ?><span>Sign out</span></a></div>
 </aside>
 <div class="main">
-  <header class="top"><button class="burger" id="burger" aria-label="Menu"><?= icon('menu', 24) ?></button><h1><?= e($title) ?></h1><span class="who"><?= icon('user', 18) ?><?= e($_SESSION['admin_name'] ?? 'Admin') ?></span></header>
+  <header class="top"><button class="burger" id="burger" aria-label="Menu"><?= icon('menu', 24) ?></button><h1><?= e($title) ?></h1><?php $sm = site_mode(); if ($sm !== 'live'): ?><a class="modepill modepill--<?= $sm ?>" href="mode.php"><?= $sm === 'coming_soon' ? 'Coming soon mode' : 'Maintenance mode' ?></a><?php endif; ?><span class="who"><?= icon('user', 18) ?><?= e($_SESSION['admin_name'] ?? 'Admin') ?></span></header>
   <div class="content">
     <?php foreach (flashes() as $f): ?><div class="alert alert--<?= $f[0] === 'ok' ? 'ok' : 'err' ?>" role="status"><?= e($f[1]) ?></div><?php endforeach;
 }

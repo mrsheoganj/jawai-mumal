@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!empty($_POST['website'])) {
         redirect(url('book.php?done=JM-OK')); // honeypot: pretend success
     } elseif (count($tries) >= 6) {
-        $errors[] = 'Too many requests. Please call us instead, or try again in a few minutes.';
+        $errors[] = 'Too many requests. Please message us on WhatsApp instead, or try again in a few minutes.';
     } elseif (!in_array($type, array_keys(booking_types()), true)) {
         $errors[] = 'Unknown request type.';
     } else {
@@ -20,8 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $phone  = trim($_POST['phone'] ?? '');
         $email  = trim($_POST['email'] ?? '');
         $notes  = trim($_POST['notes'] ?? '');
-        $pref   = in_array($_POST['contact_pref'] ?? '', ['Phone call', 'WhatsApp', 'Either'], true) ? $_POST['contact_pref'] : '';
-        if ($pref !== '' && $type !== 'enquiry') $notes = trim($notes . ($notes !== '' ? ' · ' : '') . 'Contact by: ' . $pref);
         $guests = max(1, min(500, (int)($_POST['guests'] ?? 1)));
         $from   = trim($_POST['date_from'] ?? '');
         $to     = trim($_POST['date_to'] ?? '');
@@ -45,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (!$isDate($to) || $to <= $from) $errors[] = 'Check-out must be after check-in.';
                 else {
                     $nights = (int)round((strtotime($to) - strtotime($from)) / 86400);
-                    if ($nights > 60) $errors[] = 'For stays longer than 60 nights please call us.';
+                    if ($nights > 60) $errors[] = 'For stays longer than 60 nights please message us on WhatsApp.';
                     $room = $itemId ? row("SELECT * FROM jm_rooms WHERE id=? AND status='active'", [$itemId]) : null;
                     $itemName = $room ? $room['name'] : 'Any available room';
                     if ($room) { $amount = $nights * (int)$room['price']; $tax = (int)round($amount * gst_rate((int)$room['price']) / 100); }
@@ -103,12 +101,10 @@ include __DIR__ . '/includes/header.php';
           <p><strong><?= e($b['item_name']) ?></strong><?php if ($b['date_from']): ?><br><?= e(fmt_date($b['date_from'])) ?><?= $b['date_to'] ? ' → ' . e(fmt_date($b['date_to'])) : '' ?><?= $b['time_slot'] ? ' · ' . e($b['time_slot']) : '' ?><?php endif; ?><br><?= (int)$b['guests'] ?> guest<?= $b['guests'] > 1 ? 's' : '' ?></p>
           <?php if ($b['amount'] > 0): ?><p>Estimated: <strong><?= money($b['amount'] + $b['tax']) ?></strong><?= $b['tax'] ? ' (incl. GST)' : '' ?> — final rate is confirmed by our team.</p><?php endif; ?>
         <?php endif; ?>
-        <p><?= et('done.text', 'Your request is saved. Our team will call or WhatsApp you shortly to confirm. To speed things up, send the details on WhatsApp.') ?></p>
+        <p><?= et('done.text', 'Your request is saved. Our team will message you on WhatsApp shortly to confirm. To speed things up, send the details to us on WhatsApp.') ?></p>
         <div class="hero__cta" style="justify-content:center">
-          <a class="btn btn--wa" href="<?= e(wa_link($b ? booking_wa_message($b) : 'Hello Jawai Mumal, my reference is ' . $done)) ?>" target="_blank" rel="noopener"><?= icon('whatsapp', 20) ?> <?= et('done.wa', 'Send these details on WhatsApp') ?></a>
-          <a class="btn btn--dark" href="<?= e(tel(setting('owner1_phone'))) ?>"><?= icon('phone', 20) ?> <?= et('done.call', 'Call') ?> <?= e(setting('owner1_phone')) ?></a>
-          <a class="btn btn--line" target="_blank" rel="noopener" href="<?= e(wa_link(t('done.cbmsg', 'Hello Jawai Mumal, please call me back about my request ') . $done)) ?>"><?= icon('refresh', 20) ?> <?= et('done.cb', 'Request a call-back') ?></a>
-        </div>
+          <a class="wa-ico wa-ico--lg" href="<?= e(wa_link($b ? booking_wa_message($b) : 'Hello Jawai Mumal, my reference is ' . $done)) ?>" target="_blank" rel="noopener" aria-label="<?= e(t('done.wa', 'Send these details on WhatsApp')) ?>" title="<?= e(t('done.wa', 'Send these details on WhatsApp')) ?>"><?= icon('whatsapp', 34) ?></a>
+          </div>
       </div>
     <?php else: ?>
       <div class="sechead" style="margin-bottom:2rem">

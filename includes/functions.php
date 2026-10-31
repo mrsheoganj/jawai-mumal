@@ -255,4 +255,63 @@ function notify_booking(array $b): void {
         "From: " . setting('site_name') . " <$from>\r\nContent-Type: text/plain; charset=UTF-8");
 }
 
+
+// ---------- Fonts (choose the pairing in Admin > Contact, logo & rules)
+function font_presets(): array {
+    return [
+        'playfair-inter' => ['label' => 'Playfair Display + Inter (classic hotel, recommended)', 'serif' => "'Playfair Display',Georgia,'Times New Roman',serif", 'sans' => "'Inter',system-ui,-apple-system,'Segoe UI',sans-serif",
+            'url' => 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap'],
+        'baskerville-source' => ['label' => 'Libre Baskerville + Source Sans 3 (editorial)', 'serif' => "'Libre Baskerville',Georgia,serif", 'sans' => "'Source Sans 3',system-ui,sans-serif",
+            'url' => 'https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Sans+3:wght@400;500;600;700&display=swap'],
+        'dmserif-dmsans' => ['label' => 'DM Serif Display + DM Sans (modern boutique)', 'serif' => "'DM Serif Display',Georgia,serif", 'sans' => "'DM Sans',system-ui,sans-serif",
+            'url' => 'https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap'],
+        'cormorant-jost' => ['label' => 'Cormorant Garamond + Jost (light & elegant)', 'serif' => "'Cormorant Garamond',Georgia,serif", 'sans' => "'Jost',system-ui,sans-serif",
+            'url' => 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@400;500;600&display=swap'],
+    ];
+}
+function font_head(): string {
+    $p = font_presets(); $k = setting('font_pair', 'playfair-inter'); $f = $p[$k] ?? $p['playfair-inter'];
+    return '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="' . e($f['url']) . '" rel="stylesheet">'
+         . '<style>:root{--serif:' . $f['serif'] . ';--sans:' . $f['sans'] . '}</style>';
+}
+
+
+// ---------- Site mode: live / coming soon / maintenance (+ secret preview link)
+function site_mode(): string {
+    $m = (string)get_setting_raw('site_mode');
+    if (!in_array($m, ['coming_soon', 'maintenance'], true)) return 'live';
+    if ($m === 'coming_soon' && get_setting_raw('auto_launch') !== '0') {
+        $t = launch_ts(); if ($t && $t <= time()) return 'live';   // launch time passed -> go live automatically
+    }
+    return $m;
+}
+/** Launch time (stored as local India time) as a unix timestamp, or 0. */
+function launch_ts(string $key = 'launch_at'): int {
+    $v = trim((string)get_setting_raw($key)); if ($v === '') return 0;
+    $d = date_create($v, new DateTimeZone('Asia/Kolkata')); return $d ? $d->getTimestamp() : 0;
+}
+function preview_key(): string {
+    $k = (string)get_setting_raw('preview_key');
+    if ($k === '') { $k = bin2hex(random_bytes(8)); set_setting('preview_key', $k); }
+    return $k;
+}
+function preview_token(string $key): string { return hash_hmac('sha256', $key, 'jm-preview|' . DB_NAME . '|' . __DIR__); }
+function preview_url(): string { return rtrim(setting('site_url'), '/') . '/?preview=' . preview_key(); }
+function jm_gate(): void {
+    if (PHP_SAPI === 'cli') return;
+    if (strpos($_SERVER['SCRIPT_NAME'] ?? '', '/admin/') !== false) return;
+    $mode = site_mode(); if ($mode === 'live') return;
+    if (admin_logged_in()) { $GLOBALS['jm_preview'] = $mode; return; }
+    $key = preview_key(); $tok = preview_token($key);
+    $cookie = ['expires' => time() + 86400 * 30, 'path' => '/', 'httponly' => true, 'samesite' => 'Lax', 'secure' => !empty($_SERVER['HTTPS'])];
+    if (isset($_GET['exit_preview'])) { setcookie('jm_preview', '', ['expires' => 1] + $cookie); redirect(strtok($_SERVER['REQUEST_URI'], '?')); }
+    if (isset($_GET['preview']) && hash_equals($key, (string)$_GET['preview'])) {
+        setcookie('jm_preview', $tok, $cookie);
+        $q = $_GET; unset($q['preview']); redirect(strtok($_SERVER['REQUEST_URI'], '?') . ($q ? '?' . http_build_query($q) : ''));
+    }
+    if (!empty($_COOKIE['jm_preview']) && hash_equals($tok, (string)$_COOKIE['jm_preview'])) { $GLOBALS['jm_preview'] = $mode; return; }
+    $GLOBALS['jm_gate_mode'] = $mode;
+    include __DIR__ . '/gate_page.php';
+    exit;
+}
 require_once __DIR__ . '/geo.php';

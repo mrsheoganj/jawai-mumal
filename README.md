@@ -14,8 +14,11 @@ The home banner is a gentle slideshow (1 to many slides) with a “Now Open” b
 ## Look & feel
 Mobile gets an app-style experience (bottom tab bar, slide-in menu, swipe carousels, 2-column forms). Animations: hero slideshow, word-by-word headings, count-up numbers, scroll progress, an animated Jawai landscape (day/night loop, leopard, flamingos, birds), and an animated route map. All motion respects *reduce motion* settings.
 
+## Site modes
+Admin → **Site mode**: *Live*, *Coming soon* (public countdown to a date/time you choose, optional automatic go-live) or *Maintenance* (503 “back soon” page, optional back-by countdown). While a mode is on, share the **secret preview link** with clients so they can browse the full site; you stay signed in as admin and always see the real site. Fonts can be switched in *Contact, logo & rules* (Playfair Display + Inter by default).
+
 ## Communication
-Every form has **Request booking** (saved in admin) and **Book on WhatsApp** (saved *and* opens WhatsApp with all details). A speed-dial button offers Call (both owners), WhatsApp chat and a call-back request. In Admin → Bookings, one tap sends the guest a confirmation message on WhatsApp. WhatsApp cannot be started as a *voice call* from a web link, so we open the chat (or ask for a call-back) from where the call icon is one tap away.
+Every form has **Request booking** (saved in admin) and **Book on WhatsApp** (saved *and* opens WhatsApp with all details). There are no phone-call links anywhere: contact is WhatsApp only, shown as icon-only buttons (a floating one, one per owner, and on every form). In Admin → Bookings, one tap sends the guest a confirmation message on WhatsApp. WhatsApp cannot be started as a *voice call* from a web link, so we open the chat (or ask for a call-back) from where the call icon is one tap away.
 
 ## Real map & distances
 The “How far is Jawai?” section uses OpenStreetMap: real driving routes from the hotel, true compass bearings and real kilometres. Set the hotel latitude/longitude in *Contact, logo & rules*; add places in *Distances & travel* and press **Calculate** to measure real road distance and drive time.

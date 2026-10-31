@@ -1,7 +1,7 @@
 /* Jawai Mumal admin */
-:root{--ink:#2b180e;--ink-2:#4a3426;--ink-3:#1b0f08;--gold:#c9973f;--gold-2:#e3b866;--gold-d:#8a6420;--cream:#ffffff;--sand:#f1e8d6;--paper:#fff;--line:rgba(43,24,14,.14);--muted:#66554a;--ok:#2f6b3f;--err:#a3281f;--r:12px;--serif:'Cormorant Garamond',serif;--sans:'Jost',system-ui,sans-serif;--ease:cubic-bezier(.22,.8,.3,1)}
+:root{--ink:#2b180e;--ink-2:#4a3426;--ink-3:#1b0f08;--gold:#c9973f;--gold-2:#e3b866;--gold-d:#8a6420;--cream:#ffffff;--sand:#f1e8d6;--paper:#fff;--line:rgba(43,24,14,.14);--muted:#66554a;--ok:#2f6b3f;--err:#a3281f;--r:12px;--serif:'Playfair Display',Georgia,serif;--sans:'Inter',system-ui,sans-serif;--ease:cubic-bezier(.22,.8,.3,1)}
 *,*::before,*::after{box-sizing:border-box}
-body{margin:0;font:400 1rem/1.55 var(--sans);color:var(--ink);background:#fafaf8}
+body{margin:0;font:400 .96rem/1.55 var(--sans);font-variant-numeric:lining-nums;-webkit-font-smoothing:antialiased;color:var(--ink);background:#fafaf8}
 h1,h2,h3{font-family:var(--serif);margin:0 0 .5rem;line-height:1.15}
 a{color:var(--gold-d)}
 .i{flex:none}
@@ -124,3 +124,21 @@ body.login{display:grid;grid-template-columns:1.1fr .9fr;min-height:100vh;backgr
 .curtain.is-on img,.curtain.is-on p{opacity:1;transform:none}
 @media (max-width:860px){body.login{grid-template-columns:1fr}.login__art{min-height:280px}.login__mark{width:190px;height:190px}.login__mark img{width:150px;height:150px}.login__quote{display:none}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.login__ring circle{stroke-dashoffset:0}}
+
+.wa-ico{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#1f8f4e;color:#fff;text-decoration:none;vertical-align:middle;transition:transform .2s}
+.wa-ico:hover{transform:scale(1.08)}.wa-ico--sm{width:34px;height:34px}
+
+.modepill{padding:.25rem .8rem;border-radius:999px;font-size:.78rem;font-weight:600;text-decoration:none;letter-spacing:.04em}
+.modepill--coming_soon{background:#fff0c9;color:#7a5a10}.modepill--maintenance{background:#fbe9e6;color:var(--err)}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+@media (max-width:800px){.modes{grid-template-columns:1fr}}
+.mode{position:relative;display:block;border:2px solid var(--line);border-radius:14px;padding:1.1rem 1.2rem;cursor:pointer;background:#fff;transition:border-color .2s,box-shadow .2s}
+.mode input{position:absolute;opacity:0}
+.mode:has(input:checked){border-color:var(--gold);box-shadow:0 0 0 4px rgba(201,151,63,.2)}
+.mode:has(input:focus-visible){outline:3px solid var(--gold);outline-offset:2px}
+.mode b{display:flex;align-items:center;gap:.5rem;font:600 1.15rem var(--serif);margin-bottom:.2rem}
+.mode span{font-size:.9rem;color:var(--muted)}
+.copyrow{display:flex;gap:.5rem;flex-wrap:wrap}.copyrow input{flex:1;min-width:240px;font-family:ui-monospace,Menlo,monospace;font-size:.88rem}
+
+/* Always lining figures (prices, dates, distances read cleanly) */
+*,*::before,*::after{font-variant-numeric:lining-nums!important;font-feature-settings:"lnum" 1}
