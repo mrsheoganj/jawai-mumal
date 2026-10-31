@@ -1,6 +1,12 @@
 # Deploying Jawai Mumal on Hostinger
 
-## Easiest: no terminal needed (File Manager + built-in GitHub sync)
+## Automatic hosting with GitHub Actions (recommended)
+Every push to `main` (and the work branch) is copied to Hostinger by `.github/workflows/deploy.yml` over SFTP/SSH — nothing to run by hand.
+1. GitHub repo → **Settings → Secrets and variables → Actions → New repository secret**, add: `SSH_HOST`, `SSH_PORT` (65002), `SSH_USER`, `SSH_PASSWORD` (from hPanel → Advanced → SSH Access). Optional: `DEPLOY_PATH` (default `domains/jawaimumal.com/public_html`) and `ADMIN_PASSWORD` (creates the server-only `config.local.php` — Coming soon until 6 Nov 2026 12:00 AM IST — on the very first deploy).
+2. Run it: **Actions → Deploy to Hostinger → Run workflow**, or just push. The log shows `Deployed <commit>`.
+3. The database (`data/`), photos (`assets/uploads/`) and `config.local.php` on the server are never overwritten.
+
+## Alternative: no terminal needed (File Manager + built-in GitHub sync)
 1. Build the package: `JM_ADMIN_PASS='your-password' BRANCH=main python3 deploy/build_package.py` → `dist/jawai-mumal-hosting.zip` (contains your private `config.local.php`; never commit it).
 2. hPanel → Websites → *Manage* → **File Manager** → `public_html` → delete `default.php` → **Upload** the zip → right-click it → **Extract** (extract *here*) → delete the zip.
 3. Open the site. It starts in the mode set in the package (Coming soon until the launch time). Admin: `/admin/login.php`.

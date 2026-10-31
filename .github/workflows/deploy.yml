@@ -1,0 +1,79 @@
+# Hosts the website automatically: every push to the live branch is copied to Hostinger over SFTP/SSH.
+# Setup (once): GitHub repo > Settings > Secrets and variables > Actions > New repository secret:
+#   SSH_HOST, SSH_PORT, SSH_USER, SSH_PASSWORD   (Hostinger hPanel > Advanced > SSH Access)
+#   optional: DEPLOY_PATH (default domains/jawaimumal.com/public_html), ADMIN_PASSWORD (creates config.local.php if the server has none)
+#   optional variables: SITE_URL, LAUNCH_AT (India time, e.g. 2026-11-06T00:00)
+# Your database (data/), uploaded photos (assets/uploads/) and config.local.php on the server are never overwritten.
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches: [main, ccr-8eede79d-o6zmqv]     # remove the second branch once everything is merged into main
+  workflow_dispatch:                          # Actions tab > Deploy to Hostinger > Run workflow
+
+concurrency:
+  group: deploy-hostinger
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check the secrets are set
+        env:
+          H: ${{ secrets.SSH_HOST }}
+          U: ${{ secrets.SSH_USER }}
+          P: ${{ secrets.SSH_PASSWORD }}
+        run: |
+          for v in H U P; do if [ -z "${!v}" ]; then echo "::error::Missing GitHub secret (SSH_HOST / SSH_USER / SSH_PASSWORD). See the comment at the top of .github/workflows/deploy.yml"; exit 1; fi; done
+
+      - uses: actions/checkout@v4
+
+      - name: Upload the website files
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT || '65002' }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          # Only website code is listed here, so data/, assets/uploads/ photos and config.local.php are never touched
+          source: "*.php,*.webmanifest,robots.txt,.htaccess,admin,includes,assets/css,assets/js,assets/images,assets/brand,assets/uploads/.htaccess,data/.htaccess"
+          target: ${{ secrets.DEPLOY_PATH || 'domains/jawaimumal.com/public_html' }}
+          overwrite: true
+
+      - name: Finish on the server
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH || 'domains/jawaimumal.com/public_html' }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          LAUNCH_AT: ${{ vars.LAUNCH_AT || '2026-11-06T00:00' }}
+          BRANCH: ${{ github.ref_name }}
+          SHA: ${{ github.sha }}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT || '65002' }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          envs: DEPLOY_PATH,ADMIN_PASSWORD,LAUNCH_AT,BRANCH,SHA
+          script: |
+            set -e
+            cd "$DEPLOY_PATH"
+            mkdir -p data assets/uploads
+            chmod 755 data assets/uploads
+            # first deploy only: create the server-only settings file (Coming soon until LAUNCH_AT, SQLite database)
+            if [ ! -f config.local.php ] && [ -n "$ADMIN_PASSWORD" ]; then
+              JM_PASS="$ADMIN_PASSWORD" JM_BRANCH="$BRANCH" JM_LAUNCH="$LAUNCH_AT" php includes/make_config.php
+            fi
+            echo "$SHA" > data/.version        # keeps the in-site updater in step with this deploy
+            echo "Deployed ${SHA:0:7} from $BRANCH to $(pwd)"
+
+      - name: Check the live site answers
+        continue-on-error: true
+        run: |
+          code=$(curl -s -o /dev/null -m 30 -w '%{http_code}' "${{ vars.SITE_URL || 'https://jawaimumal.com' }}/")
+          echo "Website responded with HTTP $code (200 = site or Coming soon page, 503 = Maintenance page)"
+          [ "$code" = "200" ] || [ "$code" = "503" ]
