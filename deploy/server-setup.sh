@@ -3,6 +3,8 @@
 #   JM_ADMIN_PASS='your-password' BRANCH=main bash server-setup.sh
 # Optional: SITE_DIR=/home/USER/domains/jawaimumal.com/public_html   REPO_URL=...
 #           JM_DB_HOST/JM_DB_NAME/JM_DB_USER/JM_DB_PASS to use MySQL instead of the built-in SQLite database.
+#           JM_MODE=coming_soon|live|maintenance (default coming_soon)  JM_LAUNCH_AT=2026-11-06T00:00 (India time, default shown)
+#           The mode/launch time are only DEFAULTS: whatever you save in Admin > Site mode always wins.
 set -euo pipefail
 REPO_URL="${REPO_URL:-https://github.com/mrsheoganj/jawai-mumal.git}"
 BRANCH="${BRANCH:-main}"
@@ -41,6 +43,8 @@ esc() { printf '%s' "$1" | sed "s/\\\\/\\\\\\\\/g; s/'/\\\\'/g"; }
   echo "<?php"
   echo "// Server-only settings. Created by deploy/server-setup.sh"
   echo "define('DEFAULT_ADMIN_PASS', '$(esc "$JM_ADMIN_PASS")');"
+  echo "define('DEFAULT_SITE_MODE', '$(esc "${JM_MODE:-coming_soon}")');      // coming_soon | live | maintenance"
+  echo "define('DEFAULT_LAUNCH_AT', '$(esc "${JM_LAUNCH_AT:-2026-11-06T00:00}")');   // India time; the site goes live automatically then"
   if [ -n "${JM_DB_NAME:-}" ]; then
     echo "define('DB_HOST', '$(esc "${JM_DB_HOST:-localhost}")');"
     echo "define('DB_NAME', '$(esc "$JM_DB_NAME")');"
@@ -71,6 +75,9 @@ else
   echo "Add this in hPanel > Advanced > Cron Jobs (every minute):"; echo "  /bin/bash $SITE_DIR/deploy/sync.sh"
 fi
 say "Done"
+MODE_INFO=$(php -r '$_SERVER["DOCUMENT_ROOT"]=getcwd(); $_SERVER["SCRIPT_NAME"]="/index.php"; require "includes/db.php"; echo site_mode(), "|", launch_ts() ? date("D, j M Y g:i A", launch_ts()) . " IST" : "-", "|", preview_url();' 2>/dev/null || true)
+echo "Mode    : $(echo "$MODE_INFO" | cut -d'|' -f1)   launch: $(echo "$MODE_INFO" | cut -d'|' -f2)"
+echo "Preview : $(echo "$MODE_INFO" | cut -d'|' -f3)   (secret link for clients while Coming soon)"
 echo "Website : https://jawaimumal.com/"
 echo "Admin   : https://jawaimumal.com/admin/login.php   (user: admin)"
 echo "Sync log: $HOME/jm-sync.log"

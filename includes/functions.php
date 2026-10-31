@@ -278,8 +278,15 @@ function font_head(): string {
 
 
 // ---------- Site mode: live / coming soon / maintenance (+ secret preview link)
+/** A site-mode setting: what Admin saved, else the server default from config.local.php (DEFAULT_SITE_MODE / DEFAULT_LAUNCH_AT). */
+function mode_cfg(string $key, string $fallback = ''): string {
+    $v = get_setting_raw($key);
+    if ($v !== null) return (string)$v;
+    $const = ['site_mode' => 'DEFAULT_SITE_MODE', 'launch_at' => 'DEFAULT_LAUNCH_AT', 'maint_until' => 'DEFAULT_MAINT_UNTIL'][$key] ?? '';
+    return ($const !== '' && defined($const)) ? (string)constant($const) : $fallback;
+}
 function site_mode(): string {
-    $m = (string)get_setting_raw('site_mode');
+    $m = mode_cfg('site_mode', 'live');
     if (!in_array($m, ['coming_soon', 'maintenance'], true)) return 'live';
     if ($m === 'coming_soon' && get_setting_raw('auto_launch') !== '0') {
         $t = launch_ts(); if ($t && $t <= time()) return 'live';   // launch time passed -> go live automatically
@@ -288,7 +295,7 @@ function site_mode(): string {
 }
 /** Launch time (stored as local India time) as a unix timestamp, or 0. */
 function launch_ts(string $key = 'launch_at'): int {
-    $v = trim((string)get_setting_raw($key)); if ($v === '') return 0;
+    $v = trim(mode_cfg($key)); if ($v === '') return 0;
     $d = date_create($v, new DateTimeZone('Asia/Kolkata')); return $d ? $d->getTimestamp() : 0;
 }
 function preview_key(): string {

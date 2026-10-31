@@ -14,8 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     flash('ok', $mode === 'live' ? 'Website is LIVE for everyone.' : ($mode === 'coming_soon' ? 'Coming soon mode is ON. Visitors see the countdown; use the secret link to show the site to clients.' : 'Maintenance mode is ON. Visitors see the maintenance notice.'));
     redirect('mode.php');
 }
-$mode = (string)(get_setting_raw('site_mode') ?: 'live'); $eff = site_mode();
-$launch = (string)get_setting_raw('launch_at'); $until = (string)get_setting_raw('maint_until'); $auto = get_setting_raw('auto_launch') !== '0';
+$mode = mode_cfg('site_mode', 'live') ?: 'live'; $eff = site_mode();
+$launch = mode_cfg('launch_at'); $until = mode_cfg('maint_until'); $auto = get_setting_raw('auto_launch') !== '0';
 $pv = preview_url();
 admin_head('Site mode', 'mode');
 ?>
