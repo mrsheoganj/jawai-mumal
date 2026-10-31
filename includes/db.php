@@ -20,6 +20,11 @@ try {
         PDO::ATTR_TIMEOUT => 2,
     ]);
 } catch (Throwable $e) {
+    if (DB_EXPLICIT) {   // a MySQL database was configured on purpose: never hide a broken connection behind a different database
+        error_log('Jawai Mumal: MySQL connection failed: ' . $e->getMessage());
+        http_response_code(503); header('Retry-After: 120'); header('Content-Type: text/html; charset=utf-8');
+        exit('<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Temporarily unavailable</title><body style="font-family:system-ui,sans-serif;text-align:center;padding:4rem 1rem"><h1>We will be right back</h1><p>The website cannot reach its database at the moment. Please try again in a few minutes.</p><p style="color:#777;font-size:.9rem">(Site owner: check the database name, user and password in config.local.php.)</p>');
+    }
     try {
         $pdo = new PDO('sqlite:' . $dataDir . '/jawai_mumal.sqlite', null, null, [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,

@@ -14,6 +14,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// When config.local.php sets DB_NAME the site MUST use that MySQL database (no silent fallback to a local file).
+defined('DB_EXPLICIT') || define('DB_EXPLICIT', defined('DB_NAME') && DB_NAME !== '' && !(defined('DB_DRIVER') && DB_DRIVER === 'sqlite'));
+
 // MySQL (Hostinger -> hPanel -> Databases). If MySQL is unreachable the site falls back to SQLite in /data.
 // Put  define('DB_DRIVER', 'sqlite');  in config.local.php to always use the built-in SQLite database.
 defined('DB_HOST') || define('DB_HOST', 'localhost');
