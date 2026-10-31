@@ -41,6 +41,13 @@ $o2 = [setting('owner2_name'), setting('owner2_role'), setting('owner2_phone')];
   </div>
 </footer>
 
+<nav class="mnav" aria-label="Quick navigation">
+  <a href="<?= url('index.php') ?>" <?= ($active ?? '') === 'home' ? 'aria-current="page"' : '' ?>><?= icon('mountain', 22) ?><?= et('mnav.home', 'Home') ?></a>
+  <a href="<?= url('rooms.php') ?>" <?= ($active ?? '') === 'stay' ? 'aria-current="page"' : '' ?>><?= icon('bed', 22) ?><?= et('mnav.stay', 'Stay') ?></a>
+  <a class="mnav__book" href="<?= url('book.php') ?>"><?= icon('calendar-check', 24) ?><?= et('mnav.book', 'Book') ?></a>
+  <a href="<?= url('restaurant.php') ?>" <?= ($active ?? '') === 'dining' ? 'aria-current="page"' : '' ?>><?= icon('utensils', 22) ?><?= et('mnav.dine', 'Dine') ?></a>
+  <a href="<?= url('safari.php') ?>" <?= ($active ?? '') === 'safari' ? 'aria-current="page"' : '' ?>><?= icon('car', 22) ?><?= et('mnav.safari', 'Safari') ?></a>
+</nav>
 <a class="fab" href="<?= e(wa_link('Hello Jawai Mumal, I would like to know more.')) ?>" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><?= icon('whatsapp', 26) ?></a>
 <script src="<?= url('assets/js/site.js') ?>?v=1" defer></script>
 </body>

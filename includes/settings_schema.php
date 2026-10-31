@@ -41,7 +41,9 @@ function settings_schema(): array {
         'whatsapp'     => ['Contact', 'WhatsApp number (digits only, with country code)', 'text', '916367968353'],
         'email'        => ['Contact', 'Email (leave empty to hide)', 'text', ''],
         'address'      => ['Contact', 'Address', 'textarea', "Near Up-Tehsil Office, Bera Village,\nBera–Bali Road, District Pali,\nRajasthan, India"],
-        'map_query'    => ['Contact', 'Map search text', 'text', 'Bera, Pali, Rajasthan'],
+        'map_lat'      => ['Contact', 'Hotel latitude', 'text', '', 'Exact location for maps and directions. In Google Maps press and hold on the hotel, then copy the two numbers, e.g. 25.1234 and 73.1234. Leave both empty to search by the text below.'],
+        'map_lng'      => ['Contact', 'Hotel longitude', 'text', ''],
+        'map_query'    => ['Contact', 'Map search text (used when coordinates are empty)', 'text', 'Bera, Pali, Rajasthan'],
         'reception_hours' => ['Contact', 'Reception hours', 'text', 'Open daily · 7:00 AM – 11:00 PM'],
 
         // ---------------- Social

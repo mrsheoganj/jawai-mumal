@@ -112,6 +112,9 @@ include __DIR__ . '/includes/header.php';
       </div>
       <?php foreach ($errors as $er): ?><div class="alert alert--err" role="alert"><?= e($er) ?></div><?php endforeach; ?>
       <?php include __DIR__ . '/includes/booking_panel.php'; ?>
+      <?php if ($errors && $old): $keep = array_diff_key($old, array_flip(['_csrf', 'website'])); ?>
+      <script>(function(){var d=<?= json_encode($keep, JSON_HEX_TAG | JSON_HEX_AMP) ?>,f=document.querySelector('form[data-type="'+d.type+'"]');if(!f)return;Object.keys(d).forEach(function(k){var e=f.elements[k];if(!e||k==='type')return;if(e.length&&e[0]&&e[0].type==='radio'){Array.prototype.forEach.call(e,function(r){r.checked=r.value===d[k]});}else{e.value=d[k];}});})();</script>
+      <?php endif; ?>
     <?php endif; ?>
   </div>
 </section>

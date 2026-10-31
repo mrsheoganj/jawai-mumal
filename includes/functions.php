@@ -189,3 +189,21 @@ function content_registry(): array {
     }
     return $out;
 }
+
+
+// ---------- Maps & routes (coordinates come from Admin)
+function has_coords(?string $lat, ?string $lng): bool {
+    return is_numeric($lat) && is_numeric($lng) && abs((float)$lat) <= 90 && abs((float)$lng) <= 180 && ((float)$lat != 0 || (float)$lng != 0);
+}
+function hotel_point(): string {   // "lat,lng" or the search text
+    return has_coords(setting('map_lat'), setting('map_lng')) ? trim(setting('map_lat')) . ',' . trim(setting('map_lng')) : setting('map_query');
+}
+function map_embed_src(): string { return 'https://www.google.com/maps?q=' . rawurlencode(hotel_point()) . '&z=14&output=embed'; }
+function maps_open_url(): string { return 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode(hotel_point()); }
+/** Driving directions from a route point to the hotel. */
+function route_link(array $r): string {
+    $o = has_coords($r['lat'] ?? '', $r['lng'] ?? '') ? trim($r['lat']) . ',' . trim($r['lng']) : $r['name'];
+    return 'https://www.google.com/maps/dir/?api=1&travelmode=driving&origin=' . rawurlencode($o) . '&destination=' . rawurlencode(hotel_point());
+}
+function route_kind_icon(string $k): string { return ['airport' => 'plane', 'rail' => 'train', 'city' => 'building', 'bus' => 'car'][$k] ?? 'map-pin'; }
+function route_kind_label(string $k): string { return ['airport' => 'Airport', 'rail' => 'Railway station', 'city' => 'City', 'bus' => 'Bus stand'][$k] ?? 'Place'; }

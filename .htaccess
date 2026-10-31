@@ -4,11 +4,14 @@
 # ==============================================================
 
 DirectoryIndex index.php index.html
+ErrorDocument 404 /404.php
 
 # Enable Rewrite Engine
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
+
+    RewriteRule ^sitemap\.xml$ sitemap.php [L]
 
     # Prevent directory browsing
     Options -Indexes

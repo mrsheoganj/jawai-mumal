@@ -75,11 +75,14 @@ $n = count($slides);
   </div>
 </section>
 
+<!-- ============ MARQUEE ============ -->
+<div class="marq" aria-hidden="true"><div class="marq__in"><?php $mq = lines(t('home.marquee', "Leopards on granite\nJawai Dam\nRabari villages\nWinter flamingos\nRajasthani village food\nSunrise safaris\nStarlit skies")); for ($k = 0; $k < 2; $k++) foreach ($mq as $w) echo '<span>' . e($w) . '</span>'; ?></div></div>
+
 <!-- ============ THREE PILLARS ============ -->
 <section class="sec sec--sand">
   <div class="wrap">
     <div class="sechead rv"><span class="eyebrow eyebrow--dark"><?= et('home.pillars.eyebrow', 'One address, three experiences') ?></span><h2><?= et('home.pillars.title', 'Stay. Dine. Explore.') ?></h2><p><?= et('home.pillars.sub', 'Everything for a Jawai trip, looked after by one local team.') ?></p></div>
-    <div class="cards3">
+    <div class="cards3 snap-m">
       <a class="pillar rv" href="<?= url('rooms.php') ?>"><img src="<?= imgu('home.pillar1.img', 'assets/images/room-heritage.jpg') ?>" alt="" loading="lazy"><div class="pillar__in"><div class="pillar__ic"><?= icon('bed', 24) ?></div><h3><?= et('home.pillar1.title', 'Hotel') ?></h3><p><?= et('home.pillar1.text', 'Comfortable air-conditioned rooms and suites in Bera village.') ?><?= $lowest ? ' ' . et('home.pillar1.from', 'From') . ' ' . money($lowest) . ' ' . et('home.pillar1.night', 'a night.') : '' ?></p><span class="link"><?= et('home.pillar1.link', 'View rooms') ?> <?= icon('arrow-right', 16) ?></span></div></a>
       <a class="pillar rv d1" href="<?= url('restaurant.php') ?>"><img src="<?= imgu('home.pillar2.img', 'assets/images/food-thali.jpg') ?>" alt="" loading="lazy"><div class="pillar__in"><div class="pillar__ic"><?= icon('utensils', 24) ?></div><h3><?= et('home.pillar2.title', 'Restaurant') ?></h3><p><?= et('home.pillar2.text', '100% vegetarian Rajasthani village food, tandoor and a relaxed café.') ?></p><span class="link"><?= et('home.pillar2.link', 'See the menu') ?> <?= icon('arrow-right', 16) ?></span></div></a>
       <a class="pillar rv d2" href="<?= url('safari.php') ?>"><img src="<?= imgu('home.pillar3.img', 'assets/images/leopard-log.jpg') ?>" alt="" loading="lazy"><div class="pillar__in"><div class="pillar__ic"><?= icon('car', 24) ?></div><h3><?= et('home.pillar3.title', 'Jawai Safari') ?></h3><p><?= et('home.pillar3.text', 'Dawn and dusk leopard drives in open 4x4 jeeps with local trackers.') ?></p><span class="link"><?= et('home.pillar3.link', 'Explore safaris') ?> <?= icon('arrow-right', 16) ?></span></div></a>
@@ -91,7 +94,7 @@ $n = count($slides);
 <section class="sec">
   <div class="wrap">
     <div class="sechead rv"><span class="eyebrow eyebrow--dark"><?= et('home.rooms.eyebrow', 'Rooms & suites') ?></span><h2><?= et('home.rooms.title', 'A comfortable base in Bera') ?></h2><p><?= et('home.rooms.sub', 'Clean, quiet and well-equipped, minutes from the Jawai hills. Rates are per room per night; our team confirms the final rate.') ?></p></div>
-    <div class="grid">
+    <div class="grid snap-m">
       <?php foreach ($featRooms as $i => $r): ?>
         <article class="card rv d<?= $i ?>">
           <a class="card__img" href="<?= url('room.php?slug=' . urlencode($r['slug'])) ?>" tabindex="-1" aria-hidden="true"><img src="<?= e(img($r['image'])) ?>" alt="" loading="lazy"><span class="tag"><?= e($r['category']) ?></span></a>
@@ -160,11 +163,14 @@ $n = count($slides);
   </div>
 </section>
 
+<!-- ============ ANIMATED JAWAI ============ -->
+<?php include __DIR__ . '/includes/scene.php'; ?>
+
 <!-- ============ EXPLORE JAWAI ============ -->
 <section class="sec sec--sand">
   <div class="wrap">
     <div class="sechead rv"><span class="eyebrow eyebrow--dark"><?= et('home.explore.eyebrow', 'Explore Jawai') ?></span><h2><?= et('home.explore.title', 'Wild hills, village life, ancient forts') ?></h2><p><?= et('home.explore.sub', 'Base yourself in Bera and reach the leopard hills, a reservoir full of birds, Rabari villages and some of Rajasthan\'s finest heritage.') ?></p></div>
-    <div class="grid">
+    <div class="grid snap-m">
       <?php foreach ($attrs as $i => $a): ?>
         <article class="card attr rv d<?= $i % 3 ?>">
           <div class="card__img"><img src="<?= e(img($a['image'])) ?>" alt="" loading="lazy"><span class="tag"><?= e($a['category']) ?></span></div>
@@ -175,6 +181,9 @@ $n = count($slides);
     <p style="text-align:center;margin-top:2.2rem"><a class="btn btn--line" href="<?= url('jawai.php') ?>"><?= et('home.explore.all', 'The complete Jawai guide') ?> <?= icon('arrow-right', 18) ?></a></p>
   </div>
 </section>
+
+<!-- ============ HOW TO REACH ============ -->
+<?php include __DIR__ . '/includes/routes.php'; ?>
 
 <!-- ============ EVENTS ============ -->
 <section class="sec">
@@ -239,9 +248,9 @@ $n = count($slides);
           <li style="display:flex;gap:.8rem"><?= icon('phone', 20) ?><span><a style="font:600 1.4rem var(--serif);text-decoration:none" href="<?= e(tel(setting($o . '_phone'))) ?>"><?= e(setting($o . '_phone')) ?></a><br><small style="opacity:.7"><?= e(setting($o . '_name')) ?> · <?= e(setting($o . '_role')) ?></small></span></li>
         <?php endforeach; ?>
       </ul>
-      <div class="hero__cta"><a class="btn btn--gold" href="<?= e(wa_link('Hello Jawai Mumal')) ?>" target="_blank" rel="noopener"><?= icon('whatsapp', 18) ?> WhatsApp</a><a class="btn btn--ghost" href="<?= url('contact.php') ?>"><?= et('home.find.btn', 'Directions & contact') ?></a></div>
+      <div class="hero__cta"><a class="btn btn--gold" href="<?= e(wa_link('Hello Jawai Mumal')) ?>" target="_blank" rel="noopener"><?= icon('whatsapp', 18) ?> WhatsApp</a><a class="btn btn--ghost" href="<?= e(maps_open_url()) ?>" target="_blank" rel="noopener"><?= icon('navigation', 18) ?> <?= et('home.find.btn', 'Get directions') ?></a></div>
     </div>
-    <iframe class="map rv d1" title="Map to <?= e(setting('site_name')) ?>" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=<?= urlencode(setting('map_query')) ?>&output=embed"></iframe>
+    <iframe class="map rv d1" title="Map to <?= e(setting('site_name')) ?>" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="<?= e(map_embed_src()) ?>"></iframe>
   </div>
 </section>
 
@@ -249,5 +258,5 @@ $n = count($slides);
   '@context' => 'https://schema.org', '@type' => 'Hotel', 'name' => setting('site_name'), 'url' => setting('site_url'),
   'image' => img($slides[0]['image']), 'telephone' => setting('owner1_phone'), 'description' => setting('meta_description'),
   'address' => ['@type' => 'PostalAddress', 'addressLocality' => 'Bera', 'addressRegion' => 'Rajasthan', 'addressCountry' => 'IN'],
-], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?></script>
+] + (has_coords(setting('map_lat'), setting('map_lng')) ? ['geo' => ['@type' => 'GeoCoordinates', 'latitude' => (float)setting('map_lat'), 'longitude' => (float)setting('map_lng')]] : []), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?></script>
 <?php include __DIR__ . '/includes/footer.php'; ?>

@@ -11,11 +11,14 @@ Rooms & room detail · Restaurant menu · Safari packages · Explore Jawai guide
 The booking panel has five tabs: **Stay, Table, Safari, Party & Events, Enquiry**. Requests land in the admin panel.
 The home banner is a gentle slideshow (1 to many slides) with a “Now Open” badge. Booking requests are confirmed personally by phone/WhatsApp; no online payment.
 
+## Look & feel
+Mobile gets an app-style experience (bottom tab bar, slide-in menu, swipe carousels, 2-column forms). Animations: hero slideshow, word-by-word headings, count-up numbers, scroll progress, an animated Jawai landscape (day/night loop, leopard, flamingos, birds), and an animated route map. All motion respects *reduce motion* settings.
+
 ## Admin panel — `/admin/login.php`
 First login: `admin` / `admin123` → **change it immediately** in *My account*.
 Everything is editable: bookings (status, notes, CSV export), **home banner slides**, rooms (price, photos, amenities), restaurant menu,
 safari packages, Explore Jawai places, gallery uploads, guest reviews, FAQs, **Page text & images** (every heading, paragraph and
-picture on every page — found automatically) and *Contact, logo & rules* (phone numbers, address, GST %, time slots, logo).
+picture on every page — found automatically) and *Contact, logo & rules* (phone numbers, address, **hotel latitude/longitude**, GST %, time slots, logo) and **Distances & travel** (airports, stations, cities with km, time and optional coordinates — the map, “Get directions” and every Directions link update automatically).
 
 The restaurant is **100% vegetarian** (Rajasthani village food, tandoor, café). Safaris are Jawai Mumal's own, in open 4x4 jeeps at dawn and dusk.
 

@@ -13,6 +13,7 @@ function admin_nav(): array {
         ['menu.php', 'menu', 'Restaurant menu', 'utensils'],
         ['safaris.php', 'safaris', 'Safari packages', 'car'],
         ['attractions.php', 'attractions', 'Explore Jawai', 'compass'],
+        ['routes.php', 'routes', 'Distances & travel', 'navigation'],
         ['gallery.php', 'gallery', 'Gallery', 'image'],
         ['testimonials.php', 'testimonials', 'Guest reviews', 'star'],
         ['faqs.php', 'faqs', 'FAQs', 'help'],

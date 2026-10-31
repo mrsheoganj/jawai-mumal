@@ -28,6 +28,17 @@
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { nav.classList.remove('is-open'); } });
   }
 
+  /* Drawer backdrop */
+  var bd = $('#navbd'); if (bd) bd.addEventListener('click', function () { nav.classList.remove('is-open'); if (tgl) tgl.setAttribute('aria-expanded', 'false'); });
+
+  /* Word-by-word headings */
+  $$('.sechead h2, .jscene__txt h2, .cta h2, .pagehead h1').forEach(function (h) {
+    if (reduce || h.children.length) return;
+    var words = h.textContent.trim().split(/\s+/); h.setAttribute('aria-label', h.textContent.trim());
+    h.classList.add('words'); h.innerHTML = words.map(function (w, i) { return '<span aria-hidden="true" style="--w:' + i + '">' + w.replace(/&/g, '&amp;') + '&nbsp;</span>'; }).join('');
+    var host = h.closest('.rv') || h; if (!h.closest('.rv')) { h.classList.add('rv'); }
+  });
+
   /* Reveal on scroll */
   var rv = $$('.rv');
   if ('IntersectionObserver' in window && !reduce) {
@@ -54,6 +65,63 @@
     hero.addEventListener('focusin', function () { clearInterval(timer); });
     hero.addEventListener('focusout', play);
     play();
+  }
+
+  /* Count-up numbers */
+  var counters = $$('.stat b, .jkm b');
+  var runCount = function (el) {
+    var m = el.textContent.trim().match(/^(\d+(?:\.\d+)?)(\D*)$/); if (!m || reduce) return;
+    var end = parseFloat(m[1]), dec = (m[1].split('.')[1] || '').length, suf = m[2], t0 = null, dur = 1400;
+    var step = function (t) { t0 = t0 || t; var p = Math.min(1, (t - t0) / dur), v = end * (1 - Math.pow(1 - p, 3)); el.textContent = (dec ? v.toFixed(dec) : Math.round(v)) + suf; if (p < 1) requestAnimationFrame(step); };
+    el.textContent = '0' + suf; requestAnimationFrame(step);
+  };
+  if ('IntersectionObserver' in window) {
+    var cio = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) { runCount(en.target); cio.unobserve(en.target); } }); }, { threshold: .6 });
+    counters.forEach(function (c) { cio.observe(c); });
+  }
+
+  /* Scroll progress + parallax (one rAF-throttled handler) */
+  var prog = $('#progress'), pxs = $$('.px'), heroBgs = $$('.hslide__bg'), ticking = false;
+  function onFrame() {
+    ticking = false; var y = window.scrollY, h = document.documentElement.scrollHeight - window.innerHeight;
+    if (prog) prog.style.transform = 'scaleX(' + (h > 0 ? Math.min(1, y / h) : 0) + ')';
+    if (reduce) return;
+    heroBgs.forEach(function (b) { if (y < window.innerHeight * 1.2) b.style.translate = '0 ' + (y * .22) + 'px'; });
+    pxs.forEach(function (g) {
+      var sc = g.closest('.jscene'); if (!sc) return; var r = sc.getBoundingClientRect(); if (r.bottom < 0 || r.top > window.innerHeight) return;
+      var off = (r.top + r.height / 2 - window.innerHeight / 2); g.style.transform = 'translateY(' + (off * parseFloat(g.dataset.speed || 0) * -0.35).toFixed(1) + 'px)';
+    });
+  }
+  window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onFrame); } }, { passive: true }); onFrame();
+
+  /* Jawai scene: pause the animation while off-screen / for reduced motion */
+  $$('.jscene svg').forEach(function (svg) {
+    if (!svg.pauseAnimations) return;
+    if (reduce) { svg.pauseAnimations(); return; }
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { es.forEach(function (en) { en.isIntersecting ? svg.unpauseAnimations() : svg.pauseAnimations(); }); }).observe(svg);
+  });
+
+  /* Route map <-> list highlighting */
+  $$('[data-r]').forEach(function (el) {
+    var id = el.dataset.r, on = function (v) { return function () { $$('[data-r="' + id + '"]').forEach(function (x) { x.classList.toggle('is-hot', v); }); }; };
+    el.addEventListener('mouseenter', on(true)); el.addEventListener('mouseleave', on(false)); el.addEventListener('focus', on(true)); el.addEventListener('blur', on(false));
+  });
+
+  /* Smooth page transitions for internal links */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]'); if (!a || reduce || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank' || a.hasAttribute('download')) return;
+    var u; try { u = new URL(a.href, location.href); } catch (x) { return; }
+    if (u.origin !== location.origin || (u.pathname === location.pathname && u.hash) || /^(tel|mailto):/.test(a.href)) return;
+    if (/\/admin\//.test(u.pathname)) return;
+    e.preventDefault(); document.body.classList.add('is-leaving'); setTimeout(function () { location.href = a.href; }, 200);
+  });
+  window.addEventListener('pageshow', function (e) { if (e.persisted) document.body.classList.remove('is-leaving'); });
+
+  /* Hide the floating WhatsApp button while a form is on screen (mobile) */
+  var bb = $$('.bookbox');
+  if (bb.length && 'IntersectionObserver' in window) {
+    var onScreen = new Set(); var fio = new IntersectionObserver(function (es) { es.forEach(function (en) { en.isIntersecting ? onScreen.add(en.target) : onScreen.delete(en.target); }); document.body.classList.toggle('fab-hide', onScreen.size > 0); }, { threshold: .08 });
+    bb.forEach(function (b) { fio.observe(b); });
   }
 
   /* Booking tabs */

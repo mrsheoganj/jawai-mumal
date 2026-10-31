@@ -23,12 +23,13 @@ $owners = [['owner1_name', 'owner1_role', 'owner1_phone'], ['owner2_name', 'owne
           <li><?= icon('car-park', 16) ?><?= et('contact.v1', 'Parking available') ?></li><li><?= icon('wifi', 16) ?><?= et('contact.v2', 'Free Wi-Fi') ?></li>
           <?php if (setting('email')): ?><li><?= icon('mail', 16) ?><a href="mailto:<?= e(setting('email')) ?>"><?= e(setting('email')) ?></a></li><?php endif; ?>
         </ul>
-        <div class="hero__cta"><a class="btn btn--dark" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=<?= urlencode(setting('map_query')) ?>"><?= icon('navigation', 18) ?> <?= et('contact.maps', 'Open in Google Maps') ?></a></div>
+        <div class="hero__cta"><a class="btn btn--dark" target="_blank" rel="noopener" href="<?= e(maps_open_url()) ?>"><?= icon('navigation', 18) ?> <?= et('contact.maps', 'Open in Google Maps') ?></a></div>
         <figure class="frame" style="margin-top:2rem;aspect-ratio:4/3"><img src="<?= imgu('contact.img', 'assets/images/hotel-day.jpg') ?>" alt="Jawai Mumal hotel building" loading="lazy" style="object-position:center 30%"></figure>
       </div>
-      <iframe class="map rv d1" title="Map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=<?= urlencode(setting('map_query')) ?>&output=embed"></iframe>
+      <iframe class="map rv d1" title="Map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="<?= e(map_embed_src()) ?>"></iframe>
     </div>
   </div>
 </section>
+<?php include __DIR__ . '/includes/routes.php'; ?>
 <section class="sec sec--sand" id="book" style="padding-top:3rem"><div class="wrap"><div class="sechead" style="margin-bottom:1.5rem"><h2><?= et('contact.msg.title', 'Send us a message') ?></h2><p><?= et('contact.msg.sub', 'Stay, table, safari, party or a simple question — pick a tab.') ?></p></div><?php include __DIR__ . '/includes/booking_panel.php'; ?></div></section>
 <?php include __DIR__ . '/includes/footer.php'; ?>

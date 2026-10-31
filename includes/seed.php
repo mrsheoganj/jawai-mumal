@@ -130,3 +130,17 @@ function jm_seed_slides(PDO $pdo): void {
     ];
     foreach ($rows as $r) { $st->execute($r); }
 }
+
+function jm_seed_routes(PDO $pdo): void {
+    // Distances are approximate road distances to Bera. Coordinates for stations are left empty on purpose:
+    // directions then search by name. Add exact coordinates in Admin > Distances & travel.
+    $st = $pdo->prepare('INSERT INTO jm_routes (name,kind,code,km,travel_time,note,lat,lng,status,sort_order) VALUES (?,?,?,?,?,?,?,?,?,?)');
+    $rows = [
+        ['Sumerpur Jawai Bandh Railway Station', 'rail', 'JWB', 18, 'about 30 min', 'Nearest railway station', '', '', 'active', 1],
+        ['Falna Railway Station', 'rail', 'FA', 37, 'about 50 min', 'Main line station on the Delhi–Ahmedabad route', '', '', 'active', 2],
+        ['Udaipur City', 'city', '', 115, 'about 2.5 hrs', 'City Palace, lakes and old town', '24.5854', '73.7125', 'active', 3],
+        ['Udaipur Airport (Maharana Pratap)', 'airport', 'UDR', 130, 'about 2.5–3 hrs', 'Nearest major airport', '24.6177', '73.8961', 'active', 4],
+        ['Jodhpur Airport', 'airport', 'JDH', 175, 'about 3.5 hrs', 'Airport for the Marwar side', '26.2511', '73.0489', 'active', 5],
+    ];
+    foreach ($rows as $r) { $st->execute($r); }
+}

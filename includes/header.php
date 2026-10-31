@@ -34,6 +34,7 @@ $nav = [
 <body class="<?= e($bodyClass ?? '') ?>" data-tax="<?= e(setting('tax_percent')) ?>">
 <a class="skip" href="#main">Skip to content</a>
 
+<div class="progress" id="progress" aria-hidden="true"></div>
 <div class="preloader" id="preloader" aria-hidden="true">
   <div class="preloader__mark">
     <svg class="preloader__ring" viewBox="0 0 120 120"><circle cx="60" cy="60" r="56" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
@@ -53,8 +54,14 @@ $nav = [
         <a href="<?= url($n[1]) ?>" <?= $active === $k ? 'aria-current="page"' : '' ?>><?= e($n[0]) ?></a>
       <?php endforeach; ?>
       <a class="btn btn--gold nav__cta" href="<?= url('book.php') ?>"><?= et('nav.cta', 'Book now') ?></a>
+      <div class="nav__extra">
+        <a href="<?= e(tel(setting('owner1_phone'))) ?>"><?= icon('phone', 20) ?> <?= e(setting('owner1_phone')) ?></a>
+        <a href="<?= e(wa_link('Hello Jawai Mumal')) ?>" target="_blank" rel="noopener"><?= icon('whatsapp', 20) ?> WhatsApp</a>
+        <a href="<?= e(maps_open_url()) ?>" target="_blank" rel="noopener"><?= icon('map-pin', 20) ?> <?= et('nav.directions', 'Get directions') ?></a>
+      </div>
     </nav>
     <button class="nav__toggle" id="navtoggle" aria-label="Open menu" aria-expanded="false" aria-controls="navlinks"><?= icon('menu', 24) ?></button>
   </div>
+  <div class="nav__bd" id="navbd"></div>
 </header>
 <main id="main">
