@@ -1,4 +1,4 @@
-# Hosts the website automatically: every push to the live branch is copied to Hostinger over SFTP/SSH.
+# Hosts the website automatically: every push to main is copied to Hostinger over SFTP/SSH.
 # Setup (once): GitHub repo > Settings > Secrets and variables > Actions > New repository secret:
 #   SSH_HOST, SSH_PORT, SSH_USER, SSH_PASSWORD   (Hostinger hPanel > Advanced > SSH Access)
 #   optional: DEPLOY_PATH (default domains/jawaimumal.com/public_html), ADMIN_PASSWORD (creates config.local.php if the server has none)
@@ -8,7 +8,7 @@ name: Deploy to Hostinger
 
 on:
   push:
-    branches: [main, ccr-8eede79d-o6zmqv]     # remove the second branch once everything is merged into main
+    branches: [main]
   workflow_dispatch:                          # Actions tab > Deploy to Hostinger > Run workflow
 
 concurrency:

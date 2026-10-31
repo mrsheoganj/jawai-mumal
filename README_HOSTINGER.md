@@ -1,7 +1,7 @@
 # Deploying Jawai Mumal on Hostinger
 
 ## Automatic hosting with GitHub Actions (recommended)
-Every push to `main` (and the work branch) is copied to Hostinger by `.github/workflows/deploy.yml` over SFTP/SSH — nothing to run by hand.
+Every push to `main` is copied to Hostinger by `.github/workflows/deploy.yml` over SFTP/SSH — nothing to run by hand.
 1. GitHub repo → **Settings → Secrets and variables → Actions → New repository secret**, add: `SSH_HOST`, `SSH_PORT` (65002), `SSH_USER`, `SSH_PASSWORD` (from hPanel → Advanced → SSH Access). Optional: `DEPLOY_PATH` (default `domains/jawaimumal.com/public_html`) and `ADMIN_PASSWORD` (creates the server-only `config.local.php` — Coming soon until 6 Nov 2026 12:00 AM IST — on the very first deploy).
 2. Run it: **Actions → Deploy to Hostinger → Run workflow**, or just push. The log shows `Deployed <commit>`.
 3. The database (`data/`), photos (`assets/uploads/`) and `config.local.php` on the server are never overwritten.
