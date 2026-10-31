@@ -1,6 +1,6 @@
 # 🏰 Jawai Mumal — Hotel, Restro & Jawai Safari
 
-[![GitHub Pages](https://img.shields.io/badge/Hosted%20on-GitHub%20Pages-22c55e?style=for-the-badge&logo=github)](https://prashantdesign.github.io/Jawai-Mumal/)
+[![GitHub Pages](https://img.shields.io/badge/Hosted%20on-GitHub%20Pages-22c55e?style=for-the-badge&logo=github)](https://mrsheoganj.github.io/jawai-mumal/)
 [![Hostinger](https://img.shields.io/badge/Ready%20for-Hostinger%20hPanel-673ab7?style=for-the-badge&logo=php)](README_HOSTINGER.md)
 [![PHP](https://img.shields.io/badge/PHP-8.x%20%7C%20MySQL-777BB4?style=for-the-badge&logo=php&logoColor=white)](config.php)
 [![Vanilla CSS](https://img.shields.io/badge/Design-Vanilla%20CSS%20Design%20System-38bdf8?style=for-the-badge&logo=css3)](assets/css/style.css)
@@ -45,7 +45,7 @@
 
 ### Option 1: GitHub Pages (Live Static Preview)
 This repository is configured to host directly on GitHub Pages at:
-**[https://prashantdesign.github.io/Jawai-Mumal/](https://prashantdesign.github.io/Jawai-Mumal/)**
+**[https://mrsheoganj.github.io/jawai-mumal/](https://mrsheoganj.github.io/jawai-mumal/)**
 
 ### Option 2: Hostinger (Production PHP + MySQL)
 1. Upload all files into Hostinger's **`public_html`**.
