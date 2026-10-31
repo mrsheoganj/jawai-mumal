@@ -75,7 +75,7 @@ else
   echo "Add this in hPanel > Advanced > Cron Jobs (every minute):"; echo "  /bin/bash $SITE_DIR/deploy/sync.sh"
 fi
 say "Done"
-MODE_INFO=$(php -r '$_SERVER["DOCUMENT_ROOT"]=getcwd(); $_SERVER["SCRIPT_NAME"]="/index.php"; require "includes/db.php"; echo site_mode(), "|", launch_ts() ? date("D, j M Y g:i A", launch_ts()) . " IST" : "-", "|", preview_url();' 2>/dev/null || true)
+MODE_INFO=$(php -r '$_SERVER["DOCUMENT_ROOT"]=getcwd(); $_SERVER["SCRIPT_NAME"]="/index.php"; require "includes/db.php"; echo site_mode(), "|", launch_ts() ? (new DateTime("@" . launch_ts()))->setTimezone(new DateTimeZone("Asia/Kolkata"))->format("D, j M Y g:i A") . " IST" : "-", "|", preview_url();' 2>/dev/null || true)
 echo "Mode    : $(echo "$MODE_INFO" | cut -d'|' -f1)   launch: $(echo "$MODE_INFO" | cut -d'|' -f2)"
 echo "Preview : $(echo "$MODE_INFO" | cut -d'|' -f3)   (secret link for clients while Coming soon)"
 echo "Website : https://jawaimumal.com/"

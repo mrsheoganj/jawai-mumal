@@ -13,6 +13,8 @@ admin login, and installs a cron job that pulls new changes **every minute** (li
    It auto-detects `~/domains/jawaimumal.com/public_html`. Use `SITE_DIR=/path/to/public_html` if yours differs.
 3. Open `https://jawaimumal.com/admin/login.php` — user `admin`, the password you chose.
 
+The setup script puts the site in **Coming soon** mode by default, launching **6 Nov 2026, 12:00 AM India time** (goes live by itself at that moment). Change it any time in Admin → *Site mode*; what you save there always wins. To change the default for a fresh install: `JM_LAUNCH_AT=2026-11-10T09:30 JM_MODE=coming_soon bash /tmp/jm-setup.sh`.
+
 ## What lives where
 - **Code**: GitHub. Every push to the chosen branch goes live within a minute (`deploy/sync.sh`, log in `~/jm-sync.log`).
 - **Database**: a SQLite file in `data/` on the server (no MySQL setup needed). It, the photos in `assets/uploads/` and
