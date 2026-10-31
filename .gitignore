@@ -23,3 +23,8 @@ data/*.sqlite
 *.njsproj
 *.sln
 *.sw?
+
+config.local.php
+assets/uploads/*
+!assets/uploads/.gitkeep
+!assets/uploads/.htaccess

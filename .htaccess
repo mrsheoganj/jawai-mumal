@@ -14,7 +14,7 @@ DirectoryIndex index.php index.html
     Options -Indexes
 
     # Block access to hidden files and sensitive directories
-    RewriteRule ^(\.git|\.env|data/.*\.sqlite|database\.sql) - [F,L]
+    RewriteRule ^(\.git|\.claude|\.env|data/|includes/|config\.php|config\.local\.php|README) - [F,L]
 </IfModule>
 
 # Security Headers

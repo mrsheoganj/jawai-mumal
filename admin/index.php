@@ -1,224 +1,39 @@
 <?php
-/**
- * Jawai Mumal - Admin Dashboard
- */
-$pageTitle = "Operations Dashboard";
-require_once __DIR__ . '/admin_header.php';
-
-// Calculate KPI Metrics
-$totalStayRevenue = $pdo->query("SELECT SUM(total_price) FROM stay_bookings WHERE status != 'Cancelled'")->fetchColumn() ?: 0;
-$totalSafariRevenue = $pdo->query("SELECT SUM(total_price) FROM safari_bookings WHERE status != 'Cancelled'")->fetchColumn() ?: 0;
-$totalRevenue = $totalStayRevenue + $totalSafariRevenue;
-
-$activeStaysCount = $pdo->query("SELECT COUNT(*) FROM stay_bookings WHERE status IN ('Confirmed', 'Checked In')")->fetchColumn() ?: 0;
-$tableResCount = $pdo->query("SELECT COUNT(*) FROM dining_bookings WHERE status IN ('Confirmed', 'Seated')")->fetchColumn() ?: 0;
-$safariExpCount = $pdo->query("SELECT COUNT(*) FROM safari_bookings WHERE status = 'Confirmed'")->fetchColumn() ?: 0;
-$pendingInqCount = $pdo->query("SELECT COUNT(*) FROM inquiries WHERE status = 'Pending'")->fetchColumn() ?: 0;
-
-// Fetch Recent Stay Bookings
-$recentStays = $pdo->query("SELECT * FROM stay_bookings ORDER BY id DESC LIMIT 5")->fetchAll();
-
-// Fetch Recent Dining Bookings
-$recentDining = $pdo->query("SELECT * FROM dining_bookings ORDER BY id DESC LIMIT 5")->fetchAll();
-
-// Fetch Recent Safari Bookings
-$recentSafaris = $pdo->query("SELECT * FROM safari_bookings ORDER BY id DESC LIMIT 5")->fetchAll();
+require __DIR__ . '/_init.php'; require_once __DIR__ . '/_crud.php';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'opening') {
+    set_setting('opening_soon', ($_POST['opening_soon'] ?? '1') === '1' ? '1' : '0');
+    flash('ok', opening_soon() ? 'Website is now in “Opening Soon” mode.' : 'Website is now in normal booking mode.'); redirect('index.php');
+}
+$me = row('SELECT * FROM jm_admins WHERE id = ?', [$_SESSION['admin_id']]);
+$defaultPw = $me && password_verify(DEFAULT_ADMIN_PASS, $me['password_hash']);
+$c = fn($sql) => (int)val($sql);
+$latest = rows('SELECT * FROM jm_bookings ORDER BY id DESC LIMIT 8');
+admin_head('Dashboard', 'dashboard');
 ?>
-
-<!-- KPI Metric Cards -->
-<div class="metrics-grid">
-  <div class="metric-card">
-    <div class="metric-header">
-      <span class="metric-title">Gross Sanctuary Revenue</span>
-      <div class="metric-icon-wrap">₹</div>
-    </div>
-    <div class="metric-value">₹<?php echo number_format($totalRevenue); ?></div>
-    <div class="metric-sub">Stays: ₹<?php echo number_format($totalStayRevenue); ?> | Safaris: ₹<?php echo number_format($totalSafariRevenue); ?></div>
-  </div>
-
-  <div class="metric-card">
-    <div class="metric-header">
-      <span class="metric-title">Active Suite Bookings</span>
-      <div class="metric-icon-wrap">🏨</div>
-    </div>
-    <div class="metric-value"><?php echo $activeStaysCount; ?></div>
-    <div class="metric-sub">Confirmed & Checked-In guests</div>
-  </div>
-
-  <div class="metric-card">
-    <div class="metric-header">
-      <span class="metric-title">Safari Expeditions</span>
-      <div class="metric-icon-wrap">🐆</div>
-    </div>
-    <div class="metric-value"><?php echo $safariExpCount; ?></div>
-    <div class="metric-sub">4x4 Gypsies deployed</div>
-  </div>
-
-  <div class="metric-card">
-    <div class="metric-header">
-      <span class="metric-title">Dining Covers</span>
-      <div class="metric-icon-wrap">🍽️</div>
-    </div>
-    <div class="metric-value"><?php echo $tableResCount; ?></div>
-    <div class="metric-sub">Bush dinners & Rasoi tables</div>
-  </div>
-
-  <div class="metric-card">
-    <div class="metric-header">
-      <span class="metric-title">VIP Inquiries</span>
-      <div class="metric-icon-wrap">💬</div>
-    </div>
-    <div class="metric-value" style="<?php echo $pendingInqCount > 0 ? 'color: #ef4444;' : ''; ?>">
-      <?php echo $pendingInqCount; ?>
-    </div>
-    <div class="metric-sub">Pending concierge follow-ups</div>
+<?php if ($defaultPw): ?><div class="alert alert--warn"><strong>Change your password.</strong> You are still using the default password. <a href="account.php">Update it now →</a></div><?php endif; ?>
+<div class="stats">
+  <a class="stat" href="bookings.php?status=New"><span class="ic"><?= icon('bell', 24) ?></span><div><b><?= $c("SELECT COUNT(*) FROM jm_bookings WHERE status='New'") ?></b><span>New requests</span></div></a>
+  <a class="stat" href="bookings.php?type=stay"><span class="ic"><?= icon('bed', 24) ?></span><div><b><?= $c("SELECT COUNT(*) FROM jm_bookings WHERE type='stay'") ?></b><span>Stay requests</span></div></a>
+  <a class="stat" href="bookings.php?type=safari"><span class="ic"><?= icon('car', 24) ?></span><div><b><?= $c("SELECT COUNT(*) FROM jm_bookings WHERE type='safari'") ?></b><span>Safari requests</span></div></a>
+  <a class="stat" href="bookings.php?type=event"><span class="ic"><?= icon('party', 24) ?></span><div><b><?= $c("SELECT COUNT(*) FROM jm_bookings WHERE type='event'") ?></b><span>Party / event</span></div></a>
+  <a class="stat" href="rooms.php"><span class="ic"><?= icon('building', 24) ?></span><div><b><?= $c("SELECT COUNT(*) FROM jm_rooms WHERE status='active'") ?></b><span>Rooms live</span></div></a>
+  <a class="stat" href="menu.php"><span class="ic"><?= icon('utensils', 24) ?></span><div><b><?= $c("SELECT COUNT(*) FROM jm_menu WHERE available=1") ?></b><span>Dishes on menu</span></div></a>
+</div>
+<div class="grid">
+  <div class="c8"><div class="card"><h2>Latest requests</h2>
+    <?php if ($latest): ?><div class="tablewrap" style="border:0"><table><thead><tr><th>Ref</th><th>Guest</th><th>For</th><th>Status</th></tr></thead><tbody>
+      <?php foreach ($latest as $b): ?><tr><td><a href="bookings.php?q=<?= urlencode($b['code']) ?>"><?= e($b['code']) ?></a></td><td><strong><?= e($b['guest_name']) ?></strong><br><span class="muted"><?= e($b['phone']) ?></span></td><td><?= e(booking_types()[$b['type']] ?? $b['type']) ?><br><span class="muted"><?= e($b['item_name']) ?></span></td><td><?= pill_status($b['status']) ?></td></tr><?php endforeach; ?>
+    </tbody></table></div><?php else: ?><p class="muted">No requests yet. They will appear here as soon as someone submits the booking form.</p><?php endif; ?>
+    <p style="margin:1rem 0 0"><a class="btn btn--line btn--sm" href="bookings.php">All bookings</a></p></div></div>
+  <div class="c4">
+    <div class="card"><h2>Website mode</h2><p class="muted">Currently: <strong><?= opening_soon() ? 'Opening Soon (pre-booking)' : 'Open (normal booking)' ?></strong></p>
+      <form method="post"><?= csrf_field() ?><input type="hidden" name="action" value="opening"><input type="hidden" name="opening_soon" value="<?= opening_soon() ? '0' : '1' ?>"><button class="btn btn--gold btn--sm"><?= opening_soon() ? 'Mark hotel as open' : 'Switch back to Opening Soon' ?></button></form></div>
+    <div class="card"><h2>Quick links</h2><div class="actions" style="flex-direction:column;align-items:stretch">
+      <a class="btn btn--line btn--sm" href="rooms.php?new=1"><?= icon('plus', 16) ?> Add a room</a>
+      <a class="btn btn--line btn--sm" href="menu.php?new=1"><?= icon('plus', 16) ?> Add a dish</a>
+      <a class="btn btn--line btn--sm" href="gallery.php"><?= icon('upload', 16) ?> Upload photos</a>
+      <a class="btn btn--line btn--sm" href="content.php"><?= icon('sliders', 16) ?> Edit website text &amp; logo</a>
+      <a class="btn btn--line btn--sm" href="<?= url('index.php') ?>" target="_blank" rel="noopener"><?= icon('external', 16) ?> View website</a></div></div>
   </div>
 </div>
-
-<!-- Quick Actions Banner -->
-<div style="background: var(--admin-card); border: 1px solid var(--admin-border); border-radius: 12px; padding: 1.2rem 1.6rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-  <div>
-    <h3 style="font-size: 1.05rem; color: #fff; margin-bottom: 0.2rem;">Quick Operations Actions</h3>
-    <p style="font-size: 0.82rem; color: var(--admin-muted);">Manage real-time bookings across hotel suites, dining tables, and safari slots.</p>
-  </div>
-  <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
-    <a href="rooms.php#addRoom" class="btn-admin btn-admin-gold btn-admin-sm">+ Add New Suite</a>
-    <a href="restaurant.php#addDish" class="btn-admin btn-admin-outline btn-admin-sm">+ Add Menu Item</a>
-    <a href="safari.php" class="btn-admin btn-admin-outline btn-admin-sm">Assign Gypsy & Tracker</a>
-  </div>
-</div>
-
-<!-- Recent Stays Table -->
-<div class="admin-card">
-  <div class="admin-card-header">
-    <h2 class="admin-card-title">🏨 Recent Suite Bookings</h2>
-    <a href="rooms.php" class="btn-admin btn-admin-outline btn-admin-sm">View All Stays →</a>
-  </div>
-
-  <div class="admin-table-responsive">
-    <table class="admin-table">
-      <thead>
-        <tr>
-          <th>Ref Code</th>
-          <th>Guest Name</th>
-          <th>Suite</th>
-          <th>Dates</th>
-          <th>Guests</th>
-          <th>Total (₹)</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach ($recentStays as $stay): ?>
-          <tr>
-            <td><strong style="color: var(--admin-gold);"><?php echo htmlspecialchars($stay['booking_code']); ?></strong></td>
-            <td>
-              <div><?php echo htmlspecialchars($stay['guest_name']); ?></div>
-              <small style="color: var(--admin-muted);"><?php echo htmlspecialchars($stay['phone']); ?></small>
-            </td>
-            <td><?php echo htmlspecialchars($stay['room_name']); ?></td>
-            <td><?php echo htmlspecialchars($stay['check_in']); ?> → <?php echo htmlspecialchars($stay['check_out']); ?></td>
-            <td><?php echo $stay['guests']; ?> Adults</td>
-            <td><strong>₹<?php echo number_format($stay['total_price']); ?></strong></td>
-            <td>
-              <span class="status-pill status-<?php echo strtolower(str_replace(' ', '', $stay['status'])); ?>">
-                <?php echo htmlspecialchars($stay['status']); ?>
-              </span>
-            </td>
-            <td>
-              <a href="rooms.php?status=Checked In&id=<?php echo $stay['id']; ?>" class="btn-admin btn-admin-outline btn-admin-sm" title="Mark Checked In">Check In</a>
-            </td>
-          </tr>
-        <?php endforeach; ?>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<!-- Two Column Layout: Dining & Safaris -->
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 2rem;">
-  
-  <!-- Recent Dining Reservations -->
-  <div class="admin-card">
-    <div class="admin-card-header">
-      <h2 class="admin-card-title">🍽️ Table Reservations</h2>
-      <a href="restaurant.php" class="btn-admin btn-admin-outline btn-admin-sm">Manage →</a>
-    </div>
-
-    <div class="admin-table-responsive">
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>Guest</th>
-            <th>Experience</th>
-            <th>Date & Time</th>
-            <th>Party</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php foreach ($recentDining as $dine): ?>
-            <tr>
-              <td>
-                <div><?php echo htmlspecialchars($dine['guest_name']); ?></div>
-                <small style="color: var(--admin-muted);"><?php echo htmlspecialchars($dine['phone']); ?></small>
-              </td>
-              <td style="font-size: 0.82rem;"><?php echo htmlspecialchars($dine['dining_type']); ?></td>
-              <td><?php echo htmlspecialchars($dine['dining_date']); ?><br><small><?php echo htmlspecialchars($dine['time_slot']); ?></small></td>
-              <td><?php echo $dine['party_size']; ?></td>
-              <td>
-                <span class="status-pill status-<?php echo strtolower($dine['status']); ?>">
-                  <?php echo htmlspecialchars($dine['status']); ?>
-                </span>
-              </td>
-            </tr>
-          <?php endforeach; ?>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Recent Safari Expeditions -->
-  <div class="admin-card">
-    <div class="admin-card-header">
-      <h2 class="admin-card-title">🐆 Safari Expeditions</h2>
-      <a href="safari.php" class="btn-admin btn-admin-outline btn-admin-sm">Manage →</a>
-    </div>
-
-    <div class="admin-table-responsive">
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>Guest</th>
-            <th>Expedition</th>
-            <th>Date & Slot</th>
-            <th>Assigned Vehicle</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php foreach ($recentSafaris as $saf): ?>
-            <tr>
-              <td>
-                <div><?php echo htmlspecialchars($saf['guest_name']); ?></div>
-                <small style="color: var(--admin-muted);"><?php echo htmlspecialchars($saf['phone']); ?></small>
-              </td>
-              <td style="font-size: 0.82rem;"><?php echo htmlspecialchars($saf['safari_title']); ?></td>
-              <td><?php echo htmlspecialchars($saf['safari_date']); ?><br><small><?php echo htmlspecialchars($saf['time_slot']); ?></small></td>
-              <td style="font-size: 0.8rem;"><?php echo htmlspecialchars($saf['assigned_gypsy']); ?></td>
-              <td>
-                <span class="status-pill status-<?php echo strtolower($saf['status']); ?>">
-                  <?php echo htmlspecialchars($saf['status']); ?>
-                </span>
-              </td>
-            </tr>
-          <?php endforeach; ?>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-</div>
-
-<?php require_once __DIR__ . '/admin_footer.php'; ?>
+<?php admin_foot(); ?>

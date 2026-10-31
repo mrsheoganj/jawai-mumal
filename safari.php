@@ -1,144 +1,44 @@
 <?php
-/**
- * Jawai Mumal - Jawai Leopard Safari & Wildlife Expeditions
- * Authentic 5-Star Boutique Hospitality
- */
-$pageTitle = "Jawai Safari | Leopard & Wildlife Expeditions";
-require_once __DIR__ . '/includes/header.php';
-
-// Fetch all safaris
-$safaris = $pdo->query("SELECT * FROM safaris WHERE status='active' ORDER BY id ASC")->fetchAll();
+require_once __DIR__ . '/includes/db.php';
+$pageTitle = 'Jawai Leopard Safari'; $pageDesc = 'Sunrise and sunset leopard safaris, Jawai Dam birding and Rabari village visits, arranged by Jawai Mumal in Bera.';
+$active = 'safari'; $bookTab = 'safari';
+$safaris = rows("SELECT * FROM jm_safaris WHERE status='active' ORDER BY sort_order, id");
+include __DIR__ . '/includes/header.php';
+page_head('Safari', 'Jawai Leopard Safari', 'Granite hills, open jeeps and local trackers who know every rock.', 'assets/images/safari-sunset.jpg');
 ?>
-
-<!-- Safari Hero Header -->
-<section style="background: linear-gradient(180deg, rgba(18, 31, 23, 0.5) 0%, rgba(18, 31, 23, 0.85) 100%), url('assets/images/safari_leopard.jpg') center/cover no-repeat; padding: 7rem 0 4.5rem 0; text-align: center; color: #FFFFFF;">
-  <div class="container">
-    <span class="hero-badge">JAWAI LEOPARD EXPEDITIONS</span>
-    <h1 class="hero-title" style="font-size: 3.2rem; margin-top: 0.8rem;">Jawai Leopard Safaris</h1>
-    <p class="hero-description" style="max-width: 680px;">
-      Explore the rocky granite terrain in customized open-top 4x4 Gypsies. Guided by native Rabari trackers with a 98% sighting record.
-    </p>
-    <button class="btn btn-brass" onclick="openModal('safariBookingModal')">
-      Book Safari Gypsy / Seat
-    </button>
-  </div>
-</section>
-
-<!-- Safari Highlights Bar -->
-<section class="section" style="padding-top: 3.5rem;">
-  <div class="container">
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.8rem; margin-bottom: 3.5rem;">
-      <div style="background: #FFFFFF; padding: 1.8rem; border-radius: var(--radius-md); border: 1px solid var(--color-sand-border); box-shadow: var(--shadow-subtle); text-align: center;">
-        <span class="stat-number">98%</span>
-        <h4 style="color: var(--color-charcoal); margin: 0.4rem 0;">Sighting Probability</h4>
-        <p style="font-size: 0.85rem; color: var(--color-muted);">Consistently high sighting rate across morning and evening drives.</p>
-      </div>
-
-      <div style="background: #FFFFFF; padding: 1.8rem; border-radius: var(--radius-md); border: 1px solid var(--color-sand-border); box-shadow: var(--shadow-subtle); text-align: center;">
-        <span class="stat-number">4x4</span>
-        <h4 style="color: var(--color-charcoal); margin: 0.4rem 0;">Custom Open Gypsies</h4>
-        <p style="font-size: 0.85rem; color: var(--color-muted);">Raised stadium seats with 360-degree photography angles.</p>
-      </div>
-
-      <div style="background: #FFFFFF; padding: 1.8rem; border-radius: var(--radius-md); border: 1px solid var(--color-sand-border); box-shadow: var(--shadow-subtle); text-align: center;">
-        <span class="stat-number">20+ Yrs</span>
-        <h4 style="color: var(--color-charcoal); margin: 0.4rem 0;">Expert Local Trackers</h4>
-        <p style="font-size: 0.85rem; color: var(--color-muted);">Indigenous Rabari guides who know the leopards and their territories.</p>
-      </div>
-
-      <div style="background: #FFFFFF; padding: 1.8rem; border-radius: var(--radius-md); border: 1px solid var(--color-sand-border); box-shadow: var(--shadow-subtle); text-align: center;">
-        <span class="stat-number">280+</span>
-        <h4 style="color: var(--color-charcoal); margin: 0.4rem 0;">Bird Species at Dam</h4>
-        <p style="font-size: 0.85rem; color: var(--color-muted);">Demoiselle cranes, flamingos, and basking Indian crocodiles.</p>
-      </div>
-    </div>
-
-    <!-- Safari Catalog Cards -->
-    <div style="display: flex; flex-direction: column; gap: 3.5rem;">
-      <?php foreach ($safaris as $index => $safari): ?>
-        <div style="display: grid; grid-template-columns: <?php echo ($index % 2 == 0) ? '1.2fr 1fr' : '1fr 1.2fr'; ?>; gap: 3rem; background: #FFFFFF; border: 1px solid var(--color-sand-border); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-card);">
-          
-          <div style="position: relative; min-height: 380px; order: <?php echo ($index % 2 == 0) ? '1' : '2'; ?>;">
-            <img src="<?php echo htmlspecialchars($safari['image']); ?>" alt="<?php echo htmlspecialchars($safari['title']); ?>" style="width: 100%; height: 100%; object-fit: cover;">
-            <span class="pillar-badge"><?php echo htmlspecialchars($safari['badge']); ?></span>
+<section class="sec">
+  <div class="wrap">
+    <div class="sechead rv"><span class="eyebrow eyebrow--dark">How it works</span><h2>Choose a safari, we handle the rest</h2><p>Tell us the date and guests — we arrange the jeep, guide and timing. Safari slots depend on weather and availability, and we confirm everything personally.</p></div>
+    <?php foreach ($safaris as $s): ?>
+      <article class="row rv" id="s<?= (int)$s['id'] ?>">
+        <div class="row__img"><img src="<?= e(img($s['image'])) ?>" alt="<?= e($s['title']) ?>" loading="lazy"></div>
+        <div>
+          <?php if ($s['badge']): ?><span class="pill" style="display:inline-block;margin-bottom:.6rem"><?= e($s['badge']) ?></span><?php endif; ?>
+          <h3><?= e($s['title']) ?></h3>
+          <ul class="meta"><li><?= icon('clock', 16) ?><?= e($s['duration']) ?></li><li><?= icon('sun', 16) ?><?= e($s['timing']) ?></li><li><?= icon('car', 16) ?><?= e($s['vehicle']) ?></li><li><?= icon('compass', 16) ?><?= e($s['difficulty']) ?></li></ul>
+          <p><?= e($s['description']) ?></p>
+          <ul class="checks"><?php foreach (lines($s['highlights']) as $h): ?><li><?= icon('check', 16) ?><?= e($h) ?></li><?php endforeach; ?></ul>
+          <div class="row__foot">
+            <div style="display:flex;gap:2rem;flex-wrap:wrap"><div class="price"><small>per person</small><?= money($s['price_pp']) ?></div><div class="price"><small>private jeep</small><?= money($s['private_price']) ?></div></div>
+            <a class="btn btn--gold" href="#book" data-open-tab="safari" data-safari="<?= (int)$s['id'] ?>">Request this safari <?= icon('arrow-right', 16) ?></a>
           </div>
-
-          <div style="padding: 2.8rem; display: flex; flex-direction: column; justify-content: center; order: <?php echo ($index % 2 == 0) ? '2' : '1'; ?>;">
-            <div style="display: flex; gap: 1.2rem; color: var(--color-brass-dark); font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem;">
-              <span>⏱️ <?php echo htmlspecialchars($safari['duration']); ?></span>
-              <span>🚙 <?php echo htmlspecialchars($safari['vehicle']); ?></span>
-            </div>
-
-            <h2 class="font-serif" style="font-size: 1.8rem; margin-bottom: 0.8rem; color: var(--color-charcoal);"><?php echo htmlspecialchars($safari['title']); ?></h2>
-            <p style="color: var(--color-muted); font-size: 0.95rem; margin-bottom: 1.4rem; line-height: 1.6;">
-              <?php echo htmlspecialchars($safari['description']); ?>
-            </p>
-
-            <h4 style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--color-charcoal); margin-bottom: 0.8rem; font-weight: 700;">
-              Expedition Highlights:
-            </h4>
-            <ul class="safari-highlights-list" style="margin-bottom: 1.8rem;">
-              <?php 
-                $hlArr = explode(',', $safari['highlights']);
-                foreach ($hlArr as $hl): 
-              ?>
-                <li><?php echo trim(htmlspecialchars($hl)); ?></li>
-              <?php endforeach; ?>
-            </ul>
-
-            <div style="background: var(--color-sand-bg); padding: 1.2rem; border-radius: var(--radius-sm); border: 1px solid var(--color-sand-border); margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
-              <div>
-                <span style="font-size: 0.78rem; color: var(--color-muted); display: block;">Per Seat (Shared):</span>
-                <span style="font-weight: 700; color: var(--color-forest); font-size: 1.2rem;">₹<?php echo number_format($safari['price_per_person']); ?></span>
-              </div>
-              <div>
-                <span style="font-size: 0.78rem; color: var(--color-muted); display: block;">Private 4x4 Gypsy:</span>
-                <span style="font-weight: 700; color: var(--color-charcoal); font-size: 1.2rem;">₹<?php echo number_format($safari['private_gypsy_price']); ?></span>
-              </div>
-            </div>
-
-            <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-              <button class="btn btn-forest" onclick="openSafariBookingModal('<?php echo addslashes($safari['title']); ?>', <?php echo $safari['price_per_person']; ?>, <?php echo $safari['private_gypsy_price']; ?>)">
-                Book This Safari
-              </button>
-              <a href="https://wa.me/<?php echo RESORT_WHATSAPP; ?>?text=Inquiry%20regarding%20<?php echo urlencode($safari['title']); ?>" class="btn btn-outline-brass" target="_blank">
-                WhatsApp Us
-              </a>
-            </div>
-          </div>
-
         </div>
-      <?php endforeach; ?>
+      </article>
+    <?php endforeach; ?>
+  </div>
+</section>
+<section class="sec sec--sand">
+  <div class="wrap">
+    <div class="sechead"><span class="eyebrow eyebrow--dark">Safari tips</span><h2>Make the most of it</h2></div>
+    <div class="fac">
+      <div class="fac__item"><span class="fac__ic"><?= icon('sunrise', 24) ?></span><div><h3>Go early or late</h3><p>Leopards are most active at dawn and dusk, and the light is best for photos.</p></div></div>
+      <div class="fac__item"><span class="fac__ic"><?= icon('leaf', 24) ?></span><div><h3>Wear earthy colours</h3><p>Browns, khaki and olive keep you comfortable and blend in. Carry a light jacket for mornings.</p></div></div>
+      <div class="fac__item"><span class="fac__ic"><?= icon('camera', 24) ?></span><div><h3>Bring a zoom lens</h3><p>Sightings are at a respectful distance. Binoculars help too — ask us if you need a pair.</p></div></div>
+      <div class="fac__item"><span class="fac__ic"><?= icon('shield-check', 24) ?></span><div><h3>Respect the wild</h3><p>Stay seated, keep voices low and follow your guide. Sightings are never guaranteed.</p></div></div>
+      <div class="fac__item"><span class="fac__ic"><?= icon('droplets', 24) ?></span><div><h3>Stay hydrated</h3><p>Carry water and a hat, especially in summer months.</p></div></div>
+      <div class="fac__item"><span class="fac__ic"><?= icon('calendar-check', 24) ?></span><div><h3>Book ahead</h3><p>Weekends and winter holidays fill quickly — send a request early.</p></div></div>
     </div>
   </div>
 </section>
-
-<!-- Safari Guidelines & Tips -->
-<section class="section" style="background-color: #F3EFEA;">
-  <div class="container">
-    <div class="section-title-wrap">
-      <span class="section-tag">Safari Information</span>
-      <h2 class="section-heading">What to Know Before Your Safari</h2>
-      <p class="section-subtitle">Helpful guidelines to ensure a safe, enjoyable, and ethical wildlife experience.</p>
-    </div>
-
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.8rem;">
-      <div style="background: #FFFFFF; padding: 1.8rem; border-radius: var(--radius-md); border: 1px solid var(--color-sand-border); box-shadow: var(--shadow-subtle);">
-        <h4 style="color: var(--color-forest); margin-bottom: 0.5rem;">📸 Photography Tips</h4>
-        <p style="font-size: 0.88rem; color: var(--color-muted); line-height: 1.6;">Recommended lenses: 70-200mm or 100-400mm. Beanbags provided in every Gypsy. Flash photography is strictly prohibited.</p>
-      </div>
-
-      <div style="background: #FFFFFF; padding: 1.8rem; border-radius: var(--radius-md); border: 1px solid var(--color-sand-border); box-shadow: var(--shadow-subtle);">
-        <h4 style="color: var(--color-forest); margin-bottom: 0.5rem;">🧥 Clothing & Weather</h4>
-        <p style="font-size: 0.88rem; color: var(--color-muted); line-height: 1.6;">Neutral colors (khaki, beige, olive) are recommended. Morning drives can be chilly; warm fleeces and blankets are provided in the Gypsy.</p>
-      </div>
-
-      <div style="background: #FFFFFF; padding: 1.8rem; border-radius: var(--radius-md); border: 1px solid var(--color-sand-border); box-shadow: var(--shadow-subtle);">
-        <h4 style="color: var(--color-forest); margin-bottom: 0.5rem;">🛡️ Safe Distances</h4>
-        <p style="font-size: 0.88rem; color: var(--color-muted); line-height: 1.6;">Our drivers and trackers follow ethical wildlife viewing practices. Leopards in Jawai are habituated to vehicles and behave naturally.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+<section class="sec" id="book" style="padding-top:3rem"><div class="wrap"><div class="sechead" style="margin-bottom:1.5rem"><h2>Request a safari</h2></div><?php include __DIR__ . '/includes/booking_panel.php'; ?></div></section>
+<?php include __DIR__ . '/includes/footer.php'; ?>
