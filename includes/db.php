@@ -69,7 +69,7 @@ function jm_set_admin_password(PDO $pdo, string $pw, bool $announce): void {
     $pdo->prepare('UPDATE jm_admins SET password_hash = ? WHERE id = ?')->execute([password_hash($pw, PASSWORD_DEFAULT), $id]);
     if ($announce) {
         $u = $pdo->query('SELECT username FROM jm_admins WHERE id = ' . $id)->fetchColumn();
-        @file_put_contents(__DIR__ . '/../data/first-login.txt', "Jawai Mumal admin login\nAddress : /admin/login.php\nUsername: $u\nPassword: $pw\n\nSign in, change the password under My account, then DELETE this file.\n");
+        @file_put_contents(__DIR__ . '/../data/first-login.txt', "Jawai Mumal admin login\nAddress : /admin-jm/login.php\nUsername: $u\nPassword: $pw\n\nSign in, change the password under My account, then DELETE this file.\n");
     }
 }
 if ((int)$pdo->query('SELECT COUNT(*) FROM jm_admins')->fetchColumn() === 0) {
@@ -86,7 +86,7 @@ foreach ($pdo->query('SELECT id, password_hash FROM jm_admins')->fetchAll() as $
     if (password_verify('admin123', $__a['password_hash'])) {
         $np = (defined('DEFAULT_ADMIN_PASS') && DEFAULT_ADMIN_PASS !== '') ? DEFAULT_ADMIN_PASS : jm_random_password();
         $pdo->prepare('UPDATE jm_admins SET password_hash = ? WHERE id = ?')->execute([password_hash($np, PASSWORD_DEFAULT), $__a['id']]);
-        if (!defined('DEFAULT_ADMIN_PASS') || DEFAULT_ADMIN_PASS === '') @file_put_contents(__DIR__ . '/../data/first-login.txt', "Jawai Mumal admin login\nAddress : /admin/login.php\nUsername: admin\nPassword: $np\n\nSign in, change the password under My account, then DELETE this file.\n");
+        if (!defined('DEFAULT_ADMIN_PASS') || DEFAULT_ADMIN_PASS === '') @file_put_contents(__DIR__ . '/../data/first-login.txt', "Jawai Mumal admin login\nAddress : /admin-jm/login.php\nUsername: admin\nPassword: $np\n\nSign in, change the password under My account, then DELETE this file.\n");
     }
 }
 

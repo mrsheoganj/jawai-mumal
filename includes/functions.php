@@ -123,7 +123,7 @@ function save_upload(string $field, ?string &$err = null, int $maxW = 2000): ?st
 
 // ---------- Admin auth
 function admin_logged_in(): bool { return !empty($_SESSION['admin_id']); }
-function require_admin(): void { if (!admin_logged_in()) redirect(url('admin/login.php')); }
+function require_admin(): void { if (!admin_logged_in()) redirect(url(ADMIN_DIR . '/login.php')); }
 
 // ---------- Bookings
 function booking_code(string $type): string {
@@ -252,7 +252,7 @@ function notify_booking(array $b): void {
     if ($to === '' || !filter_var($to, FILTER_VALIDATE_EMAIL)) return;
     $from = 'noreply@' . preg_replace('#^https?://(www\.)?#', '', rtrim(setting('site_url'), '/'));
     @mail($to, 'New ' . (booking_types()[$b['type']] ?? 'booking') . ' request ' . $b['code'] . ' — ' . $b['guest_name'],
-        booking_wa_message($b) . "\n\nManage: " . rtrim(setting('site_url'), '/') . '/admin/bookings.php?q=' . $b['code'],
+        booking_wa_message($b) . "\n\nManage: " . rtrim(setting('site_url'), '/') . '/' . ADMIN_DIR . '/bookings.php?q=' . $b['code'],
         "From: " . setting('site_name') . " <$from>\r\nContent-Type: text/plain; charset=UTF-8");
 }
 
@@ -315,7 +315,7 @@ function preview_token(string $key): string { return hash_hmac('sha256', $key, '
 function preview_url(): string { return rtrim(setting('site_url'), '/') . '/?preview=' . preview_key(); }
 function jm_gate(): void {
     if (PHP_SAPI === 'cli') return;
-    if (strpos($_SERVER['SCRIPT_NAME'] ?? '', '/admin/') !== false) return;
+    if (strpos($_SERVER['SCRIPT_NAME'] ?? '', '/' . ADMIN_DIR . '/') !== false) return;
     if (basename($_SERVER['SCRIPT_NAME'] ?? '') === 'deploy-hook.php') return;   // GitHub webhook must always work
     $mode = site_mode(); if ($mode === 'live') return;
     if (admin_logged_in()) { $GLOBALS['jm_preview'] = $mode; return; }

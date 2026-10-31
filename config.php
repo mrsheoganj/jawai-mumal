@@ -27,3 +27,6 @@ defined('DB_PORT') || define('DB_PORT', 3306);
 //  - or, if you do nothing, a random password is created on first run and written to data/first-login.txt
 //    (open it with hPanel > File Manager, then delete the file after you have signed in and changed the password).
 defined('DEFAULT_ADMIN_USER') || define('DEFAULT_ADMIN_USER', 'admin');
+
+// Folder name of the admin panel (the site address is /admin-jm/). If you rename the folder, change this too.
+defined('ADMIN_DIR') || define('ADMIN_DIR', 'admin-jm');

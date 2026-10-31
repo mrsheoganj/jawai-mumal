@@ -3,7 +3,7 @@
 ## Recommended: Hostinger's built-in Git (no zip, no terminal)
 1. hPanel → **Advanced → Git** → Repository `https://github.com/mrsheoganj/jawai-mumal.git`, branch `main`, install path = your site root (`public_html`) → **Create**, then **Deploy**.
 2. For deploy-on-push, copy the *Auto deployment* webhook URL shown there into GitHub → repo **Settings → Webhooks**.
-3. **First login**: nothing secret lives in GitHub, so open hPanel → File Manager → `data/first-login.txt` (a random admin password is created on the first visit), sign in at `/admin/login.php`, change the password under *My account*, then delete that file.
+3. **First login**: nothing secret lives in GitHub, so open hPanel → File Manager → `data/first-login.txt` (a random admin password is created on the first visit), sign in at `/admin-jm/login.php`, change the password under *My account*, then delete that file.
    Or create your own password first: in File Manager add a file `config.local.php` next to `index.php` containing
    `<?php define('DEFAULT_ADMIN_PASS', 'your password');` — it is applied automatically and is never overwritten by deploys.
 4. The site starts in **Coming soon** mode until **6 Nov 2026, 12:00 AM IST**, then goes live by itself. Change it any time in Admin → *Site mode*. Your database (`data/`), photos (`assets/uploads/`) and `config.local.php` are not in Git, so deploys never overwrite them.
@@ -18,7 +18,7 @@ Every push to `main` is copied to Hostinger by `.github/workflows/deploy.yml` ov
 ## Alternative: no terminal needed (File Manager + built-in GitHub sync)
 1. Build the package: `JM_ADMIN_PASS='your-password' BRANCH=main python3 deploy/build_package.py` → `dist/jawai-mumal-hosting.zip` (contains your private `config.local.php`; never commit it).
 2. hPanel → Websites → *Manage* → **File Manager** → `public_html` → delete `default.php` → **Upload** the zip → right-click it → **Extract** (extract *here*) → delete the zip.
-3. Open the site. It starts in the mode set in the package (Coming soon until the launch time). Admin: `/admin/login.php`.
+3. Open the site. It starts in the mode set in the package (Coming soon until the launch time). Admin: `/admin-jm/login.php`.
 4. **Live sync**: Admin → *Update from GitHub*. The site checks GitHub every few minutes and updates itself; *Update now* does it instantly. Optional instant mode: add the GitHub webhook shown on that page.
 
 The SSH route below does the same thing if your plan has a terminal.
@@ -36,7 +36,7 @@ admin login, and installs a cron job that pulls new changes **every minute** (li
    JM_ADMIN_PASS='YOUR-ADMIN-PASSWORD' BRANCH=main bash /tmp/jm-setup.sh
    ```
    It auto-detects `~/domains/jawaimumal.com/public_html`. Use `SITE_DIR=/path/to/public_html` if yours differs.
-3. Open `https://jawaimumal.com/admin/login.php` — user `admin`, the password you chose.
+3. Open `https://jawaimumal.com/admin-jm/login.php` — user `admin`, the password you chose.
 
 The setup script puts the site in **Coming soon** mode by default, launching **6 Nov 2026, 12:00 AM India time** (goes live by itself at that moment). Change it any time in Admin → *Site mode*; what you save there always wins. To change the default for a fresh install: `JM_LAUNCH_AT=2026-11-10T09:30 JM_MODE=coming_soon bash /tmp/jm-setup.sh`.
 

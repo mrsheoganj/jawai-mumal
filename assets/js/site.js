@@ -164,7 +164,7 @@
     var a = e.target.closest && e.target.closest('a[href]'); if (!a || reduce || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank' || a.hasAttribute('download')) return;
     var u; try { u = new URL(a.href, location.href); } catch (x) { return; }
     if (u.origin !== location.origin || (u.pathname === location.pathname && u.hash) || /^(tel|mailto):/.test(a.href)) return;
-    if (/\/admin\//.test(u.pathname)) return;
+    if (/\/admin(-jm)?\//.test(u.pathname)) return;
     e.preventDefault(); document.body.classList.add('is-leaving'); setTimeout(function () { location.href = a.href; }, 200);
   });
   window.addEventListener('pageshow', function (e) { if (e.persisted) document.body.classList.remove('is-leaving'); });

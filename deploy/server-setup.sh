@@ -79,5 +79,5 @@ MODE_INFO=$(php -r '$_SERVER["DOCUMENT_ROOT"]=getcwd(); $_SERVER["SCRIPT_NAME"]=
 echo "Mode    : $(echo "$MODE_INFO" | cut -d'|' -f1)   launch: $(echo "$MODE_INFO" | cut -d'|' -f2)"
 echo "Preview : $(echo "$MODE_INFO" | cut -d'|' -f3)   (secret link for clients while Coming soon)"
 echo "Website : https://jawaimumal.com/"
-echo "Admin   : https://jawaimumal.com/admin/login.php   (user: admin)"
+echo "Admin   : https://jawaimumal.com/admin-jm/login.php   (user: admin)"
 echo "Sync log: $HOME/jm-sync.log"

@@ -39,7 +39,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
           # Only website code is listed here, so data/, assets/uploads/ photos and config.local.php are never touched
-          source: "*.php,*.webmanifest,robots.txt,.htaccess,admin,includes,assets/css,assets/js,assets/images,assets/brand,assets/uploads/.htaccess,data/.htaccess"
+          source: "*.php,*.webmanifest,robots.txt,.htaccess,admin-jm,includes,assets/css,assets/js,assets/images,assets/brand,assets/uploads/.htaccess,data/.htaccess"
           target: ${{ secrets.DEPLOY_PATH || 'domains/jawaimumal.com/public_html' }}
           overwrite: true
 

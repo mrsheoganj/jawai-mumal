@@ -26,7 +26,7 @@ The “How far is Jawai?” section uses OpenStreetMap: real driving routes from
 ## Credits
 Icons: [Lucide](https://lucide.dev) (ISC) and [Simple Icons](https://simpleicons.org) (CC0) brand logos. Fonts (self-hosted): Inter and Playfair Display (SIL OFL). Map data © OpenStreetMap contributors.
 
-## Admin panel — `/admin/login.php`
+## Admin panel — `/admin-jm/login.php`
 Username `admin`. The password is never in this repository: put `define('DEFAULT_ADMIN_PASS', '…');` in `config.local.php` on the server, or open `data/first-login.txt` (created automatically with a random password) in hPanel → File Manager, sign in and change it under *My account*.
 Everything is editable: bookings (status, notes, CSV export), **home banner slides**, rooms (price, photos, amenities), restaurant menu,
 safari packages, Explore Jawai places, gallery uploads, guest reviews, FAQs, **Page text & images** (every heading, paragraph and
@@ -50,7 +50,7 @@ See [README_HOSTINGER.md](README_HOSTINGER.md).
 ```
 index.php rooms.php room.php restaurant.php safari.php jawai.php gallery.php contact.php book.php
 includes/   db.php (schema + seed), functions.php, settings_schema.php (all editable text), icons.php, header/footer, booking_panel.php
-admin/      login, dashboard, bookings, rooms, menu, safaris, attractions, gallery, testimonials, faqs, content, account
+admin-jm/   login, dashboard, bookings, rooms, menu, safaris, attractions, gallery, testimonials, faqs, content, account
 assets/     css/, js/, brand/ (logo, favicon), images/, uploads/ (admin uploads)
 ```
 Add editable text anywhere in a template with `<?= et('page.section.key', 'Default text') ?>` or an image with `imgu('page.key', 'assets/images/x.jpg')` — it appears in *Admin → Page text & images* automatically. Structured settings (phones, rules) live in `includes/settings_schema.php`.
