@@ -17,7 +17,8 @@ ErrorDocument 404 /404.php
     Options -Indexes
 
     # Block access to hidden files and sensitive directories
-    RewriteRule ^(\.git|\.claude|\.env|data/|includes/|config\.php|config\.local\.php|README) - [F,L]
+    RewriteRule ^(\.git|\.claude|\.env|data/|includes/|deploy/|config\.php|config\.local\.php|README) - [F,L]
+    RewriteRule \.(sh|sqlite|log|md)$ - [F,L]
 </IfModule>
 
 # Security Headers

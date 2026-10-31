@@ -13,6 +13,7 @@ $dataDir = __DIR__ . '/../data';
 if (!is_dir($dataDir)) { @mkdir($dataDir, 0755, true); }
 
 try {
+    if (defined('DB_DRIVER') && DB_DRIVER === 'sqlite') { throw new RuntimeException('sqlite forced'); }
     $pdo = new PDO('mysql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';charset=utf8mb4', DB_USER, DB_PASS, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
