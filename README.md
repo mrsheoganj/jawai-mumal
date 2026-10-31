@@ -14,6 +14,12 @@ The home banner is a gentle slideshow (1 to many slides) with a “Now Open” b
 ## Look & feel
 Mobile gets an app-style experience (bottom tab bar, slide-in menu, swipe carousels, 2-column forms). Animations: hero slideshow, word-by-word headings, count-up numbers, scroll progress, an animated Jawai landscape (day/night loop, leopard, flamingos, birds), and an animated route map. All motion respects *reduce motion* settings.
 
+## Communication
+Every form has **Request booking** (saved in admin) and **Book on WhatsApp** (saved *and* opens WhatsApp with all details). A speed-dial button offers Call (both owners), WhatsApp chat and a call-back request. In Admin → Bookings, one tap sends the guest a confirmation message on WhatsApp. WhatsApp cannot be started as a *voice call* from a web link, so we open the chat (or ask for a call-back) from where the call icon is one tap away.
+
+## Real map & distances
+The “How far is Jawai?” section uses OpenStreetMap: real driving routes from the hotel, true compass bearings and real kilometres. Set the hotel latitude/longitude in *Contact, logo & rules*; add places in *Distances & travel* and press **Calculate** to measure real road distance and drive time.
+
 ## Admin panel — `/admin/login.php`
 First login: `admin` / `admin123` → **change it immediately** in *My account*.
 Everything is editable: bookings (status, notes, CSV export), **home banner slides**, rooms (price, photos, amenities), restaurant menu,
