@@ -214,7 +214,30 @@ function jm_migrate_single_room(): void {
     set_setting('single_room_v6', '1');
 }
 jm_migrate_copy_v4();
+/** v7: room types Premium (from 2500), Deluxe 3000, Super Deluxe 3500, Family 4500. */
+function jm_migrate_room_types_v7(): void {
+    if (get_setting_raw('room_types_v7') === '1') return;
+    try {
+        $am = "Air conditioning\nFree Wi-Fi\nHot water 24 hours\nTea & coffee maker\nWork desk\nDaily housekeeping";
+        q("UPDATE jm_rooms SET description = ?, featured = 1, sort_order = 1 WHERE slug = 'premium-room' AND description LIKE ?", ['A comfortable air-conditioned room with a king bed, soft lighting and a quiet work corner. Our starting rate; rates vary with the season and we confirm the exact rate for your dates on WhatsApp.', 'Our one room type%']);
+        $def = [
+            ['deluxe-room', 'Deluxe Room', 'Deluxe', 'A little more space to spread out', 3000, '280 sq ft', '2 adults + 1 child', '1 King bed', 'Garden side', 'assets/images/room-bed.jpg', 'assets/images/room-modern.jpg', 'A roomier air-conditioned room with a king bed, sitting corner and good natural light, a relaxed base for a few days around Jawai.', 6, 1, 2],
+            ['super-deluxe-room', 'Super Deluxe Room', 'Super Deluxe', 'Our most spacious double room', 3500, '320 sq ft', '2 adults + 2 children', '1 King bed + sofa', 'Hill side', 'assets/images/room-heritage.jpg', 'assets/images/room-desert-suite.jpg', 'Our most spacious double room, with a king bed, sofa seating and a large window, good for longer stays and small families.', 4, 1, 3],
+            ['family-room', 'Family Room', 'Family', 'Space for everyone, close together', 4500, '380 sq ft', '4 adults', '2 Queen beds', 'Garden side', 'assets/images/room-desert-suite.jpg', 'assets/images/room-heritage.jpg', 'Two queen beds and extra seating, so the whole family stays together comfortably.', 2, 0, 4],
+        ];
+        foreach ($def as $r) {
+            $ex = row('SELECT * FROM jm_rooms WHERE slug = ?', [$r[0]]);
+            if (!$ex) {
+                q("INSERT INTO jm_rooms (slug,name,category,tagline,price,size,capacity,beds,view_type,image,gallery,description,amenities,inventory,featured,status,sort_order) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [$r[0], $r[1], $r[2], $r[3], $r[4], $r[5], $r[6], $r[7], $r[8], $r[9], $r[10], $r[11], $am, $r[12], $r[13], 'active', $r[14]]);
+            } elseif ($ex['status'] === 'hidden' && $ex['name'] === $r[1]) {   // the old hidden demo room: bring it back with the new rate
+                q("UPDATE jm_rooms SET status='active', price=?, category=?, tagline=?, description=?, featured=?, sort_order=? WHERE id=?", [$r[4], $r[2], $r[3], $r[11], $r[13], $r[14], $ex['id']]);
+            }
+        }
+    } catch (Throwable $e) {}
+    set_setting('room_types_v7', '1');
+}
 jm_migrate_single_room();
+jm_migrate_room_types_v7();
 if (get_setting_raw('blog_seeded') !== '1') { require_once __DIR__ . '/seed_blog.php'; jm_seed_blog(); }
 upd_maybe_auto();   // live sync with GitHub (if enabled)
 jm_gate();
