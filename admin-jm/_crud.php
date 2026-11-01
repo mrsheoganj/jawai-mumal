@@ -150,10 +150,11 @@ function admin_crud(array $c): void {
     }
 
     // ---------- List
-    $rows = rows("SELECT * FROM $t ORDER BY " . ($c['order'] ?? 'id'));
+    [$wsql, $wpar] = !empty($c['where']) ? ($c['where'])() : ['', []];
+    $rows = rows("SELECT * FROM $t" . ($wsql ? " WHERE $wsql" : '') . " ORDER BY " . ($c['order'] ?? 'id'), $wpar);
     ?>
     <div class="toolbar"><p class="muted" style="margin:0"><?= count($rows) ?> <?= e($c['plural'] ?? $c['singular'] . 's') ?><?= !empty($c['intro']) ? ' · ' . e($c['intro']) : '' ?></p>
-      <a class="btn btn--gold" href="<?= $self ?>?new=1"><?= icon('plus', 18) ?> Add <?= e($c['singular']) ?></a></div>
+      <a class="btn btn--gold" href="<?= $self ?>?new=1<?= e($c['add_query'] ?? '') ?>"><?= icon('plus', 18) ?> Add <?= e($c['singular']) ?></a></div>
     <div class="tablewrap"><table>
       <thead><tr><?php if (!empty($c['thumb'])): ?><th></th><?php endif; ?><?php foreach ($c['list'] as $l): ?><th><?= e($l[0]) ?></th><?php endforeach; ?><th style="text-align:right">Actions</th></tr></thead>
       <tbody>

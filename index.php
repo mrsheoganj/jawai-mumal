@@ -2,11 +2,19 @@
 require_once __DIR__ . '/includes/db.php';
 $active = 'home';
 $bookTab = 'stay';
-$preloadImg = val("SELECT image FROM jm_slides WHERE status='active' ORDER BY sort_order, id LIMIT 1") ?: 'assets/images/hotel-front.jpg';
+$slides    = rows("SELECT * FROM jm_slides WHERE status='active' ORDER BY sort_order, id");
+if (!$slides) $slides = [['image' => 'assets/images/hotel-front.jpg', 'eyebrow' => 'Bera · Jawai · Rajasthan', 'title' => setting('site_name'), 'text' => setting('site_tagline'), 'cta_label' => 'Book your stay', 'cta_url' => '#book', 'cta2_label' => '', 'cta2_url' => '', 'device' => 'both', 'id' => 0]];
+// Separate banner sets: computers / big screens and phones. A set with no slides falls back to the other one.
+$forD = array_values(array_filter($slides, fn($s) => in_array($s['device'] ?? 'both', ['both', 'desktop'], true)));
+$forM = array_values(array_filter($slides, fn($s) => in_array($s['device'] ?? 'both', ['both', 'mobile'], true)));
+if (!$forD) $forD = $forM; if (!$forM) $forM = $forD;
+$firstD = $forD[0] ?? null; $firstM = $forM[0] ?? null;
+$inD = array_flip(array_column($forD, 'id')); $inM = array_flip(array_column($forM, 'id'));
+$preloads = [];
+if ($firstD && $firstM && $firstD['id'] === $firstM['id']) $preloads[] = [$firstD['image'], ''];
+else { if ($firstD) $preloads[] = [$firstD['image'], '(min-width: 701px)']; if ($firstM) $preloads[] = [$firstM['image'], '(max-width: 700px)']; }
 include __DIR__ . '/includes/header.php';
 
-$slides    = rows("SELECT * FROM jm_slides WHERE status='active' ORDER BY sort_order, id");
-if (!$slides) $slides = [['image' => 'assets/images/hotel-front.jpg', 'eyebrow' => 'Bera · Jawai · Rajasthan', 'title' => setting('site_name'), 'text' => setting('site_tagline'), 'cta_label' => 'Book your stay', 'cta_url' => '#book', 'cta2_label' => '', 'cta2_url' => '']];
 $featRooms = rows("SELECT * FROM jm_rooms WHERE status='active' ORDER BY featured DESC, sort_order, id LIMIT 3");
 $safaris   = rows("SELECT * FROM jm_safaris WHERE status='active' ORDER BY sort_order, id LIMIT 3");
 $attrs     = rows("SELECT * FROM jm_attractions WHERE status='active' ORDER BY sort_order, id LIMIT 6");
@@ -16,18 +24,23 @@ $faqs      = rows("SELECT * FROM jm_faqs ORDER BY sort_order, id LIMIT 6");
 $fac = array_map(fn($l) => array_pad(explode('|', $l, 3), 3, ''), lines(setting('facilities')));
 $lowest = (int)val("SELECT MIN(price) FROM jm_rooms WHERE status='active'");
 $link = fn($u) => ($u === '' ? '#' : (preg_match('#^(https?:|\#|mailto:|tel:)#', $u) ? $u : url($u)));
+$slides = array_values(array_filter($slides, fn($s) => isset($inD[$s['id']]) || isset($inM[$s['id']])));
 $n = count($slides);
 ?>
 
 <!-- ============ HERO (slides are managed in Admin > Home banner slides) ============ -->
-<section class="hero" id="hero" data-count="<?= $n ?>" aria-roledescription="carousel" aria-label="Featured">
-  <?php foreach ($slides as $i => $s): ?>
-  <div class="hslide<?= $i === 0 ? ' is-active' : '' ?>" role="group" aria-roledescription="slide" aria-label="<?= $i + 1 ?> of <?= $n ?>"<?= $i ? ' aria-hidden="true"' : '' ?>>
-    <img class="hslide__bg" src="<?= e(img($s['image'])) ?>" alt="<?= e(trim(strip_tags((string)($s['title'] ?? ''))) ?: setting('site_name') . ' – Bera, Jawai') ?>"<?= $i ? ' loading="lazy"' : ' fetchpriority="high"' ?>>
+<section class="hero" id="hero" aria-roledescription="carousel" aria-label="Featured">
+  <?php foreach ($slides as $i => $s):
+    $d = isset($inD[$s['id']]); $m = isset($inM[$s['id']]);
+    $first = ($firstD && $s['id'] === $firstD['id']) || ($firstM && $s['id'] === $firstM['id']);
+    $cls = 'hslide' . ($d ? ' dv-d' : '') . ($m ? ' dv-m' : '') . ($first ? ' is-active' : '');
+    $isH1 = $firstD && $s['id'] === $firstD['id']; ?>
+  <div class="<?= $cls ?>" role="group" aria-roledescription="slide" aria-label="Slide <?= $i + 1 ?>"<?= $first ? '' : ' aria-hidden="true"' ?>>
+    <img class="hslide__bg" src="<?= e(img($s['image'])) ?>" alt="<?= e(trim(strip_tags((string)($s['title'] ?? ''))) ?: setting('site_name') . ' – Bera, Jawai') ?>"<?= $first ? ' fetchpriority="high"' : ' loading="lazy"' ?>>
     <div class="wrap">
       <div class="hero__in">
         <?php if ($s['eyebrow']): ?><span class="eyebrow"><?= e($s['eyebrow']) ?></span><?php endif; ?>
-        <<?= $i === 0 ? 'h1' : 'h2 class="h1"' ?>><?= e($s['title']) ?></<?= $i === 0 ? 'h1' : 'h2' ?>>
+        <<?= $isH1 ? 'h1' : 'h2 class="h1"' ?>><?= e($s['title']) ?></<?= $isH1 ? 'h1' : 'h2' ?>>
         <?php if ($s['text']): ?><p><?= e($s['text']) ?></p><?php endif; ?>
         <div class="hero__cta">
           <?php if ($s['cta_label']): ?><a class="btn btn--gold" href="<?= e($link($s['cta_url'])) ?>"><?= e($s['cta_label']) ?> <?= icon('arrow-right', 18) ?></a><?php endif; ?>
@@ -37,14 +50,12 @@ $n = count($slides);
     </div>
   </div>
   <?php endforeach; ?>
-  <?php if ($n > 1): ?>
-  <div class="hero__ctl">
+  <div class="hero__ctl" hidden>
     <button type="button" class="hctl" data-hero="prev" aria-label="Previous slide"><?= icon('chevron-left', 20) ?></button>
-    <div class="hdots" role="tablist" aria-label="Choose slide"><?php for ($i = 0; $i < $n; $i++): ?><button type="button" role="tab" data-slide="<?= $i ?>" aria-label="Slide <?= $i + 1 ?>" aria-selected="<?= $i === 0 ? 'true' : 'false' ?>"></button><?php endfor; ?></div>
+    <div class="hdots" role="tablist" aria-label="Choose slide"></div>
     <button type="button" class="hctl" data-hero="next" aria-label="Next slide"><?= icon('chevron-right', 20) ?></button>
     <button type="button" class="hctl" data-hero="pause" aria-label="Pause slideshow"><?= icon('minus', 18) ?></button>
   </div>
-  <?php endif; ?>
 </section>
 
 <!-- ============ BOOKING / ENQUIRY ============ -->

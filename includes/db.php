@@ -56,7 +56,7 @@ function jm_install_schema(PDO $pdo, string $type): void {
         "CREATE TABLE IF NOT EXISTS jm_testimonials (id $pk, name VARCHAR(150) NOT NULL, origin VARCHAR(150), rating INT DEFAULT 5, quote TEXT NOT NULL, status VARCHAR(20) DEFAULT 'hidden', sort_order INT DEFAULT 0)$tail",
         "CREATE TABLE IF NOT EXISTS jm_blog (id $pk, slug VARCHAR(160) UNIQUE, title VARCHAR(250) NOT NULL, excerpt TEXT, body MEDIUMTEXT, image VARCHAR(500), meta_title VARCHAR(250), meta_description VARCHAR(400), keywords VARCHAR(400), category VARCHAR(80), status VARCHAR(20) DEFAULT 'published', published_at DATETIME, sort_order INT DEFAULT 0)$tail",
         "CREATE TABLE IF NOT EXISTS jm_faqs (id $pk, question VARCHAR(300) NOT NULL, answer TEXT NOT NULL, sort_order INT DEFAULT 0)$tail",
-        "CREATE TABLE IF NOT EXISTS jm_slides (id $pk, image VARCHAR(500) NOT NULL, eyebrow VARCHAR(150), title VARCHAR(250), text TEXT, cta_label VARCHAR(60), cta_url VARCHAR(300), cta2_label VARCHAR(60), cta2_url VARCHAR(300), status VARCHAR(20) DEFAULT 'active', sort_order INT DEFAULT 0)$tail",
+        "CREATE TABLE IF NOT EXISTS jm_slides (id $pk, image VARCHAR(500) NOT NULL, eyebrow VARCHAR(150), title VARCHAR(250), text TEXT, cta_label VARCHAR(60), cta_url VARCHAR(300), cta2_label VARCHAR(60), cta2_url VARCHAR(300), status VARCHAR(20) DEFAULT 'active', sort_order INT DEFAULT 0, device VARCHAR(10) DEFAULT 'both')$tail",
         "CREATE TABLE IF NOT EXISTS jm_routes (id $pk, name VARCHAR(200) NOT NULL, kind VARCHAR(20) DEFAULT 'rail', code VARCHAR(20), km DECIMAL(8,1) DEFAULT 0, travel_time VARCHAR(60), note VARCHAR(255), lat VARCHAR(30), lng VARCHAR(30), geom TEXT, status VARCHAR(20) DEFAULT 'active', sort_order INT DEFAULT 0)$tail",
         "CREATE TABLE IF NOT EXISTS jm_mail_log (id $pk, created_at $ts, kind VARCHAR(30), to_addr VARCHAR(250), subject VARCHAR(300), status VARCHAR(12), error TEXT)$tail",
         "CREATE TABLE IF NOT EXISTS jm_attempts (id $pk, ip VARCHAR(64), created_at INT)$tail",
@@ -178,6 +178,13 @@ function jm_migrate_pricing_v3(): void {
     } catch (Throwable $e) {}
     set_setting('pricing_v3', '1');
 }
+/** v5: separate banner slides for phones and for computers / big screens. */
+function jm_migrate_slides_device(): void {
+    try { q('SELECT device FROM jm_slides LIMIT 1'); }
+    catch (Throwable $e) { try { q("ALTER TABLE jm_slides ADD COLUMN device VARCHAR(10) DEFAULT 'both'"); } catch (Throwable $e2) {} }
+    try { q("UPDATE jm_slides SET device = 'both' WHERE device IS NULL OR device = ''"); } catch (Throwable $e) {}
+}
+jm_migrate_slides_device();
 jm_migrate_images();
 jm_migrate_images_v2();
 /** v4: calmer copy. Replace spaced em dashes in saved content with commas. */
