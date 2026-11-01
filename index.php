@@ -155,7 +155,7 @@ $n = count($slides);
           <h3><?= e($s['title']) ?></h3>
           <ul class="meta"><li><?= icon('clock', 16) ?><?= e($s['duration']) ?></li><li><?= icon('sun', 16) ?><?= e($s['timing']) ?></li><li><?= icon('car', 16) ?><?= e($s['vehicle']) ?></li></ul>
           <p><?= e($s['description']) ?></p>
-          <div class="row__foot"><div class="price"><small><?= et('home.safari.from', 'from') ?></small><?= money($s['price_pp']) ?> <span>/ <?= et('home.safari.pp', 'person') ?></span></div>
+          <div class="row__foot"><span class="muted" style="font-size:.95rem"><?= et('safari.enquire', 'Price shared on enquiry') ?></span>
             <a class="btn btn--gold btn--sm" href="<?= url('book.php?type=safari&safari=' . (int)$s['id']) ?>"><?= et('home.safari.btn', 'Request this safari') ?></a></div>
         </div>
       </article>

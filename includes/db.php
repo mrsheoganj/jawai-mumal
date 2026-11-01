@@ -166,8 +166,20 @@ function jm_migrate_images_v2(): void {
     } catch (Throwable $e) { /* optional tables may not exist */ }
     set_setting('img_remap_v2', '1');
 }
+/** v3: safari and table rates are no longer published (enquiry only). Update the one article that mentioned them. */
+function jm_migrate_pricing_v3(): void {
+    if (get_setting_raw('pricing_v3') === '1') return;
+    try {
+        $rep = ['Prices change with the season, so we avoid quoting numbers that go out of date.' => 'Safari rates depend on the season, the group size and the kind of drive, so we share them on enquiry rather than print numbers that go out of date.',
+                'See the live prices and timings on our <a href="{{safari}}">safari page</a>.' => 'See the timings and what each drive covers on our <a href="{{safari}}">safari page</a>, then ask for the current rate.',
+                'We confirm availability and the final rate on WhatsApp.' => 'We confirm availability and share the rate on WhatsApp.'];
+        foreach ($rep as $a => $b) q("UPDATE jm_blog SET body = REPLACE(body, ?, ?) WHERE slug = ?", [$a, $b, 'jawai-safari-cost-booking-what-is-included']);
+    } catch (Throwable $e) {}
+    set_setting('pricing_v3', '1');
+}
 jm_migrate_images();
 jm_migrate_images_v2();
+jm_migrate_pricing_v3();
 if (get_setting_raw('blog_seeded') !== '1') { require_once __DIR__ . '/seed_blog.php'; jm_seed_blog(); }
 upd_maybe_auto();   // live sync with GitHub (if enabled)
 jm_gate();

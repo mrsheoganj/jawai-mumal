@@ -267,7 +267,7 @@ HTML];
         'How much does a Jawai leopard safari cost? Shared vs private jeep, what is included, how to book from Bera and tips to avoid surprises.',
         'Jawai safari cost, Jawai safari price, Jawai safari booking, private jeep safari Jawai, Jawai safari charges',
         <<<'HTML'
-<p>Prices change with the season, so we avoid quoting numbers that go out of date. The structure, however, stays the same and is worth understanding before you book.</p>
+<p>Safari rates depend on the season, the group size and the kind of drive, so we share them on enquiry rather than print numbers that go out of date. The structure, however, stays the same and is worth understanding before you book.</p>
 <h2>Shared vs private</h2>
 <ul>
 <li><strong>Per-person (shared):</strong> you join other guests in an open jeep, usually up to six. The most affordable option.</li>
@@ -281,12 +281,12 @@ HTML];
 </ul>
 <p>Park-style entry or forest charges, if any, and optional extras like a sundowner or breakfast picnic are confirmed when you book.</p>
 <h2>Packages</h2>
-<p>We run a classic leopard tracking safari, a Jawai Dam birding drive, a private 4x4 expedition, a small-group photography safari and a Rabari village visit. See the live prices and timings on our <a href="{{safari}}">safari page</a>.</p>
+<p>We run a classic leopard tracking safari, a Jawai Dam birding drive, a private 4x4 expedition, a small-group photography safari and a Rabari village visit. See the timings and what each drive covers on our <a href="{{safari}}">safari page</a>, then ask for the current rate.</p>
 <h2>How to book</h2>
 <ol>
 <li>Pick your dates and number of guests.</li>
 <li>Send the request on the <a href="{{book?type=safari}}">booking page</a> – it opens a ready WhatsApp message.</li>
-<li>We confirm availability and the final rate on WhatsApp. No online payment is needed to request.</li>
+<li>We confirm availability and share the rate on WhatsApp. No online payment is needed to request.</li>
 </ol>
 <p>Weekends, school holidays and December–January fill up quickly, so ask early.</p>
 HTML];

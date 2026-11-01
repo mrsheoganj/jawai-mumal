@@ -3,7 +3,7 @@
 $bookTab = $_GET['type'] ?? ($bookTab ?? 'stay');
 if (!in_array($bookTab, ['stay', 'dine', 'safari', 'event', 'enquiry'], true)) $bookTab = 'stay';
 $bRooms = rows("SELECT id,name,price FROM jm_rooms WHERE status='active' ORDER BY sort_order,id");
-$bSafaris = rows("SELECT id,title,price_pp,private_price FROM jm_safaris WHERE status='active' ORDER BY sort_order,id");
+$bSafaris = rows("SELECT id,title FROM jm_safaris WHERE status='active' ORDER BY sort_order,id");
 $slots = array_values(array_filter(array_map('trim', explode(',', setting('dine_slots')))));
 $maxG = max(1, (int)setting('max_guests', '12'));
 $sel = fn($a, $b) => (string)$a === (string)$b ? ' selected' : '';
@@ -62,10 +62,10 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
     <?= $formHead('safari') ?>
     <div class="fgrid">
       <div class="f f--6"><label for="f-s">Safari</label>
-        <select id="f-s" name="item_id" required><?php foreach ($bSafaris as $s): ?><option value="<?= $s['id'] ?>" data-pp="<?= (int)$s['price_pp'] ?>" data-pv="<?= (int)$s['private_price'] ?>"<?= $sel($preSaf, $s['id']) ?>><?= e($s['title']) ?></option><?php endforeach; ?></select></div>
+        <select id="f-s" name="item_id" required><?php foreach ($bSafaris as $s): ?><option value="<?= $s['id'] ?>"<?= $sel($preSaf, $s['id']) ?>><?= e($s['title']) ?></option><?php endforeach; ?></select></div>
       <div class="f"><label for="f-d">Date</label><input type="date" id="f-d" name="date_from" required></div>
       <div class="f"><label for="f-g">Guests</label><select id="f-g" name="guests"><?= $guestOpts(2) ?></select></div>
-      <div class="f f--12"><span class="lbl">Jeep type</span><div class="seg"><label><input type="radio" name="mode" value="shared" checked> Per person (shared jeep)</label><label><input type="radio" name="mode" value="private"> Private jeep</label></div></div>
+      <div class="f f--12"><span class="lbl">Jeep type</span><div class="seg"><label><input type="radio" name="mode" value="shared" checked> Shared jeep</label><label><input type="radio" name="mode" value="private"> Private jeep</label></div></div>
       <div class="f f--4"><label for="f-n">Your name</label><input id="f-n" name="name" autocomplete="name" required></div>
       <div class="f f--4"><label for="f-p">Phone / WhatsApp</label><input id="f-p" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></div>
       <div class="f f--4"><label for="f-no">Requests (optional)</label><input id="f-no" name="notes" placeholder="Photography, pick-up point…"></div>

@@ -5,8 +5,7 @@ $active = 'safari'; $bookTab = 'safari';
 $safaris = rows("SELECT * FROM jm_safaris WHERE status='active' ORDER BY sort_order, id");
 seo_ld(seo_breadcrumb_ld([['Safari', 'safari']]));
 foreach ($safaris as $sf) seo_ld(['@context' => 'https://schema.org', '@type' => 'TouristTrip', 'name' => $sf['title'], 'description' => seo_clip((string)$sf['description'], 300),
-  'image' => seo_img_abs($sf['image']), 'touristType' => 'Wildlife', 'provider' => ['@id' => seo_abs('#hotel')],
-  'offers' => ['@type' => 'Offer', 'priceCurrency' => 'INR', 'price' => (string)(int)$sf['price_pp'], 'availability' => 'https://schema.org/InStock', 'url' => seo_abs('safari')]]);
+  'image' => seo_img_abs($sf['image']), 'touristType' => 'Wildlife', 'provider' => ['@id' => seo_abs('#hotel')]]);
 include __DIR__ . '/includes/header.php';
 page_head(t('safari.head.eyebrow', 'Safari'), t('safari.head.title', 'Jawai Leopard Safari'), t('safari.head.sub', 'Granite hills, open jeeps and local trackers who know every rock.'), im('safari.head.img', 'assets/images/leopard-log.jpg'));
 ?>
@@ -24,7 +23,7 @@ page_head(t('safari.head.eyebrow', 'Safari'), t('safari.head.title', 'Jawai Leop
       <div class="fac__item rv d2"><span class="fac__ic"><?= icon('eye', 24) ?></span><div><h3><?= et('safari.f3.title', 'Binoculars on board') ?></h3><p><?= et('safari.f3.text', 'Binoculars in the jeep, camera beanbags on request, and tea or coffee in the field.') ?></p></div></div>
     </div>
 
-    <div class="sechead rv"><span class="eyebrow eyebrow--dark"><?= et('safari.list.eyebrow', 'Choose your drive') ?></span><h2><?= et('safari.list.title', 'Safari experiences') ?></h2><p><?= et('safari.list.sub', 'Tell us the date and guests — we arrange the jeep, tracker and timing and confirm everything personally. Prices shown are per person in a shared jeep, or for a private jeep.') ?></p></div>
+    <div class="sechead rv"><span class="eyebrow eyebrow--dark"><?= et('safari.list.eyebrow', 'Choose your drive') ?></span><h2><?= et('safari.list.title', 'Safari experiences') ?></h2><p><?= et('safari.list.sub', 'Tell us the date and guests — we arrange the jeep, tracker and timing and confirm everything personally.') ?></p></div>
     <?php foreach ($safaris as $s): ?>
       <article class="row rv" id="s<?= (int)$s['id'] ?>">
         <div class="row__img"><img src="<?= e(img($s['image'])) ?>" alt="<?= e($s['title']) ?>" loading="lazy"></div>
@@ -35,7 +34,7 @@ page_head(t('safari.head.eyebrow', 'Safari'), t('safari.head.title', 'Jawai Leop
           <p><?= e($s['description']) ?></p>
           <ul class="checks"><?php foreach (lines($s['highlights']) as $h): ?><li><?= icon('check', 16) ?><?= e($h) ?></li><?php endforeach; ?></ul>
           <div class="row__foot">
-            <div style="display:flex;gap:2rem;flex-wrap:wrap"><div class="price"><small><?= et('safari.pp', 'per person') ?></small><?= money($s['price_pp']) ?></div><div class="price"><small><?= et('safari.private', 'private jeep') ?></small><?= money($s['private_price']) ?></div></div>
+            <div class="muted" style="font-size:.95rem"><?= et('safari.enquire', 'Price shared on enquiry') ?></div>
             <a class="btn btn--gold" href="#book" data-open-tab="safari" data-safari="<?= (int)$s['id'] ?>"><?= et('safari.request', 'Request this safari') ?> <?= icon('arrow-right', 16) ?></a>
           </div>
         </div>

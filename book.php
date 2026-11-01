@@ -53,8 +53,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (!$s) $errors[] = 'Please choose a safari.';
                 else {
                     $private = ($_POST['mode'] ?? '') === 'private';
-                    $amount = $private ? (int)$s['private_price'] : (int)$s['price_pp'] * $guests;
-                    $itemName = $s['title'] . ($private ? ' (private jeep)' : ' (shared, per person)');
+                    $amount = 0;   // safari rates are shared on enquiry
+                    $itemName = $s['title'] . ($private ? ' (private jeep)' : ' (shared jeep)');
                 }
             } elseif ($type === 'dine') {
                 $itemName = $itemName ?: 'Restaurant';

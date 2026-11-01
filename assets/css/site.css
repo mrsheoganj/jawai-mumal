@@ -634,3 +634,4 @@ body{background:#fff}
 .footer li a{display:inline-block;padding:.25rem 0}.crumbs a{display:inline-block;padding:.2rem 0}
 /* places without a real photo yet show the emblem, uncropped */
 .card__img img[src*="emblem-512"],.bcard__img img[src*="emblem-512"],.mason img[src*="emblem-512"]{object-fit:contain;background:#faf6ee;padding:12%}
+.fromnote{display:flex;gap:.5rem;align-items:center;justify-content:center;margin:2rem 0 0;font-size:1.1rem;color:var(--ink-2)}.fromnote strong{font-family:var(--serif);font-size:1.5rem;color:var(--gold-d)}
