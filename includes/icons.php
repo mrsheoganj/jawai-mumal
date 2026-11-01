@@ -1,9 +1,8 @@
 <?php
 /**
- * Icons come from professional, open-source packs (not hand drawn):
- *   - Lucide (ISC licence, https://lucide.dev)             – interface / amenity icons, 24px stroke grid
- *   - Simple Icons (CC0, https://simpleicons.org)           – WhatsApp / Instagram / Facebook brand logos
- * includes/icons_data.php is generated from the packs. Usage: echo icon('bed', 20);
+ * All icons come from one professional, open-source library: Lucide (ISC licence, https://lucide.dev), 24px stroke grid.
+ * The only other mark is WhatsApp's own official logo (assets/brand/whatsapp.svg). includes/icons_data.php is generated from Lucide.
+ * Usage: echo icon('bed', 20);
  */
 function icon_set(): array {
     static $d = null;

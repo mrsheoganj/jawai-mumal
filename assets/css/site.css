@@ -702,3 +702,9 @@ body{background:#fff}
 .wa-ico--submit .i{width:30px;height:30px;flex:none}
 .wa-ico--submit .wa-lbl{display:inline}
 @media (max-width:900px){.wa-ico--submit{width:100%}}
+.call-ico{background:var(--gold);border-color:var(--gold);color:var(--ink-3);box-shadow:0 8px 18px -8px rgba(201,151,63,.9)}
+.call-ico .i{stroke-width:2}
+.call-ico:hover{background:var(--gold-d);border-color:var(--gold-d);color:#fff}
+.call-ico .i{stroke-width:2.2}
+.call-ico,.call-ico .i{color:#1b0f08!important}
+.call-ico:hover,.call-ico:hover .i{color:#fff!important}
