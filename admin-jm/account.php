@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . '/_init.php';
 $me = row('SELECT * FROM jm_admins WHERE id = ?', [$_SESSION['admin_id']]);
+foreach ($_POST as $k => $v) if (is_array($v)) unset($_POST[$k]);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['full_name'] ?? ''); $user = trim($_POST['username'] ?? ''); $cur = $_POST['current'] ?? ''; $new = $_POST['new'] ?? ''; $new2 = $_POST['new2'] ?? '';
     if (!password_verify($cur, $me['password_hash'])) flash('err', 'Your current password is not correct.');

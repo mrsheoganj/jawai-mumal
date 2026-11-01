@@ -122,6 +122,14 @@ if (!get_setting_raw('routes_seeded')) {
     set_setting('routes_seeded', '1');
 }
 
+// The site only takes plain text parameters: drop array-style input (?x[]=1) so it can never cause type errors.
+if (strpos($_SERVER['SCRIPT_NAME'] ?? '', '/' . ADMIN_DIR . '/') === false) {   // (admin forms legitimately post arrays)
+    foreach ($_GET as $k => $v) if (is_array($v)) unset($_GET[$k]);
+    foreach ($_POST as $k => $v) if (is_array($v)) unset($_POST[$k]);
+}
+if (PHP_SAPI !== 'cli' && !headers_sent()) {   // basic security headers (also set in .htaccess)
+    header('X-Content-Type-Options: nosniff'); header('X-Frame-Options: SAMEORIGIN'); header('Referrer-Policy: strict-origin-when-cross-origin');
+}
 require_once __DIR__ . '/updater.php';
 require_once __DIR__ . '/mailer.php';
 require_once __DIR__ . '/seo.php';

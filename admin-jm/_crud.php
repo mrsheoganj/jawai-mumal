@@ -56,7 +56,7 @@ function admin_crud(array $c): void {
             if ($hasSlug) {
                 $base = slugify($vals[$c['slug']]); $slug = $base; $n = 2;
                 while (val("SELECT COUNT(*) FROM $t WHERE slug = ? AND id <> ?", [$slug, $id])) { $slug = $base . '-' . $n++; }
-                if ($id) { $existing = val("SELECT slug FROM $t WHERE id = ?", [$id]); $slug = ($existing && slugify($vals[$c['slug']]) === preg_replace('/-\d+$/', '', $existing)) ? $existing : $slug; }
+                if ($id) { $existing = val("SELECT slug FROM $t WHERE id = ?", [$id]); if ($existing) $slug = $existing; }   // never change a live URL when a title is edited
                 $vals['slug'] = $slug;
             }
             if ($id) {

@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../includes/db.php';
 if (admin_logged_in()) redirect('index.php');
 
+foreach ($_POST as $k => $v) if (is_array($v)) unset($_POST[$k]);
 $ip = substr($_SERVER['REMOTE_ADDR'] ?? '0', 0, 64);
 $error = '';
 $wantsJson = ($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'fetch';
