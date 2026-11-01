@@ -144,7 +144,7 @@ function page_url(): string { return strtok($_SERVER['REQUEST_URI'] ?? '', '?');
 
 /** Dark banner at the top of inner pages. */
 function page_head(string $eyebrow, string $title, string $sub, string $image): void {
-    echo '<section class="pagehead"><img src="' . e(img($image)) . '" alt="" fetchpriority="high"><div class="wrap">'
+    echo '<section class="pagehead"><img src="' . e(img($image)) . '" alt="' . e($title) . '" fetchpriority="high"><div class="wrap">'
        . '<nav class="crumbs" aria-label="Breadcrumb"><a href="' . e(url('index.php')) . '">Home</a> / ' . e($eyebrow) . '</nav>'
        . '<span class="eyebrow">' . e($eyebrow) . '</span><h1 style="font-size:clamp(2.4rem,5.5vw,4.2rem)">' . e($title) . '</h1>'
        . ($sub !== '' ? '<p>' . e($sub) . '</p>' : '') . '</div></section>';
@@ -316,7 +316,7 @@ function preview_url(): string { return rtrim(setting('site_url'), '/') . '/?pre
 function jm_gate(): void {
     if (PHP_SAPI === 'cli') return;
     if (strpos($_SERVER['SCRIPT_NAME'] ?? '', '/' . ADMIN_DIR . '/') !== false) return;
-    if (basename($_SERVER['SCRIPT_NAME'] ?? '') === 'deploy-hook.php') return;   // GitHub webhook must always work
+    if (in_array(basename($_SERVER['SCRIPT_NAME'] ?? ''), ['deploy-hook.php', 'robots.php'], true)) return;   // GitHub webhook must always work
     $mode = site_mode(); if ($mode === 'live') return;
     if (admin_logged_in()) { $GLOBALS['jm_preview'] = $mode; return; }
     $key = preview_key(); $tok = preview_token($key);

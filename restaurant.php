@@ -4,6 +4,8 @@ $pageTitle = 'Restaurant & Café — Vegetarian Rajasthani Food'; $pageDesc = 'P
 $active = 'dining'; $bookTab = 'dine';
 $items = rows("SELECT * FROM jm_menu WHERE available=1 ORDER BY sort_order, id");
 $cats = array_values(array_unique(array_column($items, 'category')));
+seo_ld(seo_breadcrumb_ld([['Restaurant', 'restaurant']]));
+seo_ld(seo_restaurant_ld());
 include __DIR__ . '/includes/header.php';
 page_head(t('restaurant.head.eyebrow', 'Dining'), t('restaurant.head.title', 'Restaurant & Café'), t('restaurant.head.sub', '100% vegetarian. Village Rajasthani flavours, tandoor classics and an all-day café.'), im('restaurant.head.img', 'assets/images/food-thali.jpg'));
 ?>

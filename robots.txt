@@ -1,5 +1,0 @@
-User-agent: *
-Disallow: /admin-jm/
-Disallow: /data/
-Disallow: /includes/
-Sitemap: https://jawaimumal.com/sitemap.xml

@@ -3,6 +3,10 @@ require_once __DIR__ . '/includes/db.php';
 $pageTitle = 'Jawai Leopard Safari'; $pageDesc = 'Dawn and dusk leopard safaris in open 4x4 jeeps with local trackers, Jawai Dam birding, photography drives and Rabari village visits — from Jawai Mumal, Bera.';
 $active = 'safari'; $bookTab = 'safari';
 $safaris = rows("SELECT * FROM jm_safaris WHERE status='active' ORDER BY sort_order, id");
+seo_ld(seo_breadcrumb_ld([['Safari', 'safari']]));
+foreach ($safaris as $sf) seo_ld(['@context' => 'https://schema.org', '@type' => 'TouristTrip', 'name' => $sf['title'], 'description' => seo_clip((string)$sf['description'], 300),
+  'image' => seo_img_abs($sf['image']), 'touristType' => 'Wildlife', 'provider' => ['@id' => seo_abs('#hotel')],
+  'offers' => ['@type' => 'Offer', 'priceCurrency' => 'INR', 'price' => (string)(int)$sf['price_pp'], 'availability' => 'https://schema.org/InStock', 'url' => seo_abs('safari')]]);
 include __DIR__ . '/includes/header.php';
 page_head(t('safari.head.eyebrow', 'Safari'), t('safari.head.title', 'Jawai Leopard Safari'), t('safari.head.sub', 'Granite hills, open jeeps and local trackers who know every rock.'), im('safari.head.img', 'assets/images/leopard-log.jpg'));
 ?>

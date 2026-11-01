@@ -251,9 +251,5 @@ $n = count($slides);
   </div>
 </section>
 
-<script type="application/ld+json"><?= json_encode([
-  '@context' => 'https://schema.org', '@type' => 'Hotel', 'name' => setting('site_name'), 'url' => setting('site_url'),
-  'image' => img($slides[0]['image']), 'telephone' => setting('owner1_phone'), 'description' => setting('meta_description'),
-  'address' => ['@type' => 'PostalAddress', 'addressLocality' => 'Bera', 'addressRegion' => 'Rajasthan', 'addressCountry' => 'IN'],
-] + (has_coords(setting('map_lat'), setting('map_lng')) ? ['geo' => ['@type' => 'GeoCoordinates', 'latitude' => (float)setting('map_lat'), 'longitude' => (float)setting('map_lng')]] : []), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) ?></script>
+<?php if ($fq = seo_faq_ld($faqs)) seo_ld($fq); ?>
 <?php include __DIR__ . '/includes/footer.php'; ?>

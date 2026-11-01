@@ -4,6 +4,7 @@ $pageTitle = 'Rooms & Suites'; $pageDesc = 'Comfortable air-conditioned rooms an
 $active = 'stay';
 $rooms = rows("SELECT * FROM jm_rooms WHERE status='active' ORDER BY sort_order, id");
 $cats = array_values(array_unique(array_column($rooms, 'category')));
+seo_ld(seo_breadcrumb_ld([['Rooms & suites', 'rooms']]));
 include __DIR__ . '/includes/header.php';
 page_head(t('rooms.head.eyebrow', 'Stay'), t('rooms.head.title', 'Rooms & Suites'), t('rooms.head.sub', 'Quiet, clean and comfortable — a proper base for your Jawai trip.'), im('rooms.head.img', 'assets/images/hotel-front.jpg'));
 ?>

@@ -12,13 +12,16 @@ ErrorDocument 404 /404.php
     RewriteBase /
 
     RewriteRule ^sitemap\.xml$ sitemap.php [L]
+    RewriteRule ^robots\.txt$ robots.php [L]
+    RewriteRule ^blog/?$ blog.php [L]
+    RewriteRule ^blog/([a-z0-9-]+)/?$ blog.php?slug=$1 [L,QSA]
 
     # Clean URLs: /rooms instead of /rooms.php (old .php links redirect to the clean address)
     RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$
     RewriteCond %{THE_REQUEST} \s/+index\.php[\s?]
     RewriteRule ^index\.php$ / [R=301,L]
     RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$
-    RewriteCond %{THE_REQUEST} \s/+(?!deploy-hook|404|config)([a-z0-9_-]+)\.php[\s?]
+    RewriteCond %{THE_REQUEST} \s/+(?!deploy-hook|404|config|robots|sitemap)([a-z0-9_-]+)\.php[\s?]
     RewriteRule ^([a-z0-9_-]+)\.php$ /$1 [R=301,L,QSA]
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d

@@ -4,6 +4,7 @@ $pageTitle = 'Explore Jawai — Leopards, Dam, Villages & How to Reach'; $pageDe
 $active = 'jawai';
 $attrs = rows("SELECT * FROM jm_attractions WHERE status='active' ORDER BY sort_order, id");
 $groups = []; foreach ($attrs as $a) { $groups[$a['category']][] = $a; }
+seo_ld(seo_breadcrumb_ld([['Explore Jawai', 'jawai']]));
 include __DIR__ . '/includes/header.php';
 page_head(t('jawai.head.eyebrow', 'Explore Jawai'), t('jawai.head.title', 'Explore Jawai'), t('jawai.head.sub', 'Leopard hills, a bird-filled reservoir, village life and the heritage of Mewar and Marwar within reach.'), im('jawai.head.img', 'assets/images/hills-green.jpg'));
 ?>

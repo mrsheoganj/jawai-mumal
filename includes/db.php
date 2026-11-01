@@ -54,6 +54,7 @@ function jm_install_schema(PDO $pdo, string $type): void {
         "CREATE TABLE IF NOT EXISTS jm_attractions (id $pk, name VARCHAR(200) NOT NULL, category VARCHAR(60), distance VARCHAR(80), description TEXT, image VARCHAR(500), status VARCHAR(20) DEFAULT 'active', sort_order INT DEFAULT 0)$tail",
         "CREATE TABLE IF NOT EXISTS jm_gallery (id $pk, title VARCHAR(200), category VARCHAR(60), image VARCHAR(500) NOT NULL, sort_order INT DEFAULT 0)$tail",
         "CREATE TABLE IF NOT EXISTS jm_testimonials (id $pk, name VARCHAR(150) NOT NULL, origin VARCHAR(150), rating INT DEFAULT 5, quote TEXT NOT NULL, status VARCHAR(20) DEFAULT 'hidden', sort_order INT DEFAULT 0)$tail",
+        "CREATE TABLE IF NOT EXISTS jm_blog (id $pk, slug VARCHAR(160) UNIQUE, title VARCHAR(250) NOT NULL, excerpt TEXT, body MEDIUMTEXT, image VARCHAR(500), meta_title VARCHAR(250), meta_description VARCHAR(400), keywords VARCHAR(400), category VARCHAR(80), status VARCHAR(20) DEFAULT 'published', published_at DATETIME, sort_order INT DEFAULT 0)$tail",
         "CREATE TABLE IF NOT EXISTS jm_faqs (id $pk, question VARCHAR(300) NOT NULL, answer TEXT NOT NULL, sort_order INT DEFAULT 0)$tail",
         "CREATE TABLE IF NOT EXISTS jm_slides (id $pk, image VARCHAR(500) NOT NULL, eyebrow VARCHAR(150), title VARCHAR(250), text TEXT, cta_label VARCHAR(60), cta_url VARCHAR(300), cta2_label VARCHAR(60), cta2_url VARCHAR(300), status VARCHAR(20) DEFAULT 'active', sort_order INT DEFAULT 0)$tail",
         "CREATE TABLE IF NOT EXISTS jm_routes (id $pk, name VARCHAR(200) NOT NULL, kind VARCHAR(20) DEFAULT 'rail', code VARCHAR(20), km DECIMAL(8,1) DEFAULT 0, travel_time VARCHAR(60), note VARCHAR(255), lat VARCHAR(30), lng VARCHAR(30), geom TEXT, status VARCHAR(20) DEFAULT 'active', sort_order INT DEFAULT 0)$tail",
@@ -123,6 +124,7 @@ if (!get_setting_raw('routes_seeded')) {
 
 require_once __DIR__ . '/updater.php';
 require_once __DIR__ . '/mailer.php';
+require_once __DIR__ . '/seo.php';
 
 /** One-off clean-up: stock photos that did not belong to Jawai were replaced; point old references at the related photos. */
 function jm_migrate_images(): void {
@@ -143,5 +145,6 @@ function jm_migrate_images(): void {
     set_setting('img_remap_v1', '1');
 }
 jm_migrate_images();
+if (get_setting_raw('blog_seeded') !== '1') { require_once __DIR__ . '/seed_blog.php'; jm_seed_blog(); }
 upd_maybe_auto();   // live sync with GitHub (if enabled)
 jm_gate();

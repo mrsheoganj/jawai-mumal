@@ -83,8 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $done = isset($_GET['done']) ? preg_replace('/[^A-Z0-9\-]/', '', strtoupper($_GET['done'])) : '';
 $b = $done ? row('SELECT * FROM jm_bookings WHERE code = ?', [$done]) : null;
 
-$pageTitle = $done ? 'Request received' : 'Book your stay';
-$pageDesc = 'Request a room, table, safari or party booking at ' . setting('site_name') . ', Bera, Jawai.';
+$seoKey = 'book'; if ($done) $seo = ['noindex' => true];
 $active = '';
 $bodyClass = 'nav-solid';
 include __DIR__ . '/includes/header.php';

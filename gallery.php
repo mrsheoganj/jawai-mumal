@@ -4,6 +4,7 @@ $pageTitle = 'Gallery'; $pageDesc = 'Photos of Jawai Mumal hotel, rooms, restaur
 $active = 'gallery';
 $g = rows('SELECT * FROM jm_gallery ORDER BY sort_order, id');
 $cats = array_values(array_unique(array_column($g, 'category')));
+seo_ld(seo_breadcrumb_ld([['Gallery', 'gallery']]));
 include __DIR__ . '/includes/header.php';
 page_head(t('gallery.head.eyebrow', 'Gallery'), t('gallery.head.title', 'Gallery'), t('gallery.head.sub', 'The hotel, the food and the wild country around us.'), im('gallery.head.img', 'assets/images/hills-terrace.jpg'));
 ?>

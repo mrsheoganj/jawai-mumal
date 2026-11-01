@@ -22,6 +22,7 @@ $o2 = [setting('owner2_name'), setting('owner2_role'), setting('owner2_phone')];
         <li><a href="<?= url('safari.php') ?>"><?= et('footer.l3', 'Jawai safari') ?></a></li>
         <li><a href="<?= url('jawai.php') ?>"><?= et('footer.l4', 'Explore Jawai') ?></a></li>
         <li><a href="<?= url('gallery.php') ?>">Gallery</a></li>
+        <?php if (seo_cfg('blog_in_footer') === '1'): ?><li><a href="<?= url('blog') ?>"><?= et('footer.blog', 'Travel journal') ?></a></li><?php endif; ?>
         <li><a href="<?= url('book.php?type=event') ?>"><?= et('footer.l5', 'Party & events') ?></a></li>
         <li><a href="<?= url('policies.php') ?>"><?= et('footer.l6', 'Policies & terms') ?></a></li>
       </ul>
@@ -51,6 +52,7 @@ $o2 = [setting('owner2_name'), setting('owner2_role'), setting('owner2_phone')];
 </nav>
 <?php if (!empty($GLOBALS['jm_preview'])): ?><div class="prevpill" role="status"><?= icon('eye', 16) ?> <?= $GLOBALS['jm_preview'] === 'coming_soon' ? 'Preview · visitors see Coming soon' : 'Preview · visitors see Maintenance' ?> <a href="?exit_preview=1">Exit preview</a></div><?php endif; ?>
 <a class="wa-float" href="<?= e(wa_link(t('sdial.msg', 'Hello Jawai Mumal, I would like to know more.'))) ?>" target="_blank" rel="noopener" aria-label="<?= et('wa.aria', 'Chat on WhatsApp') ?>" title="<?= et('wa.aria', 'Chat on WhatsApp') ?>"><?= icon('whatsapp', 28) ?></a>
+<?php seo_ld_print($GLOBALS['jm_seo'] ?? seo_resolve([])); ?>
 <script src="<?= url('assets/js/site.js') ?>?v=1" defer></script>
 </body>
 </html>

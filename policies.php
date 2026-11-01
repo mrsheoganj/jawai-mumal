@@ -2,6 +2,8 @@
 require_once __DIR__ . '/includes/db.php';
 $pageTitle = 'Policies & Terms'; $pageDesc = 'Booking, check-in, cancellation, safari and privacy policies for ' . setting('site_name') . ', Bera.';
 $active = '';
+$seoKey = 'policies';
+seo_ld(seo_breadcrumb_ld([['Policies', 'policies']]));
 include __DIR__ . '/includes/header.php';
 page_head(t('policies.head.eyebrow', 'Good to know'), t('policies.head.title', 'Policies & Terms'), t('policies.head.sub', 'Simple, fair rules so everyone enjoys their stay.'), im('policies.head.img', 'assets/images/hotel-day.jpg'));
 $blocks = [

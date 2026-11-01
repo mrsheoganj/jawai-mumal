@@ -46,6 +46,7 @@ function admin_crud(array $c): void {
                     $vals[$col] = trim($_POST['v_' . $col] ?? '');
                 }
             }
+            if (!empty($c['before_save'])) $vals = ($c['before_save'])($vals, $id);
             $req = $c['required'] ?? array_key_first($c['fields']);
             if (($vals[$req] ?? '') === '' || $vals[$req] === 0 && $c['fields'][$req][1] !== 'number') $errs[] = $c['fields'][$req][0] . ' is required.';
             if ($errs) {

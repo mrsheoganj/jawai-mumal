@@ -3,7 +3,7 @@
 $gm = $GLOBALS['jm_gate_mode'] ?? 'coming_soon';
 $isCS = $gm === 'coming_soon';
 $target = $isCS ? launch_ts() : launch_ts('maint_until');
-if (!$isCS) { http_response_code(503); header('Retry-After: 3600'); }
+http_response_code(503); header('Retry-After: ' . ($target && $target > time() ? min(86400, max(300, $target - time())) : 3600)); header('X-Robots-Tag: noindex');
 header('Cache-Control: no-store');
 $name = setting('site_name');
 $whenText = $target ? (new DateTime('@' . $target))->setTimezone(new DateTimeZone('Asia/Kolkata'))->format('l, j F Y \a\t g:i A') . ' IST' : '';

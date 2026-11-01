@@ -16,6 +16,8 @@ function admin_nav(): array {
         ['routes.php', 'routes', 'Distances & travel', 'navigation'],
         ['gallery.php', 'gallery', 'Gallery', 'image'],
         ['testimonials.php', 'testimonials', 'Guest reviews', 'star'],
+        ['seo.php', 'seo', 'SEO & search ranking', 'search'],
+        ['blog.php', 'blog', 'Journal (SEO articles)', 'pencil'],
         ['faqs.php', 'faqs', 'FAQs', 'help'],
         ['slides.php', 'slides', 'Home banner slides', 'image'],
         ['texts.php', 'texts', 'Page text & images', 'pencil'],

@@ -2,7 +2,13 @@
 require_once __DIR__ . '/includes/db.php';
 $r = row("SELECT * FROM jm_rooms WHERE slug = ? AND status='active'", [$_GET['slug'] ?? '']);
 if (!$r) { http_response_code(404); $pageTitle = 'Room not found'; $active = 'stay'; $bodyClass = 'nav-solid'; include __DIR__ . '/includes/header.php'; echo '<section class="sec" style="padding-top:10rem;text-align:center"><div class="wrap"><h1>Room not found</h1><p><a class="btn btn--dark" href="' . url('rooms.php') . '">See all rooms</a></p></div></section>'; include __DIR__ . '/includes/footer.php'; exit; }
-$pageTitle = $r['name']; $pageDesc = $r['tagline'] . ' — ' . mb_substr($r['description'], 0, 140);
+$seo = ['title' => seo_clip($r['name'] . ' in Bera, Jawai | ' . setting('site_name'), 62), 'desc' => seo_clip($r['tagline'] . ' — ' . $r['description'], 160), 'image' => $r['image'],
+        'canonical' => seo_abs('room?slug=' . $r['slug']), 'keywords' => $r['name'] . ', ' . $r['name'] . ' Jawai, hotel room Bera, ' . ($r['category'] ?? ''), 'alt' => $r['name']];
+seo_ld(seo_breadcrumb_ld([['Rooms & suites', 'rooms'], [$r['name'], 'room?slug=' . $r['slug']]]));
+seo_ld(['@context' => 'https://schema.org', '@type' => 'HotelRoom', 'name' => $r['name'], 'description' => seo_clip((string)$r['description'], 300), 'image' => seo_img_abs($r['image']),
+  'url' => seo_abs('room?slug=' . $r['slug']), 'containedInPlace' => ['@id' => seo_abs('#hotel')],
+  'occupancy' => ['@type' => 'QuantitativeValue', 'value' => (int)preg_replace('/\D.*/', '', (string)$r['capacity']) ?: 2],
+  'offers' => ['@type' => 'Offer', 'priceCurrency' => 'INR', 'price' => (string)(int)$r['price'], 'availability' => 'https://schema.org/InStock', 'url' => seo_abs('room?slug=' . $r['slug'])]]);
 $ogImage = $r['image']; $active = 'stay'; $bookRoom = (int)$r['id']; $bookTab = 'stay';
 $imgs = array_values(array_filter(array_merge([$r['image']], lines((string)$r['gallery']))));
 $others = rows("SELECT * FROM jm_rooms WHERE status='active' AND id<>? ORDER BY sort_order LIMIT 3", [$r['id']]);

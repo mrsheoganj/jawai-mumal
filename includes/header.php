@@ -1,21 +1,19 @@
 <?php
 require_once __DIR__ . '/db.php';
 $siteName = setting('site_name');
-$pageTitle = isset($pageTitle) ? $pageTitle . ' | ' . $siteName : $siteName . ' — ' . setting('site_tagline') . ' | Bera, Jawai';
-$pageDesc  = $pageDesc ?? setting('meta_description');
 $active    = $active ?? '';
-$ogImage   = img($ogImage ?? 'assets/images/hotel-day.jpg');
+$GLOBALS['jm_seo'] = $seoR = seo_resolve(['seoKey' => $seoKey ?? null, 'seo' => $seo ?? [], 'active' => $active, 'pageTitle' => $pageTitle ?? '', 'pageDesc' => $pageDesc ?? null, 'ogImage' => $ogImage ?? null]);
 $nav = [
     'home' => [t('nav.home', 'Home'), 'index.php'], 'stay' => [t('nav.stay', 'Stay'), 'rooms.php'], 'dining' => [t('nav.dining', 'Dining'), 'restaurant.php'],
     'safari' => [t('nav.safari', 'Safari'), 'safari.php'], 'jawai' => [t('nav.jawai', 'Explore Jawai'), 'jawai.php'], 'gallery' => [t('nav.gallery', 'Gallery'), 'gallery.php'], 'contact' => [t('nav.contact', 'Contact'), 'contact.php'],
 ];
+if (seo_cfg('blog_in_menu') === '1') $nav['blog'] = [t('nav.blog', 'Journal'), 'blog'];
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title><?= e($pageTitle) ?></title>
-<meta name="description" content="<?= e($pageDesc) ?>">
+<?php seo_head($seoR); ?>
 <meta name="theme-color" content="#ffffff">
 <meta name="format-detection" content="telephone=no">
 <link rel="icon" href="<?= url('assets/brand/favicon.ico') ?>" sizes="any">
@@ -23,10 +21,6 @@ $nav = [
 <link rel="icon" type="image/png" sizes="192x192" href="<?= url('assets/brand/icon-192.png') ?>">
 <link rel="manifest" href="<?= url('site.webmanifest') ?>">
 <link rel="apple-touch-icon" href="<?= url('assets/brand/icon-180.png') ?>">
-<meta property="og:type" content="website">
-<meta property="og:title" content="<?= e($pageTitle) ?>">
-<meta property="og:description" content="<?= e($pageDesc) ?>">
-<meta property="og:image" content="<?= e($ogImage) ?>">
 <?= font_head() ?>
 <link rel="stylesheet" href="<?= url('assets/css/site.css') ?>?v=1">
 <script>try{if(sessionStorage.getItem('jmPre'))document.documentElement.classList.add('no-pre')}catch(e){}</script>
