@@ -708,3 +708,5 @@ body{background:#fff}
 .call-ico .i{stroke-width:2.2}
 .call-ico,.call-ico .i{color:#1b0f08!important}
 .call-ico:hover,.call-ico:hover .i{color:#fff!important}
+.call-ico{display:flex!important;align-items:center;justify-content:center;padding:0!important;min-height:0!important;line-height:0}
+.call-ico .i{display:block;margin:0!important;flex:none}
