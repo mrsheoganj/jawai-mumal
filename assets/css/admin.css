@@ -162,3 +162,7 @@ body.login{display:grid;grid-template-columns:1.1fr .9fr;min-height:100vh;backgr
 .ngrp__in a .i{opacity:.8}
 .ngrp:not(.is-open) .ngrp__in{visibility:hidden}
 @media (prefers-reduced-motion:reduce){.ngrp__b,.ngrp__chev{transition:none}}
+/* the sidebar scrolls; its blocks must never be squashed into each other */
+.side>*{flex-shrink:0}
+.side .side__brand{padding-bottom:1.2rem}
+.side__foot{margin-top:auto;padding-bottom:.4rem}
