@@ -18,6 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = row('SELECT * FROM jm_admins WHERE username = ?', [$u]);
         if ($user && password_verify($_POST['password'] ?? '', $user['password_hash'])) {
             session_regenerate_id(true);
+            if (!empty($_POST['remember'])) {   // keep this device signed in for 30 days (persistent cookie)
+                setcookie(session_name(), session_id(), ['expires' => time() + 2592000, 'path' => '/', 'httponly' => true, 'samesite' => 'Lax', 'secure' => !empty($_SERVER['HTTPS'])]);
+            }
             $_SESSION['admin_id'] = (int)$user['id'];
             $_SESSION['admin_user'] = $user['username'];
             $_SESSION['admin_name'] = $user['full_name'] ?: $user['username'];
@@ -40,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <link rel="stylesheet" href="<?= url('assets/css/admin.css') ?>?v=1"></head>
 <body class="login" id="loginbody">
 <div class="login__art" aria-hidden="true">
-  <img src="<?= e(img('assets/images/hero-savanna.jpg')) ?>" alt="">
+  <img src="<?= e(img('assets/images/hills-green.jpg')) ?>" alt="">
   <div class="login__mark">
     <svg viewBox="0 0 120 120" class="login__ring"><circle cx="60" cy="60" r="57" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
     <svg viewBox="0 0 120 120" class="login__ring login__ring--2"><circle cx="60" cy="60" r="52" fill="none" stroke="currentColor" stroke-width=".6" stroke-dasharray="2 5"/></svg>
@@ -60,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="inp"><?= icon('user', 20) ?><input id="u" name="username" autocomplete="username" required autofocus value="<?= e($_POST['username'] ?? '') ?>"></div>
     <label for="p">Password</label>
     <div class="inp"><?= icon('lock', 20) ?><input id="p" name="password" type="password" autocomplete="current-password" required><button type="button" class="eye" id="eye" aria-label="Show password"><?= icon('eye', 20) ?></button></div>
+    <label class="remember"><input type="checkbox" name="remember" value="1" checked> <span>Keep me signed in on this device (30 days)</span></label>
     <button class="btn" id="lbtn" type="submit"><span>Sign in</span><?= icon('arrow-right', 18) ?></button>
     <a class="back" href="<?= url('index.php') ?>">← Back to website</a>
   </form>

@@ -33,12 +33,12 @@ function settings_schema(): array {
 
         
         // ---------------- Contact
-        'owner1_name'  => ['Contact', 'Owner 1 – name', 'text', 'Nilesh Singh Chouhan'],
-        'owner1_role'  => ['Contact', 'Owner 1 – role', 'text', 'Owner'],
-        'owner1_phone' => ['Contact', 'Owner 1 – phone', 'text', '+91 63679 68353'],
-        'owner2_name'  => ['Contact', 'Owner 2 – name', 'text', 'Devendra Singh'],
-        'owner2_role'  => ['Contact', 'Owner 2 – role', 'text', 'Owner'],
-        'owner2_phone' => ['Contact', 'Owner 2 – phone', 'text', '+91 95113 09522'],
+        'owner1_name'  => ['Contact', 'Contact 1 – name', 'text', 'Nilesh Singh Chouhan'],
+        'owner1_role'  => ['Contact', 'Contact 1 – role', 'text', 'Reservations'],
+        'owner1_phone' => ['Contact', 'Contact 1 – phone', 'text', '+91 63679 68353'],
+        'owner2_name'  => ['Contact', 'Contact 2 – name', 'text', 'Devendra Singh'],
+        'owner2_role'  => ['Contact', 'Contact 2 – role', 'text', 'Reservations'],
+        'owner2_phone' => ['Contact', 'Contact 2 – phone', 'text', '+91 95113 09522'],
         'whatsapp'     => ['Contact', 'WhatsApp number (digits only, with country code)', 'text', '916367968353'],
         'email'        => ['Contact', 'Email (leave empty to hide)', 'text', ''],
         'address'      => ['Contact', 'Address', 'textarea', "Near Up-Tehsil Office, Bera Village,\nBera–Bali Road, District Pali,\nRajasthan, India"],

@@ -3,7 +3,7 @@ require_once __DIR__ . '/includes/db.php';
 $pageTitle = 'Contact & Directions'; $pageDesc = 'Message or visit Jawai Mumal in Bera village, Bera–Bali road, Pali, Rajasthan.';
 $active = 'contact'; $bookTab = 'enquiry';
 include __DIR__ . '/includes/header.php';
-page_head(t('contact.head.eyebrow', 'Contact'), t('contact.head.title', 'Contact & Directions'), t('contact.head.sub', 'Talk to the owners directly — we are happy to help plan your stay, safari or celebration.'), im('contact.head.img', 'assets/images/hotel-front.jpg'));
+page_head(t('contact.head.eyebrow', 'Contact'), t('contact.head.title', 'Contact & Directions'), t('contact.head.sub', 'Message us directly — we are happy to help plan your stay, safari or celebration.'), im('contact.head.img', 'assets/images/hotel-front.jpg'));
 $owners = [['owner1_name', 'owner1_role', 'owner1_phone'], ['owner2_name', 'owner2_role', 'owner2_phone']];
 ?>
 <section class="sec">

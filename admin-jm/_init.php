@@ -20,6 +20,7 @@ function admin_nav(): array {
         ['slides.php', 'slides', 'Home banner slides', 'image'],
         ['texts.php', 'texts', 'Page text & images', 'pencil'],
         ['content.php', 'content', 'Contact, logo & rules', 'sliders'],
+        ['email.php', 'email', 'Email (SMTP)', 'mail'],
         ['mode.php', 'mode', 'Site mode (launch / maintenance)', 'bell'],
         ['update.php', 'update', 'Update from GitHub', 'refresh'],
         ['account.php', 'account', 'My account', 'lock'],

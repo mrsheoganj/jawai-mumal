@@ -2,7 +2,7 @@
   "name": "Jawai Mumal — Hotel · Restaurant · Safari",
   "short_name": "Jawai Mumal",
   "description": "Hotel, pure-vegetarian Rajasthani restaurant and leopard safaris in Bera, Jawai.",
-  "start_url": "/index.php",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",

@@ -57,6 +57,7 @@ function jm_install_schema(PDO $pdo, string $type): void {
         "CREATE TABLE IF NOT EXISTS jm_faqs (id $pk, question VARCHAR(300) NOT NULL, answer TEXT NOT NULL, sort_order INT DEFAULT 0)$tail",
         "CREATE TABLE IF NOT EXISTS jm_slides (id $pk, image VARCHAR(500) NOT NULL, eyebrow VARCHAR(150), title VARCHAR(250), text TEXT, cta_label VARCHAR(60), cta_url VARCHAR(300), cta2_label VARCHAR(60), cta2_url VARCHAR(300), status VARCHAR(20) DEFAULT 'active', sort_order INT DEFAULT 0)$tail",
         "CREATE TABLE IF NOT EXISTS jm_routes (id $pk, name VARCHAR(200) NOT NULL, kind VARCHAR(20) DEFAULT 'rail', code VARCHAR(20), km DECIMAL(8,1) DEFAULT 0, travel_time VARCHAR(60), note VARCHAR(255), lat VARCHAR(30), lng VARCHAR(30), geom TEXT, status VARCHAR(20) DEFAULT 'active', sort_order INT DEFAULT 0)$tail",
+        "CREATE TABLE IF NOT EXISTS jm_mail_log (id $pk, created_at $ts, kind VARCHAR(30), to_addr VARCHAR(250), subject VARCHAR(300), status VARCHAR(12), error TEXT)$tail",
         "CREATE TABLE IF NOT EXISTS jm_attempts (id $pk, ip VARCHAR(64), created_at INT)$tail",
         "CREATE TABLE IF NOT EXISTS jm_bookings (id $pk, code VARCHAR(30) UNIQUE, type VARCHAR(20) NOT NULL, guest_name VARCHAR(150) NOT NULL, phone VARCHAR(40) NOT NULL, email VARCHAR(150), item_id INT, item_name VARCHAR(250), date_from DATE, date_to DATE, time_slot VARCHAR(40), guests INT DEFAULT 1, nights INT DEFAULT 0, amount INT DEFAULT 0, tax INT DEFAULT 0, status VARCHAR(30) DEFAULT 'New', notes TEXT, admin_notes TEXT, created_at $ts)$tail",
     ];
@@ -78,7 +79,7 @@ function jm_set_admin_password(PDO $pdo, string $pw, bool $announce): void {
     }
 }
 if ((int)$pdo->query('SELECT COUNT(*) FROM jm_admins')->fetchColumn() === 0) {
-    $pdo->prepare('INSERT INTO jm_admins (username, password_hash, full_name) VALUES (?,?,?)')->execute([DEFAULT_ADMIN_USER, 'x', 'Site Owner']);
+    $pdo->prepare('INSERT INTO jm_admins (username, password_hash, full_name) VALUES (?,?,?)')->execute([DEFAULT_ADMIN_USER, 'x', 'Site Admin']);
     if (defined('DEFAULT_ADMIN_PASS') && DEFAULT_ADMIN_PASS !== '') jm_set_admin_password($pdo, DEFAULT_ADMIN_PASS, false); else jm_set_admin_password($pdo, jm_random_password(), true);
 }
 // A password set in config.local.php is (re)applied whenever you change it there
@@ -121,5 +122,26 @@ if (!get_setting_raw('routes_seeded')) {
 }
 
 require_once __DIR__ . '/updater.php';
+require_once __DIR__ . '/mailer.php';
+
+/** One-off clean-up: stock photos that did not belong to Jawai were replaced; point old references at the related photos. */
+function jm_migrate_images(): void {
+    if (get_setting_raw('img_remap_v1') === '1') return;
+    $map = ['hero-savanna' => 'hills-green', 'safari-sunset' => 'leopard-log', 'culture-hawamahal' => 'hills-terrace', 'culture-fort' => 'hills-green',
+            'resort-night' => 'hotel-front', 'villa-pool' => 'hotel-day', 'resort-deck' => 'hotel-front', 'dining-hall' => 'food-bowls', 'dining-fine' => 'food-thali'];
+    $tables = ['jm_settings', 'jm_rooms', 'jm_menu', 'jm_safaris', 'jm_attractions', 'jm_gallery', 'jm_testimonials', 'jm_slides', 'jm_routes'];
+    foreach ($tables as $t) {
+        try {
+            $cols = [];
+            if (db()->getAttribute(PDO::ATTR_DRIVER_NAME) === 'sqlite') { foreach (rows("PRAGMA table_info($t)") as $c) if (stripos($c['type'], 'INT') === false) $cols[] = $c['name']; }
+            else { foreach (rows("SHOW COLUMNS FROM $t") as $c) if (preg_match('/char|text/i', $c['Type'])) $cols[] = $c['Field']; }
+            foreach ($cols as $c) foreach ($map as $a => $b)
+                q("UPDATE $t SET `$c` = REPLACE(`$c`, ?, ?) WHERE `$c` LIKE ?", ["assets/images/$a.jpg", "assets/images/$b.jpg", "%assets/images/$a.jpg%"]);
+        } catch (Throwable $e) { /* table or column not present: ignore */ }
+    }
+    try { q("UPDATE jm_settings SET svalue = 'Reservations' WHERE skey IN ('owner1_role','owner2_role') AND svalue = 'Owner'"); } catch (Throwable $e) {}
+    set_setting('img_remap_v1', '1');
+}
+jm_migrate_images();
 upd_maybe_auto();   // live sync with GitHub (if enabled)
 jm_gate();

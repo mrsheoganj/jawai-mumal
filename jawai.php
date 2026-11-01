@@ -19,7 +19,6 @@ page_head(t('jawai.head.eyebrow', 'Explore Jawai'), t('jawai.head.title', 'Explo
   </div></div>
 </section>
 
-<?php include __DIR__ . '/includes/scene.php'; ?>
 <section class="sec sec--sand">
   <div class="wrap">
     <div class="sechead rv"><span class="eyebrow eyebrow--dark"><?= et('jawai.wild.eyebrow', 'Wildlife') ?></span><h2><?= et('jawai.wild.title', 'More than leopards') ?></h2><p><?= et('jawai.wild.sub', 'Leopards are the headline, but the hills and the dam are alive all day.') ?></p></div>

@@ -9,6 +9,11 @@ if (is_file(__DIR__ . '/config.local.php')) {
 }
 
 if (session_status() === PHP_SESSION_NONE) {
+    // Sessions are saved in our own folder (shared hosting otherwise deletes them after ~24 minutes) and kept for 30 days.
+    $__sd = __DIR__ . '/data/sessions';
+    if (!is_dir($__sd)) @mkdir($__sd, 0700, true);
+    if (is_dir($__sd) && is_writable($__sd)) session_save_path($__sd);
+    @ini_set('session.gc_maxlifetime', '2592000'); @ini_set('session.gc_probability', '1'); @ini_set('session.gc_divisor', '200');
     session_name('jmsess');
     session_set_cookie_params(['httponly' => true, 'samesite' => 'Lax', 'secure' => !empty($_SERVER['HTTPS'])]);
     session_start();

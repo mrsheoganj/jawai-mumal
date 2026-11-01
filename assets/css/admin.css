@@ -56,8 +56,8 @@ input[type=checkbox]{width:auto;min-height:0;accent-color:var(--ink)}
 input[type=file]{padding:.5rem}
 .help{font-size:.82rem;color:var(--muted);margin:.25rem 0 0}
 .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:1rem}
-.c3{grid-column:span 3}.c4{grid-column:span 4}.c6{grid-column:span 6}.c8{grid-column:span 8}.c12{grid-column:span 12}
-@media (max-width:900px){.c3,.c4,.c6,.c8{grid-column:span 12}}
+.c2{grid-column:span 2}.c3{grid-column:span 3}.c4{grid-column:span 4}.c6{grid-column:span 6}.c8{grid-column:span 8}.c12{grid-column:span 12}
+@media (max-width:900px){.c2,.c3,.c4,.c6,.c8{grid-column:span 12}}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:1rem;margin-bottom:1.2rem}
 .stat{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:1.1rem 1.2rem;display:flex;gap:1rem;align-items:center;text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s}
 .stat:hover{transform:translateY(-2px);box-shadow:0 10px 24px -14px rgba(43,24,14,.4)}
@@ -142,3 +142,6 @@ body.login{display:grid;grid-template-columns:1.1fr .9fr;min-height:100vh;backgr
 
 /* Always lining figures (prices, dates, distances read cleanly) */
 *,*::before,*::after{font-variant-numeric:lining-nums!important;font-feature-settings:"lnum" 1}
+
+.remember{display:flex;gap:.6rem;align-items:center;margin-top:1.1rem;font-weight:400;font-size:.92rem;color:var(--muted);cursor:pointer}
+.remember input{accent-color:var(--ink);width:18px;height:18px}

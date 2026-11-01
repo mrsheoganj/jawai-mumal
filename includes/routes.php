@@ -20,7 +20,7 @@ foreach ($rt as $r) {
 $mapOk = $hasHotel && count(array_filter($items, fn($x) => $x['has'])) > 0;
 $cx = 400; $cy = 275; $paths = icon_paths();
 $kinds = array_values(array_unique(array_column(array_filter($items, fn($x) => $x['has']), 'kind')));
-$defKind = in_array('rail', $kinds, true) ? 'rail' : 'all';
+$defKind = 'all';
 foreach ($items as $n => &$it) { $it['n'] = $n + 1; } unset($it);
 $payload = ['defKind' => $defKind, 'hotel' => ['lat' => $hLat, 'lng' => $hLng, 'name' => setting('site_name'), 'img' => img(setting('logo_emblem'))], 'points' => $items];
 ?>

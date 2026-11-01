@@ -32,7 +32,6 @@ $whenText = $target ? (new DateTime('@' . $target))->setTimezone(new DateTimeZon
   .gate__when{font-weight:500;color:var(--ink-2);margin:0 0 1.8rem}
   .gate__live{display:none;margin:0 0 1.5rem}.gate.is-over .cd,.gate.is-over .gate__when{display:none}.gate.is-over .gate__live{display:block}
   .gate__wa{display:flex;flex-direction:column;align-items:center;gap:.6rem;color:var(--muted);font-size:.95rem}
-  .gate__scene .jscene{min-height:300px}.gate__scene .jscene svg{min-height:300px}.gate__scene .jscene__txt{display:none}
   .gate__foot{text-align:center;padding:1rem;font-size:.85rem;color:var(--muted);background:#fff}
   body{animation:none}
 </style>
@@ -53,7 +52,7 @@ $whenText = $target ? (new DateTime('@' . $target))->setTimezone(new DateTimeZon
     <?php endif; ?>
     <div class="gate__wa"><a class="wa-ico wa-ico--lg" href="<?= e(wa_link(t('gate.wamsg', 'Hello Jawai Mumal, I would like to ask about a booking.'))) ?>" target="_blank" rel="noopener" aria-label="<?= et('wa.aria', 'Chat on WhatsApp') ?>" title="<?= et('wa.aria', 'Chat on WhatsApp') ?>"><?= icon('whatsapp', 34) ?></a><span><?= et('gate.wa', 'For enquiries and bookings, message us on WhatsApp') ?></span></div>
   </div></div>
-  <div class="gate__scene"><?php include __DIR__ . '/scene.php'; ?>
+  <div class="gate__scene">
     <div class="gate__foot">© <?= date('Y') ?> <?= e($name) ?> · <?= e(preg_replace('/\s+/', ' ', str_replace("\n", ', ', setting('address')))) ?></div></div>
 </div>
 <script>
@@ -65,7 +64,6 @@ $whenText = $target ? (new DateTime('@' . $target))->setTimezone(new DateTimeZon
     el.d.textContent=p(Math.floor(l/86400));el.h.textContent=p(Math.floor(l%86400/3600));el.m.textContent=p(Math.floor(l%3600/60));el.s.textContent=p(l%60);
     if(l===0){g.classList.add('is-over');clearInterval(iv);var done=false;try{done=sessionStorage.getItem('gateReload')==='1';sessionStorage.setItem('gateReload','1')}catch(e){}if(!done)setTimeout(function(){location.reload()},2500)}}
   var iv=setInterval(tick,1000);tick();
-  var svg=document.querySelector('.jscene svg'); if(svg&&svg.pauseAnimations&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)svg.pauseAnimations();
 })();
 </script>
 </body></html>

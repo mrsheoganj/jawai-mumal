@@ -13,6 +13,18 @@ ErrorDocument 404 /404.php
 
     RewriteRule ^sitemap\.xml$ sitemap.php [L]
 
+    # Clean URLs: /rooms instead of /rooms.php (old .php links redirect to the clean address)
+    RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$
+    RewriteCond %{THE_REQUEST} \s/+index\.php[\s?]
+    RewriteRule ^index\.php$ / [R=301,L]
+    RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$
+    RewriteCond %{THE_REQUEST} \s/+(?!deploy-hook|404|config)([a-z0-9_-]+)\.php[\s?]
+    RewriteRule ^([a-z0-9_-]+)\.php$ /$1 [R=301,L,QSA]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{DOCUMENT_ROOT}/$1.php -f
+    RewriteRule ^([a-z0-9_-]+)/?$ $1.php [L,QSA]
+
     # Prevent directory browsing
     Options -Indexes
 

@@ -4,7 +4,7 @@ $pageTitle = 'Jawai Leopard Safari'; $pageDesc = 'Dawn and dusk leopard safaris 
 $active = 'safari'; $bookTab = 'safari';
 $safaris = rows("SELECT * FROM jm_safaris WHERE status='active' ORDER BY sort_order, id");
 include __DIR__ . '/includes/header.php';
-page_head(t('safari.head.eyebrow', 'Safari'), t('safari.head.title', 'Jawai Leopard Safari'), t('safari.head.sub', 'Granite hills, open jeeps and local trackers who know every rock.'), im('safari.head.img', 'assets/images/safari-sunset.jpg'));
+page_head(t('safari.head.eyebrow', 'Safari'), t('safari.head.title', 'Jawai Leopard Safari'), t('safari.head.sub', 'Granite hills, open jeeps and local trackers who know every rock.'), im('safari.head.img', 'assets/images/leopard-log.jpg'));
 ?>
 <section class="sec">
   <div class="wrap">
@@ -45,7 +45,7 @@ page_head(t('safari.head.eyebrow', 'Safari'), t('safari.head.title', 'Jawai Leop
     <div class="rv"><span class="eyebrow"><?= et('safari.ethics.eyebrow', 'Respect for the wild') ?></span><h2><?= et('safari.ethics.title', 'How we watch wildlife') ?></h2>
       <p><?= et('safari.ethics.p', 'Jawai works because people and leopards have shared these hills for generations. We keep it that way.') ?></p>
       <ul class="checks"><?php foreach (lines(t('safari.ethics.list', "We never block an animal's path or crowd a sighting\nNo calls, baiting or chasing — ever\nEngines off while we watch, from a respectful distance\nSmall groups and no convoys\nWe leave before an animal is disturbed\nLocal trackers and village families benefit directly")) as $li): ?><li><?= icon('check', 16) ?><?= e($li) ?></li><?php endforeach; ?></ul></div>
-    <div class="frame rv d1" style="aspect-ratio:4/3"><img src="<?= imgu('safari.ethics.img', 'assets/images/safari-sunset.jpg') ?>" alt="" loading="lazy"></div>
+    <div class="frame rv d1" style="aspect-ratio:4/3"><img src="<?= imgu('safari.ethics.img', 'assets/images/leopard-log.jpg') ?>" alt="" loading="lazy"></div>
   </div>
 </section>
 

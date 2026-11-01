@@ -29,3 +29,10 @@ assets/uploads/*
 !assets/uploads/.gitkeep
 !assets/uploads/.htaccess
 dist/
+data/sessions/
+data/*.log
+data/.version
+data/.last_check
+data/.update.lock
+data/first-login.txt
+dist/

@@ -13,7 +13,14 @@ function base_path(): string {
     $b = ($doc !== '' && strpos($root, $doc) === 0) ? substr($root, strlen($doc)) : '';
     return rtrim($b, '/');
 }
-function url(string $path = ''): string { return base_path() . '/' . ltrim($path, '/'); }
+/** Site URL for a path. Root-level pages are linked without ".php" (clean URLs, rewritten by .htaccess). */
+function url(string $path = ''): string {
+    $path = ltrim($path, '/');
+    if (preg_match('~^([a-z0-9_-]+)\.php(?=$|[?#])~i', $path, $m) && !in_array(strtolower($m[1]), ['deploy-hook', '404', 'config'], true)) {
+        $path = (strtolower($m[1]) === 'index' ? '' : $m[1]) . substr($path, strlen($m[0]));
+    }
+    return base_path() . '/' . $path;
+}
 function img(?string $p): string {
     $p = (string)$p;
     if ($p === '') return url('assets/brand/emblem-512.png');
@@ -247,14 +254,7 @@ function wa_to(string $phone, string $msg): string { return 'https://wa.me/' . w
 function gst_rate($nightly): float {
     return (float)($nightly <= (float)setting('tax_threshold', '7500') ? setting('tax_percent', '5') : setting('tax_percent_high', '18'));
 }
-function notify_booking(array $b): void {
-    $to = trim(setting('notify_email'));
-    if ($to === '' || !filter_var($to, FILTER_VALIDATE_EMAIL)) return;
-    $from = 'noreply@' . preg_replace('#^https?://(www\.)?#', '', rtrim(setting('site_url'), '/'));
-    @mail($to, 'New ' . (booking_types()[$b['type']] ?? 'booking') . ' request ' . $b['code'] . ' — ' . $b['guest_name'],
-        booking_wa_message($b) . "\n\nManage: " . rtrim(setting('site_url'), '/') . '/' . ADMIN_DIR . '/bookings.php?q=' . $b['code'],
-        "From: " . setting('site_name') . " <$from>\r\nContent-Type: text/plain; charset=UTF-8");
-}
+function notify_booking(array $b): void { jm_defer(function () use ($b) { send_booking_emails($b); }); }
 
 
 // ---------- Fonts (choose the pairing in Admin > Contact, logo & rules)

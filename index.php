@@ -5,7 +5,7 @@ $bookTab = 'stay';
 include __DIR__ . '/includes/header.php';
 
 $slides    = rows("SELECT * FROM jm_slides WHERE status='active' ORDER BY sort_order, id");
-if (!$slides) $slides = [['image' => 'assets/images/hero-savanna.jpg', 'eyebrow' => 'Bera · Jawai · Rajasthan', 'title' => setting('site_name'), 'text' => setting('site_tagline'), 'cta_label' => 'Book your stay', 'cta_url' => '#book', 'cta2_label' => '', 'cta2_url' => '']];
+if (!$slides) $slides = [['image' => 'assets/images/hills-green.jpg', 'eyebrow' => 'Bera · Jawai · Rajasthan', 'title' => setting('site_name'), 'text' => setting('site_tagline'), 'cta_label' => 'Book your stay', 'cta_url' => '#book', 'cta2_label' => '', 'cta2_url' => '']];
 $featRooms = rows("SELECT * FROM jm_rooms WHERE status='active' ORDER BY featured DESC, sort_order, id LIMIT 3");
 $safaris   = rows("SELECT * FROM jm_safaris WHERE status='active' ORDER BY sort_order, id LIMIT 3");
 $attrs     = rows("SELECT * FROM jm_attractions WHERE status='active' ORDER BY sort_order, id LIMIT 6");
@@ -163,9 +163,6 @@ $n = count($slides);
   </div>
 </section>
 
-<!-- ============ ANIMATED JAWAI ============ -->
-<?php include __DIR__ . '/includes/scene.php'; ?>
-
 <!-- ============ EXPLORE JAWAI ============ -->
 <section class="sec sec--sand">
   <div class="wrap">
@@ -189,7 +186,7 @@ $n = count($slides);
 <section class="sec">
   <div class="wrap">
     <div class="cta rv">
-      <img src="<?= imgu('home.events.img', 'assets/images/dining-hall.jpg') ?>" alt="" loading="lazy">
+      <img src="<?= imgu('home.events.img', 'assets/images/food-bowls.jpg') ?>" alt="" loading="lazy">
       <span class="eyebrow"><?= et('home.events.eyebrow', 'Party & personal bookings') ?></span>
       <h2><?= et('home.events.title', 'Parties, celebrations & private functions') ?></h2>
       <p><?= et('home.events.text', 'Birthdays, family get-togethers, small weddings, corporate meets or a quiet personal celebration — party and personal bookings are both available. Tell us your date, guest count and menu ideas and we will plan the rest.') ?></p>
