@@ -24,7 +24,7 @@ if (seo_cfg('blog_in_menu') === '1') $nav['blog'] = [t('nav.blog', 'Journal'), '
 <link rel="manifest" href="<?= url('site.webmanifest') ?>">
 <link rel="apple-touch-icon" href="<?= url('assets/brand/icon-180.png') ?>">
 <?= font_head() ?>
-<link rel="stylesheet" href="<?= url('assets/css/site.css') ?>?v=1">
+<link rel="stylesheet" href="<?= asset('assets/css/site.css') ?>">
 <script>try{if(sessionStorage.getItem('jmPre'))document.documentElement.classList.add('no-pre')}catch(e){}</script>
 </head>
 <body class="<?= e($bodyClass ?? '') ?>" data-tax="<?= e(setting('tax_percent')) ?>">

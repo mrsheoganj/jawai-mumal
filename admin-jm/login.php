@@ -41,10 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <title>Sign in · <?= e(setting('site_name')) ?> admin</title><meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="<?= url('assets/brand/favicon.ico') ?>">
 <?= font_head() ?>
-<link rel="stylesheet" href="<?= url('assets/css/admin.css') ?>?v=1"></head>
+<link rel="stylesheet" href="<?= asset('assets/css/admin.css') ?>"></head>
 <body class="login" id="loginbody">
 <div class="login__art" aria-hidden="true">
-  <img src="<?= e(img('assets/images/hills-green.jpg')) ?>" alt="">
+  <img src="<?= e(img('assets/images/hotel-front.jpg')) ?>" alt="">
   <div class="login__mark">
     <svg viewBox="0 0 120 120" class="login__ring"><circle cx="60" cy="60" r="57" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
     <svg viewBox="0 0 120 120" class="login__ring login__ring--2"><circle cx="60" cy="60" r="52" fill="none" stroke="currentColor" stroke-width=".6" stroke-dasharray="2 5"/></svg>

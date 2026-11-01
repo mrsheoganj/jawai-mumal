@@ -53,6 +53,6 @@ $o2 = [setting('owner2_name'), setting('owner2_role'), setting('owner2_phone')];
 <?php if (!empty($GLOBALS['jm_preview'])): ?><div class="prevpill" role="status"><?= icon('eye', 16) ?> <?= $GLOBALS['jm_preview'] === 'coming_soon' ? 'Preview · visitors see Coming soon' : 'Preview · visitors see Maintenance' ?> <a href="?exit_preview=1">Exit preview</a></div><?php endif; ?>
 <a class="wa-float" href="<?= e(wa_link(t('sdial.msg', 'Hello Jawai Mumal, I would like to know more.'))) ?>" target="_blank" rel="noopener" aria-label="<?= et('wa.aria', 'Chat on WhatsApp') ?>" title="<?= et('wa.aria', 'Chat on WhatsApp') ?>"><?= icon('whatsapp', 28) ?></a>
 <?php seo_ld_print($GLOBALS['jm_seo'] ?? seo_resolve([])); ?>
-<script src="<?= url('assets/js/site.js') ?>?v=1" defer></script>
+<script src="<?= asset('assets/js/site.js') ?>" defer></script>
 </body>
 </html>

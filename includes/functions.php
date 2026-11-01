@@ -13,6 +13,8 @@ function base_path(): string {
     $b = ($doc !== '' && strpos($root, $doc) === 0) ? substr($root, strlen($doc)) : '';
     return rtrim($b, '/');
 }
+/** URL of a static file with a version stamp so browsers pick up new CSS/JS right after a deploy. */
+function asset(string $path): string { $f = __DIR__ . '/../' . ltrim($path, '/'); return url($path) . '?v=' . (is_file($f) ? filemtime($f) : 1); }
 /** Site URL for a path. Root-level pages are linked without ".php" (clean URLs, rewritten by .htaccess). */
 function url(string $path = ''): string {
     $path = ltrim($path, '/');
@@ -277,7 +279,7 @@ function font_head(): string {
         $b = url('assets/fonts/');
         return '<link rel="preload" href="' . e($b) . 'Inter-normal-latin.woff2" as="font" type="font/woff2" crossorigin>'
              . '<link rel="preload" href="' . e($b) . 'PlayfairDisplay-normal-latin.woff2" as="font" type="font/woff2" crossorigin>'
-             . '<link rel="stylesheet" href="' . e($b) . 'fonts.css?v=1">' . $vars;
+             . '<link rel="stylesheet" href="' . e($b) . 'fonts.css?v=2">' . $vars;
     }
     return '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="' . e($f['url']) . '" rel="stylesheet">' . $vars;
 }

@@ -34,7 +34,7 @@ function admin_head(string $title, string $active = ''): void {
 <title><?= e($title) ?> · Admin · <?= e(setting('site_name')) ?></title><meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="<?= url('assets/brand/favicon.ico') ?>">
 <?= font_head() ?>
-<link rel="stylesheet" href="<?= url('assets/css/admin.css') ?>?v=1"></head>
+<link rel="stylesheet" href="<?= asset('assets/css/admin.css') ?>"></head>
 <body><div class="shell">
 <aside class="side" id="side">
   <a class="side__brand" href="index.php"><img src="<?= e(img(setting('logo_light'))) ?>" alt="<?= e(setting('site_name')) ?>"><small>Admin panel</small></a>

@@ -38,7 +38,7 @@ function jm_blog_posts(): array {
 <p>If you are still choosing dates, read our guide to the <a href="{{blog/best-time-to-visit-jawai}}">best time to visit Jawai</a>.</p>
 HTML];
 
-    $P[] = ['best-time-to-visit-jawai', 'Best Time to Visit Jawai: Month-by-Month', 'Planning', 'assets/images/hills-green.jpg', '2026-09-04 09:00:00',
+    $P[] = ['best-time-to-visit-jawai', 'Best Time to Visit Jawai: Month-by-Month', 'Planning', 'assets/images/hotel-day.jpg', '2026-09-04 09:00:00',
         'Jawai is a year-round destination. Here is what each season feels like and which months suit leopards, birds and comfort.',
         'Best Time to Visit Jawai, Rajasthan: Month-by-Month Guide',
         'The best time to visit Jawai for leopard safaris, birdwatching and comfortable weather – month by month, with notes on summer, monsoon and winter.',
@@ -61,7 +61,7 @@ HTML];
 <p>Whatever the month, a stay in Bera puts you minutes from the hills. Browse our <a href="{{rooms}}">rooms</a> or ask about dates on <a href="{{contact}}">WhatsApp</a>.</p>
 HTML];
 
-    $P[] = ['how-to-reach-jawai-from-udaipur-jodhpur-jaipur', 'How to Reach Jawai from Udaipur, Jodhpur, Jaipur & Delhi', 'Planning', 'assets/images/hills-terrace.jpg', '2026-09-07 09:00:00',
+    $P[] = ['how-to-reach-jawai-from-udaipur-jodhpur-jaipur', 'How to Reach Jawai from Udaipur, Jodhpur, Jaipur & Delhi', 'Planning', 'assets/images/hotel-front.jpg', '2026-09-07 09:00:00',
         'Road, rail and air routes to Jawai and Bera, with real driving distances from the nearest airports and stations.',
         'How to Reach Jawai: Airports, Trains & Road Distances',
         'How to reach Jawai and Bera, Pali, by air, train and road: Udaipur and Jodhpur airports, Jawai Bandh and Falna stations, driving times and tips.',
@@ -119,7 +119,7 @@ HTML];
 <p>Jawai Mumal combines <a href="{{rooms}}">comfortable rooms</a>, a pure-vegetarian <a href="{{restaurant}}">Rajasthani restaurant</a> and our own <a href="{{safari}}">leopard safaris</a> under one roof in Bera, so you can sleep, eat and set out for the hills without arranging three different providers.</p>
 HTML];
 
-    $P[] = ['jawai-dam-jawai-bandh-history-birds-crocodiles', 'Jawai Dam (Jawai Bandh): History, Birds and Crocodiles', 'Nature', 'assets/images/hills-green.jpg', '2026-09-13 09:00:00',
+    $P[] = ['jawai-dam-jawai-bandh-history-birds-crocodiles', 'Jawai Dam (Jawai Bandh): History, Birds and Crocodiles', 'Nature', '', '2026-09-13 09:00:00',
         'The story behind western Rajasthan’s large Jawai reservoir and the wildlife you can see on its shores.',
         'Jawai Dam (Jawai Bandh): History, Birds & Wildlife',
         'Jawai Dam in Pali, Rajasthan: when it was built, why it matters, the birds and mugger crocodiles you can see and how to visit from Bera.',
@@ -136,7 +136,7 @@ HTML];
 <p>The dam is about 15 km from Bera, roughly half an hour by road. A slow morning drive with binoculars is rewarding; our <a href="{{safari}}">Jawai Dam wetland and birding drive</a> is built around it. Dress in muted colours, keep noise low and never approach the water’s edge on foot near crocodiles.</p>
 HTML];
 
-    $P[] = ['rabari-community-jawai-culture-and-leopards', 'The Rabari of Jawai: Living Beside Leopards', 'Culture', 'assets/images/hills-terrace.jpg', '2026-09-16 09:00:00',
+    $P[] = ['rabari-community-jawai-culture-and-leopards', 'The Rabari of Jawai: Living Beside Leopards', 'Culture', '', '2026-09-16 09:00:00',
         'Meet the herding community whose tolerance for big cats shapes the story of Jawai.',
         'Rabari Community of Jawai: Culture & Coexistence with Leopards',
         'Learn about the Rabari herders of Jawai, their red turbans and silver jewellery, hill temples and the unusual coexistence between people and leopards.',
@@ -207,7 +207,7 @@ HTML];
 <p>Either way, nothing in the wild is guaranteed. Read how a drive works in our <a href="{{blog/jawai-leopard-safari-complete-guide}}">complete Jawai safari guide</a>.</p>
 HTML];
 
-    $P[] = ['wildlife-of-jawai-beyond-leopards', 'Wildlife of Jawai: More Than Leopards', 'Wildlife', 'assets/images/hills-green.jpg', '2026-09-25 09:00:00',
+    $P[] = ['wildlife-of-jawai-beyond-leopards', 'Wildlife of Jawai: More Than Leopards', 'Wildlife', '', '2026-09-25 09:00:00',
         'Hyenas, crocodiles, foxes and more: what else lives in the Jawai hills and around the dam.',
         'Wildlife of Jawai: Animals Besides Leopards',
         'Beyond leopards: striped hyena, desert fox, jackal, mongoose, mugger crocodile and other wildlife you may see around Jawai, with tips for spotting them.',
@@ -235,7 +235,7 @@ HTML];
 <p>Our <a href="{{safari}}">safari packages</a> are led by local trackers who know these hills by sight and sound.</p>
 HTML];
 
-    $P[] = ['birdwatching-in-jawai', 'Birdwatching in Jawai: Species, Seasons and Hotspots', 'Wildlife', 'assets/images/hills-green.jpg', '2026-09-28 09:00:00',
+    $P[] = ['birdwatching-in-jawai', 'Birdwatching in Jawai: Species, Seasons and Hotspots', 'Wildlife', '', '2026-09-28 09:00:00',
         'When to go, where to look and what you might see on a birding morning at Jawai.',
         'Birdwatching in Jawai: Best Season, Species & Hotspots',
         'Birdwatching in Jawai, Rajasthan: the best season, species around the dam and granite hills, tips and how to arrange a birding drive from Bera.',
@@ -291,7 +291,7 @@ HTML];
 <p>Weekends, school holidays and December–January fill up quickly, so ask early.</p>
 HTML];
 
-    $P[] = ['jawai-wildlife-photography-tips', 'Jawai Wildlife Photography Tips for Leopards and Landscapes', 'Photography', 'assets/images/hills-terrace.jpg', '2026-10-04 09:00:00',
+    $P[] = ['jawai-wildlife-photography-tips', 'Jawai Wildlife Photography Tips for Leopards and Landscapes', 'Photography', 'assets/images/leopard-log.jpg', '2026-10-04 09:00:00',
         'Light, lenses, camera settings and etiquette for photographing leopards on granite hills.',
         'Jawai Wildlife Photography Tips: Leopards & Landscapes',
         'Practical photography tips for Jawai leopard safaris: best light, lenses, camera settings, composition and ethical behaviour on the rocks.',
@@ -366,7 +366,7 @@ HTML];
 <p>A vegetarian kitchen that can adjust spice levels, a comfortable air-conditioned room and a hotel only minutes from the hills makes the logistics easy. Explore our <a href="{{rooms}}">family-friendly rooms</a> or tell us your needs on <a href="{{contact}}">WhatsApp</a>.</p>
 HTML];
 
-    $P[] = ['romantic-getaway-jawai-couples-honeymoon', 'A Romantic Getaway in Jawai: Couples and Honeymoon Ideas', 'Couples', 'assets/images/hills-terrace.jpg', '2026-10-13 09:00:00',
+    $P[] = ['romantic-getaway-jawai-couples-honeymoon', 'A Romantic Getaway in Jawai: Couples and Honeymoon Ideas', 'Couples', 'assets/images/hotel-front.jpg', '2026-10-13 09:00:00',
         'Quiet hills, starry skies and good food: how to plan a memorable couples’ trip.',
         'Romantic Jawai Getaway: Honeymoon & Couples Ideas',
         'Plan a romantic Jawai trip for couples and honeymooners: private leopard safaris, sunset points, stargazing, village dinners and where to stay in Bera.',
@@ -387,7 +387,7 @@ HTML];
 <p>If it is an anniversary or birthday, tell us in advance. We can arrange a flower-decorated room, a cake or a private dinner. Browse our <a href="{{rooms}}">rooms and suites</a> and request dates on <a href="{{book?type=stay}}">the booking page</a>.</p>
 HTML];
 
-    $P[] = ['day-trips-from-jawai-ranakpur-kumbhalgarh-mount-abu', 'Day Trips from Jawai: Ranakpur, Kumbhalgarh, Mount Abu and Udaipur', 'Itinerary', 'assets/images/hills-green.jpg', '2026-10-16 09:00:00',
+    $P[] = ['day-trips-from-jawai-ranakpur-kumbhalgarh-mount-abu', 'Day Trips from Jawai: Ranakpur, Kumbhalgarh, Mount Abu and Udaipur', 'Itinerary', '', '2026-10-16 09:00:00',
         'Heritage and nature trips within easy driving distance of Bera, with real distances.',
         'Day Trips from Jawai: Ranakpur, Kumbhalgarh, Mount Abu & More',
         'Best day trips from Jawai and Bera: Ranakpur Jain temples, Kumbhalgarh Fort, Mount Abu, Udaipur and Jodhpur, with driving distances and tips.',

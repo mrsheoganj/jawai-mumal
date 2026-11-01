@@ -152,7 +152,22 @@ function jm_migrate_images(): void {
     try { q("UPDATE jm_settings SET svalue = 'Reservations' WHERE skey IN ('owner1_role','owner2_role') AND svalue = 'Owner'"); } catch (Throwable $e) {}
     set_setting('img_remap_v1', '1');
 }
+/** v2: no generic stock landscapes – only real hotel photos, the leopard and the food. Other places show the emblem until real photos are uploaded. */
+function jm_migrate_images_v2(): void {
+    if (get_setting_raw('img_remap_v2') === '1') return;
+    $gen = ['assets/images/hills-green.jpg', 'assets/images/hills-terrace.jpg'];
+    try {
+        q("UPDATE jm_slides SET image = ? WHERE image IN (?, ?)", array_merge(['assets/images/hotel-front.jpg'], $gen));
+        q("DELETE FROM jm_gallery WHERE image IN (?, ?)", $gen);
+        q("UPDATE jm_safaris SET image = ? WHERE slug = ?", ['assets/images/leopard-log.jpg', 'wildlife-photography-safari']);
+        foreach (['jm_safaris', 'jm_attractions', 'jm_blog', 'jm_rooms', 'jm_menu'] as $t) q("UPDATE $t SET image = '' WHERE image IN (?, ?)", $gen);
+        foreach (['best-time-to-visit-jawai' => 'assets/images/hotel-day.jpg', 'how-to-reach-jawai-from-udaipur-jodhpur-jaipur' => 'assets/images/hotel-front.jpg', 'romantic-getaway-jawai-couples-honeymoon' => 'assets/images/hotel-front.jpg', 'jawai-wildlife-photography-tips' => 'assets/images/leopard-log.jpg'] as $sl => $im) q("UPDATE jm_blog SET image = ? WHERE slug = ? AND (image = '' OR image IS NULL)", [$im, $sl]);
+        q("UPDATE jm_gallery SET title = 'Rajasthani bowls' WHERE title = 'Restaurant hall'");
+    } catch (Throwable $e) { /* optional tables may not exist */ }
+    set_setting('img_remap_v2', '1');
+}
 jm_migrate_images();
+jm_migrate_images_v2();
 if (get_setting_raw('blog_seeded') !== '1') { require_once __DIR__ . '/seed_blog.php'; jm_seed_blog(); }
 upd_maybe_auto();   // live sync with GitHub (if enabled)
 jm_gate();

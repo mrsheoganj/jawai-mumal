@@ -13,7 +13,7 @@ $whenText = $target ? (new DateTime('@' . $target))->setTimezone(new DateTimeZon
 <meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#ffffff"><meta name="format-detection" content="telephone=no">
 <link rel="icon" href="<?= url('assets/brand/favicon.ico') ?>" sizes="any"><link rel="apple-touch-icon" href="<?= url('assets/brand/icon-180.png') ?>">
 <?= font_head() ?>
-<link rel="stylesheet" href="<?= url('assets/css/site.css') ?>?v=1">
+<link rel="stylesheet" href="<?= asset('assets/css/site.css') ?>">
 <style>
   body{background:#fff;padding:0}
   .gate{min-height:100svh;display:grid;grid-template-rows:1fr auto;isolation:isolate}

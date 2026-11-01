@@ -61,10 +61,10 @@ function jm_seed(PDO $pdo): void {
     $st = $pdo->prepare('INSERT INTO jm_safaris (slug,title,duration,timing,price_pp,private_price,vehicle,difficulty,image,description,highlights,badge,status,sort_order) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
     $safaris = [
         ['classic-leopard-tracking-safari', 'Classic Leopard Tracking Safari', 'About 3 hours', 'Morning 6:00–9:00 AM · Evening 4:00–7:00 PM', 3500, 12000, 'Open 4x4 jeep, up to 6 guests', 'Easy', $I.'leopard-log.jpg', 'Follow alarm calls, pugmarks and the warmth of sun-struck granite with a local tracker as the hills\' resident leopards come out onto the rocks at first and last light. Jawai\'s leopards live on open granite domes, not in dense forest, so the land itself shows you where to look.', "Open 4x4 jeep with driver and local tracker\nTracking by langur and peafowl alarm calls\nEngine off during sightings, at a respectful distance\nBinoculars on board, hot tea in the field", 'Most popular', 'active', 1],
-        ['jawai-dam-wetland-birding-drive', 'Jawai Dam Wetland & Birding Drive', 'About 3 hours', 'Morning 7:00–10:00 AM', 2500, 9000, 'Open 4x4 jeep, up to 6 guests', 'Easy', $I.'hills-green.jpg', 'A slower, scope-led drive along the Jawai Dam shoreline. In winter look for flamingos, demoiselle cranes and bar-headed geese; raptors circle the hills and mugger crocodiles bask on the banks. More than 300 bird species have been recorded around Jawai.', "Shoreline birdwatching with a guide\nWinter flocks of flamingos and cranes\nMugger crocodiles on the sandbanks\nGentle pace, ideal for families", 'Birds & wildlife', 'active', 2],
+        ['jawai-dam-wetland-birding-drive', 'Jawai Dam Wetland & Birding Drive', 'About 3 hours', 'Morning 7:00–10:00 AM', 2500, 9000, 'Open 4x4 jeep, up to 6 guests', 'Easy', '', 'A slower, scope-led drive along the Jawai Dam shoreline. In winter look for flamingos, demoiselle cranes and bar-headed geese; raptors circle the hills and mugger crocodiles bask on the banks. More than 300 bird species have been recorded around Jawai.', "Shoreline birdwatching with a guide\nWinter flocks of flamingos and cranes\nMugger crocodiles on the sandbanks\nGentle pace, ideal for families", 'Birds & wildlife', 'active', 2],
         ['private-4x4-expedition', 'Private 4x4 Expedition', 'Half day or full day', 'Flexible timings', 6000, 20000, 'Private open 4x4 jeep', 'Easy–Moderate', $I.'leopard-log.jpg', 'Your own jeep and tracker, with the day shaped around you: longer sightings, unhurried breaks, a boulder-top sundowner or a breakfast picnic on the rocks. Good for families with children, couples marking an occasion and serious wildlife watchers.', "Whole jeep for your group only\nFlexible start time and unhurried sightings\nOptional sundowner on the granite hills\nCombine the leopard hills and the dam in one day", 'Private', 'active', 3],
-        ['wildlife-photography-safari', 'Wildlife Photography Safari', 'Multi-drive programmes', 'Dawn and dusk drives', 7000, 22000, 'Open 4x4 jeep, max 3 photographers', 'Easy', $I.'hills-green.jpg', 'Planned around the light: low-angle positioning, camera beanbags and a tracker who understands composition. Small groups of up to three photographers per jeep so everyone gets a clear line of sight.', "Maximum 3 photographers per jeep\nBeanbag camera mounts on request\nPlanned around golden-hour light\nPatient, no-chase approach", 'Photography', 'active', 4],
-        ['rabari-village-culture-visit', 'Rabari Village & Culture Visit', '2 to 2.5 hours', 'Morning 9:00–11:30 AM', 1800, 6500, 'Jeep + walking', 'Easy', $I.'hills-terrace.jpg', 'Meet the Rabari herding families who have shared these hills with leopards for generations. Walk through a village, sip chai in a courtyard and hear how people and big cats live side by side.', "Village walk with a local guide\nMasala chai with a family\nStories of living alongside leopards\nRespectful, small groups", 'Culture', 'active', 5],
+        ['wildlife-photography-safari', 'Wildlife Photography Safari', 'Multi-drive programmes', 'Dawn and dusk drives', 7000, 22000, 'Open 4x4 jeep, max 3 photographers', 'Easy', $I.'leopard-log.jpg', 'Planned around the light: low-angle positioning, camera beanbags and a tracker who understands composition. Small groups of up to three photographers per jeep so everyone gets a clear line of sight.', "Maximum 3 photographers per jeep\nBeanbag camera mounts on request\nPlanned around golden-hour light\nPatient, no-chase approach", 'Photography', 'active', 4],
+        ['rabari-village-culture-visit', 'Rabari Village & Culture Visit', '2 to 2.5 hours', 'Morning 9:00–11:30 AM', 1800, 6500, 'Jeep + walking', 'Easy', '', 'Meet the Rabari herding families who have shared these hills with leopards for generations. Walk through a village, sip chai in a courtyard and hear how people and big cats live side by side.', "Village walk with a local guide\nMasala chai with a family\nStories of living alongside leopards\nRespectful, small groups", 'Culture', 'active', 5],
     ];
     foreach ($safaris as $s) { $st->execute([$s[0], $s[1], $s[2], $s[3], $s[4], $s[5], $s[6], $s[7], $s[8], $s[9], $s[10], $s[11], $s[12], $s[13]]); }
 
@@ -72,17 +72,17 @@ function jm_seed(PDO $pdo): void {
     $st = $pdo->prepare('INSERT INTO jm_attractions (name,category,distance,description,image,status,sort_order) VALUES (?,?,?,?,?,?,?)');
     $att = [
         ['Jawai Leopard Hills', 'Wildlife', 'Nearby', 'Granite domes, caves and boulder fields where leopards rest by day. A short walk from villages, farms and hill temples. Estimates put the wider Jawai area at roughly 50–70 leopards; there is no official count.', $I.'leopard-log.jpg'],
-        ['Jawai Bandh Leopard Conservation Reserve', 'Wildlife', 'Nearby', 'A notified conservation reserve around the Jawai hills that helps protect leopards and their habitat while local herding communities continue to graze their animals nearby.', $I.'hills-terrace.jpg'],
-        ['Jawai Dam (Jawai Bandh)', 'Nature', '15 km · about 30 min', 'Completed in 1957 on the Jawai river, one of western Rajasthan\'s largest reservoirs. Mugger crocodiles, winter flamingos, cranes and raptors, with granite hills all around.', $I.'hills-green.jpg'],
-        ['Rabari Villages', 'Culture', 'Nearby', 'Meet the Rabari herders, known for their red turbans and silver jewellery, whose long tradition of living beside leopards is the heart of Jawai\'s story.', $I.'hills-terrace.jpg'],
+        ['Jawai Bandh Leopard Conservation Reserve', 'Wildlife', 'Nearby', 'A notified conservation reserve around the Jawai hills that helps protect leopards and their habitat while local herding communities continue to graze their animals nearby.', ''],
+        ['Jawai Dam (Jawai Bandh)', 'Nature', '15 km · about 30 min', 'Completed in 1957 on the Jawai river, one of western Rajasthan\'s largest reservoirs. Mugger crocodiles, winter flamingos, cranes and raptors, with granite hills all around.', ''],
+        ['Rabari Villages', 'Culture', 'Nearby', 'Meet the Rabari herders, known for their red turbans and silver jewellery, whose long tradition of living beside leopards is the heart of Jawai\'s story.', ''],
         ['Village Food & Chai Stops', 'Experience', 'In and around Bera', 'Bajra roti with ghee, buttermilk, ker sangri and kulhad chai — ask us to arrange a village-style meal or a chai halt on your drive.', $I.'food-thali.jpg'],
-        ['Granite Hill Sunrise & Sunset Points', 'Nature', 'Nearby', 'Quiet viewpoints over the boulder-strewn hills, perfect for golden-hour photographs and a flask of tea.', $I.'hills-green.jpg'],
+        ['Granite Hill Sunrise & Sunset Points', 'Nature', 'Nearby', 'Quiet viewpoints over the boulder-strewn hills, perfect for golden-hour photographs and a flask of tea.', ''],
         ['Stargazing & Campfire', 'Experience', 'At the hotel', 'Clear desert skies away from city light. Ask the team to arrange an evening campfire.', $I.'hotel-front.jpg'],
-        ['Ranakpur Jain Temples', 'Heritage', '48 km · about 1 hr', 'A marble temple complex with 1,444 carved pillars set in a forested valley.', $I.'hills-terrace.jpg'],
-        ['Kumbhalgarh Fort', 'Heritage', '81 km · about 1 hr 40 min', 'A 15th-century hill fort with one of the longest continuous walls in the world.', $I.'hills-green.jpg'],
-        ['Mount Abu', 'Nature', '99 km · about 2 hrs', 'Rajasthan\'s only hill station, with Nakki Lake, the Dilwara temples and cool air.', $I.'hills-green.jpg'],
+        ['Ranakpur Jain Temples', 'Heritage', '48 km · about 1 hr', 'A marble temple complex with 1,444 carved pillars set in a forested valley.', ''],
+        ['Kumbhalgarh Fort', 'Heritage', '81 km · about 1 hr 40 min', 'A 15th-century hill fort with one of the longest continuous walls in the world.', ''],
+        ['Mount Abu', 'Nature', '99 km · about 2 hrs', 'Rajasthan\'s only hill station, with Nakki Lake, the Dilwara temples and cool air.', ''],
         ['Udaipur — City of Lakes', 'Heritage', '114 km · about 2 hrs', 'City Palace, Lake Pichola and royal-era havelis.', $I.'hotel-front.jpg'],
-        ['Jodhpur — Mehrangarh Fort', 'Heritage', '175 km · about 3 hrs', 'The Blue City and its giant fortress above the old town.', $I.'hills-green.jpg'],
+        ['Jodhpur — Mehrangarh Fort', 'Heritage', '175 km · about 3 hrs', 'The Blue City and its giant fortress above the old town.', ''],
     ];
     foreach ($att as $i => $a) { $st->execute([$a[0], $a[1], $a[2], $a[3], $a[4], 'active', $i]); }
 
@@ -90,10 +90,9 @@ function jm_seed(PDO $pdo): void {
     $st = $pdo->prepare('INSERT INTO jm_gallery (title,category,image,sort_order) VALUES (?,?,?,?)');
     $gal = [
         ['Jawai Mumal, Bera', 'Hotel', $I.'hotel-day.jpg'], ['Jawai Mumal at dusk', 'Hotel', $I.'hotel-front.jpg'], ['Leopard on the rocks', 'Safari', $I.'leopard-log.jpg'], ['Heritage suite', 'Rooms', $I.'room-heritage.jpg'],
-        ['Safari at sunset', 'Safari', $I.'leopard-log.jpg'], ['Village-style curry', 'Dining', $I.'food-thali.jpg'], ['Granite Hill Room', 'Rooms', $I.'room-desert-suite.jpg'],
-        ['Savanna light', 'Landscape', $I.'hills-green.jpg'], ['Restaurant hall', 'Dining', $I.'food-bowls.jpg'], ['Terrace Suite', 'Rooms', $I.'hotel-day.jpg'],
-        ['Hills of Jawai', 'Landscape', $I.'hills-green.jpg'], ['Hilltop view', 'Landscape', $I.'hills-terrace.jpg'],
-        ['Deluxe Room', 'Rooms', $I.'room-modern.jpg'], ['Evening lights', 'Hotel', $I.'hotel-front.jpg'], ['Paneer tikka', 'Dining', $I.'food-paneer.jpg'], ['Rajasthan heritage', 'Culture', $I.'hills-terrace.jpg'],
+        ['Jawai leopard country', 'Safari', $I.'leopard-log.jpg'], ['Village-style curry', 'Dining', $I.'food-thali.jpg'], ['Granite Hill Room', 'Rooms', $I.'room-desert-suite.jpg'],
+        ['Rajasthani bowls', 'Dining', $I.'food-bowls.jpg'], ['Terrace Suite', 'Rooms', $I.'hotel-day.jpg'],
+        ['Deluxe Room', 'Rooms', $I.'room-modern.jpg'], ['Evening lights', 'Hotel', $I.'hotel-front.jpg'], ['Paneer tikka', 'Dining', $I.'food-paneer.jpg'],
     ];
     foreach ($gal as $i => $g) { $st->execute([$g[0], $g[1], $g[2], $i]); }
 
@@ -124,7 +123,7 @@ function jm_seed_slides(PDO $pdo): void {
     $I = 'assets/images/';
     $st = $pdo->prepare('INSERT INTO jm_slides (image,eyebrow,title,text,cta_label,cta_url,cta2_label,cta2_url,status,sort_order) VALUES (?,?,?,?,?,?,?,?,?,?)');
     $rows = [
-        [$I.'hills-green.jpg', 'Bera · Jawai · Rajasthan', 'Stay in the heart of Jawai leopard country', 'A comfortable hotel, a pure-vegetarian Rajasthani kitchen and guided leopard safaris — all in Bera village, Pali.', 'Book your stay', '#book', 'Jawai safari', 'safari.php', 'active', 1],
+        [$I.'hotel-front.jpg', 'Bera · Jawai · Rajasthan', 'Stay in the heart of Jawai leopard country', 'A comfortable hotel, a pure-vegetarian Rajasthani kitchen and guided leopard safaris — all in Bera village, Pali.', 'Book your stay', '#book', 'Jawai safari', 'safari.php', 'active', 1],
         [$I.'leopard-log.jpg', 'Jawai Safari', 'Leopards on the granite hills', 'Sunrise and sunset drives in open 4x4 jeeps with local trackers who read every alarm call and pugmark.', 'See safaris', 'safari.php', 'Request a safari', 'book.php?type=safari', 'active', 2],
         [$I.'food-thali.jpg', 'Village flavours', 'Rajasthani food, the village way', 'Dal baati churma, ker sangri, bajra roti with ghee and more — a 100% vegetarian kitchen.', 'View the menu', 'restaurant.php', 'Reserve a table', 'book.php?type=dine', 'active', 3],
     ];

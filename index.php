@@ -2,11 +2,11 @@
 require_once __DIR__ . '/includes/db.php';
 $active = 'home';
 $bookTab = 'stay';
-$preloadImg = val("SELECT image FROM jm_slides WHERE status='active' ORDER BY sort_order, id LIMIT 1") ?: 'assets/images/hills-green.jpg';
+$preloadImg = val("SELECT image FROM jm_slides WHERE status='active' ORDER BY sort_order, id LIMIT 1") ?: 'assets/images/hotel-front.jpg';
 include __DIR__ . '/includes/header.php';
 
 $slides    = rows("SELECT * FROM jm_slides WHERE status='active' ORDER BY sort_order, id");
-if (!$slides) $slides = [['image' => 'assets/images/hills-green.jpg', 'eyebrow' => 'Bera · Jawai · Rajasthan', 'title' => setting('site_name'), 'text' => setting('site_tagline'), 'cta_label' => 'Book your stay', 'cta_url' => '#book', 'cta2_label' => '', 'cta2_url' => '']];
+if (!$slides) $slides = [['image' => 'assets/images/hotel-front.jpg', 'eyebrow' => 'Bera · Jawai · Rajasthan', 'title' => setting('site_name'), 'text' => setting('site_tagline'), 'cta_label' => 'Book your stay', 'cta_url' => '#book', 'cta2_label' => '', 'cta2_url' => '']];
 $featRooms = rows("SELECT * FROM jm_rooms WHERE status='active' ORDER BY featured DESC, sort_order, id LIMIT 3");
 $safaris   = rows("SELECT * FROM jm_safaris WHERE status='active' ORDER BY sort_order, id LIMIT 3");
 $attrs     = rows("SELECT * FROM jm_attractions WHERE status='active' ORDER BY sort_order, id LIMIT 6");
