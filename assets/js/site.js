@@ -220,15 +220,6 @@
   }
   [sIn, sOut, sRoom].forEach(function (n) { n && n.addEventListener('change', estStay); });
   estStay();
-  var fS = $('#f-s'), fG = $('#f-g');
-  function estSafari() {
-    if (!fS) return; var f = fS.closest('form'), est = $('[data-est]', f); if (!est) return;
-    var o = fS.selectedOptions[0], mode = ($('input[name=mode]:checked', f) || {}).value, g = parseInt(fG.value, 10) || 1;
-    if (!o) return; var amt = mode === 'private' ? parseInt(o.dataset.pv, 10) : parseInt(o.dataset.pp, 10) * g;
-    est.textContent = 'approx. ' + money(amt) + (mode === 'private' ? ' per jeep' : ' for ' + g);
-  }
-  if (fS) { [fS, fG].forEach(function (n) { n.addEventListener('change', estSafari); }); $$('input[name=mode]').forEach(function (n) { n.addEventListener('change', estSafari); }); estSafari(); }
-
   /* Client-side validation (server re-validates) */
   $$('.bform').forEach(function (f) {
     f.addEventListener('submit', function (e) {

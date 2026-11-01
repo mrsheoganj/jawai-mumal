@@ -71,7 +71,7 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
       <div class="f f--4"><label for="f-no">Requests (optional)</label><input id="f-no" name="notes" placeholder="Photography, pick-up point…"></div>
     </div>
     <div class="formfoot"><p><?= icon('compass', 18) ?><span><?= et('book.safari.note', 'Safari timings depend on weather and tracker availability. We confirm the exact slot on WhatsApp.') ?></span></p>
-      <div><span class="est" data-est></span> <button class="btn btn--gold" type="submit">Request safari <?= icon('arrow-right', 18) ?></button> <button class="wa-ico wa-ico--submit" type="submit" name="via" value="wa" aria-label="<?= e(t('book.wa', 'Book on WhatsApp')) ?>" title="<?= e(t('book.wa', 'Book on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?></button></div></div>
+      <div><button class="btn btn--gold" type="submit">Request safari <?= icon('arrow-right', 18) ?></button> <button class="wa-ico wa-ico--submit" type="submit" name="via" value="wa" aria-label="<?= e(t('book.wa', 'Book on WhatsApp')) ?>" title="<?= e(t('book.wa', 'Book on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?></button></div></div>
     </form>
   </section>
 
