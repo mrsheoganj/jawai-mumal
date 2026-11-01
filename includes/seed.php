@@ -7,12 +7,7 @@ function jm_seed(PDO $pdo): void {
     $st = $pdo->prepare('INSERT INTO jm_rooms (slug,name,category,tagline,price,size,capacity,beds,view_type,image,gallery,description,amenities,inventory,featured,status,sort_order) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
     $am = "Air conditioning\nFree Wi-Fi\nHot water 24 hours\nTea & coffee maker\nWork desk\nDaily housekeeping";
     $rooms = [
-        ['deluxe-room', 'Deluxe Room', 'Deluxe', 'Calm, bright and made for easy stays', 3500, '260 sq ft', '2 adults + 1 child', '1 King bed', 'Courtyard', $I.'room-modern.jpg', $I.'room-bed.jpg', 'A comfortable air-conditioned room with a king bed, soft lighting and a quiet work corner. A good base for travellers and couples exploring Jawai.', $am, 6, 1, 1],
-        ['heritage-suite', 'Heritage Suite', 'Suite', 'Warm woods, deep sofas, room to spread out', 6500, '420 sq ft', '2 adults + 2 children', '1 King bed + sofa', 'Garden', $I.'room-heritage.jpg', $I.'room-desert-suite.jpg', 'A larger suite with a separate seating area and Rajasthani-inspired décor. Ideal for families and longer stays.', $am . "\nSeating lounge\nMini fridge", 3, 1, 2],
-        ['granite-hill-room', 'Granite Hill Room', 'Premium', 'Wake up facing the hills', 5000, '320 sq ft', '2 adults + 1 child', '1 King bed', 'Hill view', $I.'room-desert-suite.jpg', $I.'room-modern.jpg', 'A premium room with a large window framing the granite hills, a lounge corner and premium bedding.', $am . "\nHill-facing window\nLounge corner", 4, 1, 3],
-        ['family-room', 'Family Room', 'Family', 'Space for everyone, close together', 5500, '380 sq ft', '4 adults', '2 Queen beds', 'Courtyard', $I.'room-bed.jpg', $I.'room-heritage.jpg', 'Two queen beds and extra floor space so families and small groups can stay together comfortably.', $am . "\nExtra seating", 4, 0, 4],
-        ['terrace-suite', 'Terrace Suite', 'Suite', 'Private terrace for sunsets and chai', 8500, '480 sq ft', '2 adults + 2 children', '1 King bed + sofa', 'Terrace & hills', $I.'hotel-day.jpg', $I.'hotel-front.jpg', 'Our top-floor suite with a private terrace, outdoor seating and the best sunset views at Jawai Mumal.', $am . "\nPrivate terrace\nOutdoor seating", 2, 1, 5],
-        ['standard-room', 'Standard Room', 'Standard', 'Simple, clean and great value', 2500, '200 sq ft', '2 adults', '1 Queen bed', 'Street side', $I.'room-bed.jpg', $I.'room-modern.jpg', 'A neat, well-kept room with everything you need for a short stay at a friendly price.', "Air conditioning\nFree Wi-Fi\nHot water 24 hours\nDaily housekeeping", 8, 0, 6],
+        ['premium-room', 'Premium Room', 'Premium', 'Calm, bright and made for easy stays', 2500, '260 sq ft', '2 adults + 1 child', '1 King bed', 'Hill side', $I.'room-modern.jpg', $I.'room-bed.jpg' . "\n" . $I.'room-heritage.jpg', 'Our one room type: a comfortable air-conditioned Premium Room with a king bed, soft lighting and a quiet work corner, a good base for travellers and couples exploring Jawai. Rates start from the price shown and vary with the season; we confirm the exact rate for your dates on WhatsApp.', $am, 8, 1, 1],
     ];
     foreach ($rooms as $r) {
         $st->execute([$r[0], $r[1], $r[2], $r[3], $r[4], $r[5], $r[6], $r[7], $r[8], $r[9], $r[10], $r[11], $r[12], $r[13], $r[14], 'active', $r[15]]);
@@ -89,10 +84,10 @@ function jm_seed(PDO $pdo): void {
     // ---------- Gallery
     $st = $pdo->prepare('INSERT INTO jm_gallery (title,category,image,sort_order) VALUES (?,?,?,?)');
     $gal = [
-        ['Jawai Mumal, Bera', 'Hotel', $I.'hotel-day.jpg'], ['Jawai Mumal at dusk', 'Hotel', $I.'hotel-front.jpg'], ['Leopard on the rocks', 'Safari', $I.'leopard-log.jpg'], ['Heritage suite', 'Rooms', $I.'room-heritage.jpg'],
-        ['Jawai leopard country', 'Safari', $I.'leopard-log.jpg'], ['Village-style curry', 'Dining', $I.'food-thali.jpg'], ['Granite Hill Room', 'Rooms', $I.'room-desert-suite.jpg'],
-        ['Rajasthani bowls', 'Dining', $I.'food-bowls.jpg'], ['Terrace Suite', 'Rooms', $I.'hotel-day.jpg'],
-        ['Deluxe Room', 'Rooms', $I.'room-modern.jpg'], ['Evening lights', 'Hotel', $I.'hotel-front.jpg'], ['Paneer tikka', 'Dining', $I.'food-paneer.jpg'],
+        ['Jawai Mumal, Bera', 'Hotel', $I.'hotel-day.jpg'], ['Jawai Mumal at dusk', 'Hotel', $I.'hotel-front.jpg'], ['Leopard on the rocks', 'Safari', $I.'leopard-log.jpg'], ['Premium Room', 'Rooms', $I.'room-heritage.jpg'],
+        ['Jawai leopard country', 'Safari', $I.'leopard-log.jpg'], ['Village-style curry', 'Dining', $I.'food-thali.jpg'], ['Premium Room', 'Rooms', $I.'room-desert-suite.jpg'],
+        ['Rajasthani bowls', 'Dining', $I.'food-bowls.jpg'], ['Premium Room', 'Rooms', $I.'hotel-day.jpg'],
+        ['Premium Room', 'Rooms', $I.'room-modern.jpg'], ['Evening lights', 'Hotel', $I.'hotel-front.jpg'], ['Paneer tikka', 'Dining', $I.'food-paneer.jpg'],
     ];
     foreach ($gal as $i => $g) { $st->execute([$g[0], $g[1], $g[2], $i]); }
 

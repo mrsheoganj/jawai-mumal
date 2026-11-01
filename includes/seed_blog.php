@@ -384,7 +384,7 @@ HTML];
 <h2>When to go</h2>
 <p>Winter evenings are the most pleasant. Spring and early summer offer excellent sightings if you do not mind the heat. Our <a href="{{blog/best-time-to-visit-jawai}}">best time to visit guide</a> has details.</p>
 <h2>Celebrating something?</h2>
-<p>If it is an anniversary or birthday, tell us in advance. We can arrange a flower-decorated room, a cake or a private dinner. Browse our <a href="{{rooms}}">rooms and suites</a> and request dates on <a href="{{book?type=stay}}">the booking page</a>.</p>
+<p>If it is an anniversary or birthday, tell us in advance. We can arrange a flower-decorated room, a cake or a private dinner. Browse our <a href="{{rooms}}">room</a> and request dates on <a href="{{book?type=stay}}">the booking page</a>.</p>
 HTML];
 
     $P[] = ['day-trips-from-jawai-ranakpur-kumbhalgarh-mount-abu', 'Day Trips from Jawai: Ranakpur, Kumbhalgarh, Mount Abu and Udaipur', 'Itinerary', '', '2026-10-16 09:00:00',

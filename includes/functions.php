@@ -57,7 +57,7 @@ function set_setting(string $k, string $v): void {
     q('INSERT INTO jm_settings (skey, svalue) VALUES (?, ?)', [$k, $v]);
     settings_all(true);
 }
-function lines(string $t): array {
+function lines(?string $t): array {
     return array_values(array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', $t)), 'strlen'));
 }
 

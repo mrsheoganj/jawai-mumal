@@ -20,24 +20,26 @@ function v_name(string $s, string $label = 'Name'): ?string {
     if (!preg_match("/^[\\p{L}\\p{M}][\\p{L}\\p{M} .'\\-]*$/u", $s)) return "$label can only contain letters, spaces and . ' -";
     return null;
 }
-/** Phone: Indian 10-digit mobile (6-9...), optionally with +91 / 91 / 0, or an international number starting with +. Returns [normalised, error]. */
+/** Phone: any country. Indian 10-digit mobiles (optionally with +91 / 91 / 0) and international numbers (with + or 00, or with the country code typed first). Returns [normalised, error]. */
 function v_phone(string $s): array {
     $s = trim($s);
     if ($s === '') return ['', 'Phone number is required.'];
     if (strlen($s) > 25 || !preg_match('/^\+?[0-9][0-9 ()\-]*$/', $s)) return ['', 'Phone number can only contain digits, spaces, + - ( ).'];
-    if (strlen(preg_replace('/\D/', '', $s)) < 8) return ['', 'That phone number is too short.'];
-    $plus = $s[0] === '+';
     $d = preg_replace('/\D/', '', $s);
-    if ($plus) {
-        if (strpos($d, '91') === 0 && strlen($d) === 12 && preg_match('/^[6-9]/', substr($d, 2))) return ['+91 ' . substr($d, 2, 5) . ' ' . substr($d, 7), null];
-        if (strpos($d, '91') === 0) return ['', 'Indian numbers need 10 digits after +91, starting with 6, 7, 8 or 9.'];
-        if (strlen($d) < 8 || strlen($d) > 15) return ['', 'Please enter a valid international number (8 to 15 digits).'];
+    if (strlen($d) < 8) return ['', 'That phone number is too short.'];
+    if (strlen($d) > 15) return ['', 'That phone number is too long (maximum 15 digits).'];
+    $intl = $s[0] === '+' || strpos($d, '00') === 0;
+    if (strpos($d, '00') === 0) $d = substr($d, 2);
+    if ($intl || strlen($d) > 10) {
+        if (strpos($d, '91') === 0 && ($intl || strlen($d) === 12)) {
+            if (!preg_match('/^91[6-9]\d{9}$/', $d)) return ['', 'Indian numbers need 10 digits after +91, starting with 6, 7, 8 or 9.'];
+            return ['+91 ' . substr($d, 2, 5) . ' ' . substr($d, 7), null];
+        }
+        if (!$intl && strlen($d) === 11 && $d[0] === '0' && preg_match('/^[6-9]/', substr($d, 1))) return ['+91 ' . substr($d, 1, 5) . ' ' . substr($d, 6), null];
         return ['+' . $d, null];
     }
-    if (strlen($d) === 12 && strpos($d, '91') === 0) $d = substr($d, 2);
-    if (strlen($d) === 11 && $d[0] === '0') $d = substr($d, 1);
-    if (!preg_match('/^[6-9]\d{9}$/', $d)) return ['', 'Please enter a 10-digit mobile number starting with 6, 7, 8 or 9 (or add your country code with +).'];
-    return ['+91 ' . substr($d, 0, 5) . ' ' . substr($d, 5), null];
+    if (preg_match('/^[6-9]\d{9}$/', $d)) return ['+91 ' . substr($d, 0, 5) . ' ' . substr($d, 5), null];
+    return [$s, null];   // another country's number typed without a + sign: keep exactly as entered
 }
 function v_email(string $s, bool $required = false, string $label = 'Email address'): ?string {
     $s = trim($s);

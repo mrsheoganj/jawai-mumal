@@ -17,6 +17,8 @@ function icon_paths(): array {
     return $p;
 }
 function icon(string $name, int $size = 20, string $class = ''): string {
+    // WhatsApp always uses the official full-colour logo (assets/brand/whatsapp.svg), never a redrawn icon.
+    if ($name === 'whatsapp') return '<img class="i i--wa' . ($class !== '' ? ' ' . $class : '') . '" src="' . htmlspecialchars(url('assets/brand/whatsapp.svg'), ENT_QUOTES) . '" width="' . $size . '" height="' . $size . '" alt="" aria-hidden="true" decoding="async">';
     $set = icon_set();
     if (!isset($set[$name])) return '';
     $i = $set[$name];

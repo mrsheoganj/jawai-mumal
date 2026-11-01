@@ -9,7 +9,7 @@
 function seo_pages(): array {
     return [
         'home'       => ['Home', ''],
-        'rooms'      => ['Rooms & suites', 'rooms'],
+        'rooms'      => ['Rooms', 'rooms'],
         'restaurant' => ['Restaurant', 'restaurant'],
         'safari'     => ['Safari', 'safari'],
         'jawai'      => ['Explore Jawai', 'jawai'],
@@ -30,8 +30,8 @@ function seo_defaults(): array {
             'keywords' => 'Jawai hotel, hotel in Bera Rajasthan, Jawai leopard safari, Jawai Bandh stay, leopard safari Rajasthan, Jawai Mumal, Jawai resort, pure veg restaurant Bera, Jawai leopard hills hotel',
         ],
         'rooms' => [
-            'title' => 'Rooms & Suites in Bera, Jawai | Jawai Mumal',
-            'desc'  => 'Comfortable air-conditioned rooms and suites in Bera village, minutes from the Jawai leopard hills. Hot water, Wi-Fi and a vegetarian kitchen on site.',
+            'title' => 'Rooms in Bera, Jawai | Jawai Mumal',
+            'desc'  => 'Comfortable air-conditioned rooms in Bera village, minutes from the Jawai leopard hills. Hot water, Wi-Fi and a vegetarian kitchen on site.',
             'keywords' => 'Jawai hotel rooms, hotel rooms Bera Rajasthan, stay near Jawai leopard hills, Jawai Bandh accommodation, hotel near Jawai dam, Bera hotel booking',
         ],
         'restaurant' => [

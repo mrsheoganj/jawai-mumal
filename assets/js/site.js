@@ -58,6 +58,9 @@
     hero.addEventListener('mouseleave', play);
     hero.addEventListener('focusin', function () { clearInterval(timer); });
     hero.addEventListener('focusout', play);
+    var tx = null;
+    hero.addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; }, { passive: true });
+    hero.addEventListener('touchend', function (e) { if (tx === null) return; var dx = e.changedTouches[0].clientX - tx; tx = null; if (Math.abs(dx) > 50) { go(cur + (dx < 0 ? 1 : -1)); play(); } }, { passive: true });
     var mq = window.matchMedia('(max-width: 700px)');
     if (mq.addEventListener) mq.addEventListener('change', build); else if (mq.addListener) mq.addListener(build);
     build();
@@ -211,10 +214,12 @@
     phone: function (v) {
       if (!v) return 'Please enter your phone number.';
       if (v.length > 25 || !/^\+?[0-9][0-9 ()\-]*$/.test(v)) return 'Use digits only (spaces, + and - are fine).';
-      var d = v.replace(/\D/g, ''); if (d.length < 8) return 'That phone number is too short.';
-      if (v[0] === '+') { if (d.indexOf('91') === 0) return /^91[6-9]\d{9}$/.test(d) ? '' : 'Indian numbers need 10 digits after +91.'; return d.length >= 8 && d.length <= 15 ? '' : 'Please enter a valid international number.'; }
-      if (d.length === 12 && d.indexOf('91') === 0) d = d.slice(2); if (d.length === 11 && d[0] === '0') d = d.slice(1);
-      return /^[6-9]\d{9}$/.test(d) ? '' : 'Enter a 10-digit mobile number starting with 6, 7, 8 or 9.';
+      var d = v.replace(/\D/g, '');
+      if (d.length < 8) return 'That phone number is too short.';
+      if (d.length > 15) return 'That phone number is too long.';
+      var intl = v[0] === '+' || d.indexOf('00') === 0; if (d.indexOf('00') === 0) d = d.slice(2);
+      if (d.indexOf('91') === 0 && (intl || d.length === 12)) return /^91[6-9]\d{9}$/.test(d) ? '' : 'Indian numbers need 10 digits after +91.';
+      return '';
     },
     email: function (v) { return v && !/^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(v) ? 'That email address does not look right.' : ''; },
     notes: function (v, i) { return i.required && v.length < 5 ? 'Please write a little more so we can help.' : (v.length > 600 ? 'Please keep this under 600 characters.' : ''); }

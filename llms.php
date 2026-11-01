@@ -7,6 +7,6 @@ $n = setting('site_name');
 echo "# $n\n\n> " . seo_field('home', 'desc') . "\n\n";
 echo "$n is a hotel, pure-vegetarian Rajasthani restaurant and leopard-safari operator in Bera village, Pali district, Rajasthan, India, at the edge of the Jawai leopard hills. Bookings are handled on WhatsApp.\n\n";
 echo "## Main pages\n";
-foreach (['rooms' => 'Rooms & suites', 'restaurant' => 'Restaurant', 'safari' => 'Jawai leopard safari', 'jawai' => 'Explore Jawai & distances', 'contact' => 'Contact & directions', 'policies' => 'Policies'] as $k => $l) echo "- [$l](" . seo_abs($k) . "): " . seo_field($k, 'desc') . "\n";
+foreach (['rooms' => 'Rooms', 'restaurant' => 'Restaurant', 'safari' => 'Jawai leopard safari', 'jawai' => 'Explore Jawai & distances', 'contact' => 'Contact & directions', 'policies' => 'Policies'] as $k => $l) echo "- [$l](" . seo_abs($k) . "): " . seo_field($k, 'desc') . "\n";
 echo "\n## Journal\n";
 foreach (blog_published() as $p) echo "- [" . $p['title'] . "](" . seo_abs('blog/' . $p['slug']) . "): " . $p['excerpt'] . "\n";

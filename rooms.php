@@ -1,16 +1,16 @@
 <?php
 require_once __DIR__ . '/includes/db.php';
-$pageTitle = 'Rooms & Suites'; $pageDesc = 'Comfortable air-conditioned rooms and suites at Jawai Mumal, Bera, a base for leopard safaris in Jawai.';
+$pageTitle = 'Rooms'; $pageDesc = 'Comfortable air-conditioned rooms at Jawai Mumal, Bera, a base for leopard safaris in Jawai.';
 $active = 'stay';
 $rooms = rows("SELECT * FROM jm_rooms WHERE status='active' ORDER BY sort_order, id");
 $cats = array_values(array_unique(array_column($rooms, 'category')));
-seo_ld(seo_breadcrumb_ld([['Rooms & suites', 'rooms']]));
+seo_ld(seo_breadcrumb_ld([['Rooms', 'rooms']]));
 include __DIR__ . '/includes/header.php';
-page_head(t('rooms.head.eyebrow', 'Stay'), t('rooms.head.title', 'Rooms & Suites'), t('rooms.head.sub', 'Quiet, clean and comfortable, a proper base for your Jawai trip.'), im('rooms.head.img', 'assets/images/hotel-front.jpg'));
+page_head(t('rooms.head.eyebrow', 'Stay'), t('rooms.head.title', 'Rooms'), t('rooms.head.sub', 'Quiet, clean and comfortable, a proper base for your Jawai trip.'), im('rooms.head.img', 'assets/images/hotel-front.jpg'));
 ?>
 <section class="sec">
   <div class="wrap">
-    <div class="chips" data-filter-group=".card[data-cat]">
+    <div class="chips" data-filter-group=".card[data-cat]"<?= count($cats) < 2 ? ' hidden' : '' ?>>
       <button class="chip" data-filter="all" aria-pressed="true"><?= et('rooms.all', 'All rooms') ?></button>
       <?php foreach ($cats as $c): ?><button class="chip" data-filter="<?= e($c) ?>" aria-pressed="false"><?= e($c) ?></button><?php endforeach; ?>
     </div>
@@ -29,7 +29,7 @@ page_head(t('rooms.head.eyebrow', 'Stay'), t('rooms.head.title', 'Rooms & Suites
       <?php endforeach; ?>
     </div>
     <p class="fromnote"><?= icon('bed', 18) ?> <?= et('rooms.starting', 'Rooms starting from') ?> <strong><?= money((int)val("SELECT MIN(price) FROM jm_rooms WHERE status='active'")) ?></strong> <?= et('rooms.pn', 'per night') ?></p>
-    <p class="demo-note" style="margin-top:1.5rem"><?= icon('shield-check', 16) ?> <?= et('rooms.note', 'Rates are per room per night, before GST. Our team confirms the final rate for your dates.') ?> GST: <?= e(setting('tax_percent')) ?>% up to ₹<?= number_format((int)setting('tax_threshold')) ?>, <?= e(setting('tax_percent_high')) ?>% above.</p>
+    <p class="demo-note" style="margin-top:1.5rem"><?= icon('shield-check', 16) ?> <?= et('rooms.note', 'Rates are per room per night, before GST, and vary with the season. Our team confirms the exact rate for your dates on WhatsApp.') ?> GST: <?= e(setting('tax_percent')) ?>% up to ₹<?= number_format((int)setting('tax_threshold')) ?>, <?= e(setting('tax_percent_high')) ?>% above.</p>
   </div>
 </section>
 <?php include __DIR__ . '/includes/footer.php'; ?>

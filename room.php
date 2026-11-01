@@ -1,10 +1,11 @@
 <?php
 require_once __DIR__ . '/includes/db.php';
 $r = row("SELECT * FROM jm_rooms WHERE slug = ? AND status='active'", [$_GET['slug'] ?? '']);
+if (!$r && in_array($_GET['slug'] ?? '', ['standard-room', 'deluxe-room', 'heritage-suite', 'granite-hill-room', 'family-room', 'terrace-suite'], true)) redirect(url('room?slug=premium-room'));
 if (!$r) { http_response_code(404); $pageTitle = 'Room not found'; $active = 'stay'; $bodyClass = 'nav-solid'; include __DIR__ . '/includes/header.php'; echo '<section class="sec" style="padding-top:10rem;text-align:center"><div class="wrap"><h1>Room not found</h1><p><a class="btn btn--dark" href="' . url('rooms.php') . '">See all rooms</a></p></div></section>'; include __DIR__ . '/includes/footer.php'; exit; }
 $seo = ['title' => seo_clip($r['name'] . ' in Bera, Jawai | ' . setting('site_name'), 62), 'desc' => seo_clip($r['tagline'] . ', ' . $r['description'], 160), 'image' => $r['image'],
         'canonical' => seo_abs('room?slug=' . $r['slug']), 'keywords' => $r['name'] . ', ' . $r['name'] . ' Jawai, hotel room Bera, ' . ($r['category'] ?? ''), 'alt' => $r['name']];
-seo_ld(seo_breadcrumb_ld([['Rooms & suites', 'rooms'], [$r['name'], 'room?slug=' . $r['slug']]]));
+seo_ld(seo_breadcrumb_ld([['Rooms', 'rooms'], [$r['name'], 'room?slug=' . $r['slug']]]));
 seo_ld(['@context' => 'https://schema.org', '@type' => 'HotelRoom', 'name' => $r['name'], 'description' => seo_clip((string)$r['description'], 300), 'image' => seo_img_abs($r['image']),
   'url' => seo_abs('room?slug=' . $r['slug']), 'containedInPlace' => ['@id' => seo_abs('#hotel')],
   'occupancy' => ['@type' => 'QuantitativeValue', 'value' => (int)preg_replace('/\D.*/', '', (string)$r['capacity']) ?: 2],
@@ -30,6 +31,7 @@ page_head(t('room.head.eyebrow', 'Stay'), $r['name'], $r['tagline'], $r['image']
       <h3 style="margin-top:1.5rem"><?= et('room.inroom', 'In the room') ?></h3>
       <ul class="checks" style="color:var(--ink-2)"><?php foreach (lines($r['amenities']) as $a): ?><li><span style="color:var(--gold-d)"><?= icon(amenity_icon($a), 16) ?></span><?= e($a) ?></li><?php endforeach; ?></ul>
       <div class="price" style="margin:1.2rem 0"><small><?= et('room.from', 'from') ?></small><?= money($r['price']) ?> <span>/ <?= et('room.night', 'night') ?> + <?= e(rtrim(rtrim(number_format(gst_rate((int)$r['price']), 1), '0'), '.')) ?>% GST</span></div>
+      <p class="muted" style="margin:-.6rem 0 1rem;font-size:.92rem"><?= et('room.season', 'Starting rate. It varies with the season, and we confirm the exact rate for your dates on WhatsApp.') ?></p>
       <p class="demo-note"><?= icon('clock', 16) ?> Check-in <?= e(setting('checkin_time')) ?> · Check-out <?= e(setting('checkout_time')) ?></p>
     </div>
   </div>

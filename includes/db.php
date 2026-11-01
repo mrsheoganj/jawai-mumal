@@ -197,7 +197,23 @@ function jm_migrate_copy_v4(): void {
     set_setting('copy_v4', '1');
 }
 jm_migrate_pricing_v3();
+/** v6: one room type, the Premium Room (rate starts from the price and varies by season). */
+function jm_migrate_single_room(): void {
+    if (get_setting_raw('single_room_v6') === '1') return;
+    try {
+        $std = row("SELECT * FROM jm_rooms WHERE slug = 'standard-room'");
+        if ($std && $std['name'] === 'Standard Room') {
+            q("UPDATE jm_rooms SET slug='premium-room', name='Premium Room', category='Premium', tagline=?, description=?, image=?, featured=1, sort_order=1 WHERE id=?",
+              ['Calm, bright and made for easy stays', 'Our one room type: a comfortable air-conditioned Premium Room with a king bed, soft lighting and a quiet work corner, a good base for travellers and couples exploring Jawai. Rates start from the price shown and vary with the season; we confirm the exact rate for your dates on WhatsApp.', 'assets/images/room-modern.jpg', $std['id']]);
+        }
+        foreach (['deluxe-room' => 'Deluxe Room', 'heritage-suite' => 'Heritage Suite', 'granite-hill-room' => 'Granite Hill Room', 'family-room' => 'Family Room', 'terrace-suite' => 'Terrace Suite'] as $sl => $nm)
+            q("UPDATE jm_rooms SET status='hidden', featured=0 WHERE slug = ? AND name = ?", [$sl, $nm]);
+        q("UPDATE jm_gallery SET title='Premium Room' WHERE title IN ('Heritage suite','Granite Hill Room','Terrace Suite','Deluxe Room')");
+    } catch (Throwable $e) {}
+    set_setting('single_room_v6', '1');
+}
 jm_migrate_copy_v4();
+jm_migrate_single_room();
 if (get_setting_raw('blog_seeded') !== '1') { require_once __DIR__ . '/seed_blog.php'; jm_seed_blog(); }
 upd_maybe_auto();   // live sync with GitHub (if enabled)
 jm_gate();
