@@ -9,7 +9,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $k = $r['key']; $sk = $r['kind'] . '.' . $k;
         if ($r['kind'] === 'txt') {
             if (!isset($_POST['t'][$k])) continue;
-            $v = trim((string)$_POST['t'][$k]);
+            $v = v_clean((string)$_POST['t'][$k]);
+            if (mb_strlen($v) > 3000) { $errs[] = 'A text is too long (maximum 3000 characters): ' . mb_substr($v, 0, 30) . '…'; continue; }
             if ($v === '' || $v === $r['default']) q('DELETE FROM jm_settings WHERE skey = ?', [$sk]); else set_setting($sk, $v);
         } else {
             $up = '';
@@ -19,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($up === null) { $errs[] = $k . ': ' . $err; $up = ''; }
             }
             $v = $up !== '' ? $up : trim((string)($_POST['ip'][$k] ?? ''));
+            if ($up === '' && ($ie = v_media($v, 'Image'))) { $errs[] = $ie . ' (' . $k . ')'; continue; }
             if ($v === '' || $v === $r['default']) q('DELETE FROM jm_settings WHERE skey = ?', [$sk]); else set_setting($sk, $v);
         }
         $n++;

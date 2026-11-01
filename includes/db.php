@@ -133,6 +133,7 @@ if (PHP_SAPI !== 'cli' && !headers_sent()) {   // basic security headers (also s
 require_once __DIR__ . '/updater.php';
 require_once __DIR__ . '/mailer.php';
 require_once __DIR__ . '/seo.php';
+require_once __DIR__ . '/validate.php';
 
 /** One-off clean-up: stock photos that did not belong to Jawai were replaced; point old references at the related photos. */
 function jm_migrate_images(): void {

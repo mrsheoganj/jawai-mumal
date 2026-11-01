@@ -176,7 +176,8 @@
   /* Dates & estimates */
   var iso = function (d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
   var today = new Date(), tom = new Date(Date.now() + 864e5);
-  $$('input[type=date]').forEach(function (d) { d.min = iso(today); });
+  var horizon = new Date(); horizon.setFullYear(horizon.getFullYear() + 2);
+  $$('input[type=date]').forEach(function (d) { d.min = iso(today); d.max = iso(horizon); });
   var money = function (n) { return '₹' + Math.round(n).toString().replace(/\B(?=(\d{2})*\d{3}(?!\d))/g, ','); };
   var sIn = $('#s-in'), sOut = $('#s-out'), sRoom = $('#s-room');
   function estStay() {
@@ -191,14 +192,42 @@
   }
   [sIn, sOut, sRoom].forEach(function (n) { n && n.addEventListener('change', estStay); });
   estStay();
-  /* Client-side validation (server re-validates) */
+  /* Client-side validation (the server checks everything again) */
+  var rules = {
+    name: function (v) { return v.length < 2 ? 'Please enter your name (at least 2 letters).' : (!/^[\p{L}\p{M}][\p{L}\p{M} .'\-]*$/u.test(v) ? 'Names can only contain letters, spaces and . \' -' : (v.length > 80 ? 'Name is too long.' : '')); },
+    phone: function (v) {
+      if (!v) return 'Please enter your phone number.';
+      if (v.length > 25 || !/^\+?[0-9][0-9 ()\-]*$/.test(v)) return 'Use digits only (spaces, + and - are fine).';
+      var d = v.replace(/\D/g, ''); if (d.length < 8) return 'That phone number is too short.';
+      if (v[0] === '+') { if (d.indexOf('91') === 0) return /^91[6-9]\d{9}$/.test(d) ? '' : 'Indian numbers need 10 digits after +91.'; return d.length >= 8 && d.length <= 15 ? '' : 'Please enter a valid international number.'; }
+      if (d.length === 12 && d.indexOf('91') === 0) d = d.slice(2); if (d.length === 11 && d[0] === '0') d = d.slice(1);
+      return /^[6-9]\d{9}$/.test(d) ? '' : 'Enter a 10-digit mobile number starting with 6, 7, 8 or 9.';
+    },
+    email: function (v) { return v && !/^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(v) ? 'That email address does not look right.' : ''; },
+    notes: function (v, i) { return i.required && v.length < 5 ? 'Please write a little more so we can help.' : (v.length > 600 ? 'Please keep this under 600 characters.' : ''); }
+  };
+  function fieldMsg(i, f) {
+    var v = i.value.trim();
+    if (i.required && v === '') return 'This field is required.';
+    if (rules[i.name]) { var m = rules[i.name](v, i); if (m) return m; }
+    if (i.type === 'date' && v) {
+      if (i.min && v < i.min) return 'Please choose today or a later date.';
+      if (i.max && v > i.max) return 'Please choose a date within the next 2 years.';
+      if (i.name === 'date_to') { var fi = $('[name=date_from]', f); if (fi && fi.value && v <= fi.value) return 'Check-out must be after check-in.'; }
+    }
+    return '';
+  }
+  function showMsg(i, m) {
+    var box = i.parentNode.querySelector('.ferr');
+    if (m) { if (!box) { box = document.createElement('p'); box.className = 'ferr'; box.setAttribute('role', 'alert'); i.parentNode.appendChild(box); } box.textContent = m; i.setAttribute('aria-invalid', 'true'); i.classList.add('is-bad'); }
+    else { if (box) box.remove(); i.removeAttribute('aria-invalid'); i.classList.remove('is-bad'); }
+  }
   $$('.bform').forEach(function (f) {
+    var fields = $$('input[name]:not([type=hidden]):not([type=radio]):not(.hp input), textarea', f);
+    fields.forEach(function (i) { i.addEventListener('blur', function () { if (i.value !== '' || i.classList.contains('is-bad')) showMsg(i, fieldMsg(i, f)); }); i.addEventListener('input', function () { if (i.classList.contains('is-bad')) showMsg(i, fieldMsg(i, f)); }); });
     f.addEventListener('submit', function (e) {
       var bad = null;
-      $$('[required]', f).forEach(function (i) {
-        var ok = i.value.trim() !== ''; if (i.name === 'phone') ok = i.value.replace(/\D/g, '').length >= 8;
-        i.style.borderColor = ok ? '' : 'var(--err)'; if (!ok && !bad) bad = i;
-      });
+      fields.forEach(function (i) { var m = fieldMsg(i, f); showMsg(i, m); if (m && !bad) bad = i; });
       if (bad) { e.preventDefault(); bad.focus(); }
     });
   });

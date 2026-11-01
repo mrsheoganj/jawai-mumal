@@ -12,7 +12,7 @@ admin_crud([
     'meta_description' => ['Search description (SEO)', 'textarea', 'Aim for 120–160 characters that make people want to click.'],
     'keywords' => ['Keywords', 'text', 'Comma separated phrases.', null, 12],
     'excerpt' => ['Short summary', 'textarea', 'Shown on the journal list and under the title.'],
-    'body' => ['Article body (HTML)', 'textarea', 'Use <h2>, <h3>, <p>, <ul>, <ol>, <strong>. Internal links: {{rooms}} {{safari}} {{restaurant}} {{jawai}} {{contact}} {{book?type=safari}} {{blog/other-slug}}'],
+    'body' => ['Article body (HTML)', 'textarea', 'Use <h2>, <h3>, <p>, <ul>, <ol>, <strong>. Internal links: {{rooms}} {{safari}} {{restaurant}} {{jawai}} {{contact}} {{book?type=safari}} {{blog/other-slug}}', null, 12, ['max' => 200000]],
     'image' => ['Cover photo', 'image'],
   ],
   'defaults' => ['status' => 'published', 'category' => 'Planning', 'published_at' => date('Y-m-d H:i:s')],

@@ -4,7 +4,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = (int)($_POST['id'] ?? 0);
     if (($_POST['action'] ?? '') === 'update' && $id) {
         $st = in_array($_POST['status'] ?? '', booking_statuses(), true) ? $_POST['status'] : 'New';
-        q('UPDATE jm_bookings SET status = ?, admin_notes = ? WHERE id = ?', [$st, trim($_POST['admin_notes'] ?? ''), $id]);
+        $an = v_clean((string)($_POST['admin_notes'] ?? ''));
+        if (mb_strlen($an) > 2000) { flash('err', 'Notes must be 2000 characters or fewer.'); redirect('bookings.php'); }
+        q('UPDATE jm_bookings SET status = ?, admin_notes = ? WHERE id = ?', [$st, $an, $id]);
         flash('ok', 'Booking updated.');
     } elseif (($_POST['action'] ?? '') === 'email_confirm' && $id) {
         $b = row('SELECT * FROM jm_bookings WHERE id = ?', [$id]);
@@ -63,7 +65,7 @@ admin_head('Bookings & enquiries', 'bookings');
         <form method="post" style="min-width:260px;margin-top:.8rem;display:grid;gap:.6rem"><?= csrf_field() ?><input type="hidden" name="action" value="update"><input type="hidden" name="id" value="<?= (int)$b['id'] ?>"><input type="hidden" name="f_type" value="<?= e($ft) ?>"><input type="hidden" name="f_status" value="<?= e($fs) ?>">
           <?php if ($b['notes']): ?><p class="help"><strong>Guest note:</strong> <?= e($b['notes']) ?></p><?php endif; ?>
           <select name="status" aria-label="Status"><?php foreach (booking_statuses() as $s): ?><option <?= $b['status'] === $s ? 'selected' : '' ?>><?= e($s) ?></option><?php endforeach; ?></select>
-          <textarea name="admin_notes" rows="2" placeholder="Private notes (not shown to guest)"><?= e($b['admin_notes']) ?></textarea>
+          <textarea name="admin_notes" rows="2" maxlength="2000" placeholder="Private notes (not shown to guest)"><?= e($b['admin_notes']) ?></textarea>
           <button class="btn btn--gold btn--sm">Save</button>
           <a class="wa-ico" target="_blank" rel="noopener" href="<?= e(wa_to($b['phone'], booking_wa_message($b, true) . "\n\nYour request is confirmed. We look forward to welcoming you. For any change, reply here or call " . setting('owner1_phone') . '.')) ?>" aria-label="Send confirmation on WhatsApp" title="Send confirmation on WhatsApp"><?= icon('whatsapp', 22) ?></a></form>
         <?php if (filter_var((string)$b['email'], FILTER_VALIDATE_EMAIL)): ?><form method="post" style="margin-top:.5rem"><?= csrf_field() ?><input type="hidden" name="action" value="email_confirm"><input type="hidden" name="id" value="<?= (int)$b['id'] ?>"><button class="btn btn--line btn--sm" data-confirm="Email a confirmation to <?= e($b['email']) ?> and mark this booking Confirmed?"><?= icon('mail', 16) ?> Email confirmation</button></form><?php endif; ?>

@@ -16,6 +16,36 @@ function crud_multi_upload(string $field, array &$errs): array {
     return $out;
 }
 
+/** Validate one submitted record against the field definitions. Returns a list of error messages. */
+function crud_validate(array $vals, array $c, array $raw): array {
+    $errs = [];
+    $numLimits = ['price' => [0, 1000000], 'price_pp' => [0, 1000000], 'private_price' => [0, 1000000], 'sort_order' => [0, 9999], 'inventory' => [0, 1000], 'featured' => [0, 1]];
+    foreach ($c['fields'] as $col => $f) {
+        $type = $f[1]; $label = $f[0]; $o = is_array($f[5] ?? null) ? $f[5] : []; $v = $vals[$col] ?? '';
+        if ($type === 'text') {
+            $max = $o['max'] ?? db_col_max($c['table'], $col) ?? 250;
+            if (mb_strlen((string)$v) > $max) $errs[] = "$label must be $max characters or fewer.";
+        } elseif ($type === 'textarea') {
+            $max = $o['max'] ?? 20000;
+            if (mb_strlen((string)$v) > $max) $errs[] = "$label is too long (maximum $max characters).";
+        } elseif ($type === 'number') {
+            $rawv = trim((string)($raw['v_' . $col] ?? ''));
+            [$mn, $mx] = [$o['min'] ?? ($numLimits[$col][0] ?? 0), $o['max'] ?? ($numLimits[$col][1] ?? 10000000)];
+            if (!empty($o['decimal'])) { if ($rawv !== '' && (!preg_match('/^\d+(\.\d+)?$/', $rawv) || (float)$rawv < $mn || (float)$rawv > $mx)) $errs[] = "$label must be a number between $mn and $mx."; }
+            elseif ($rawv !== '' && ($e = v_int($rawv, $mn, $mx, $label))) $errs[] = $e;
+        } elseif ($type === 'image') {
+            if ($e = v_media((string)$v, $label)) $errs[] = $e;
+        } elseif ($type === 'gallery') {
+            foreach (lines((string)$v) as $ln) if ($e = v_media($ln, $label)) { $errs[] = $e; break; }
+        } elseif ($type === 'select') {
+            if (!array_key_exists((string)$v, (array)($f[3] ?? []))) $errs[] = "Please choose a valid option for $label.";
+        }
+        if (!empty($o['pattern']) && $v !== '' && !preg_match($o['pattern'], (string)$v)) $errs[] = $o['msg'] ?? "$label is not in the right format.";
+    }
+    if (!empty($c['rules'])) foreach (($c['rules'])($vals) as $e) $errs[] = $e;
+    return array_values(array_unique($errs));
+}
+
 function admin_crud(array $c): void {
     $t = $c['table']; $self = basename($_SERVER['SCRIPT_NAME']);
     $hasSlug = !empty($c['slug']);
@@ -41,12 +71,13 @@ function admin_crud(array $c): void {
                 } elseif ($type === 'check') {
                     $vals[$col] = !empty($_POST['v_' . $col]) ? 1 : 0;
                 } elseif ($type === 'number') {
-                    $vals[$col] = (int)($_POST['v_' . $col] ?? 0);
+                    $vals[$col] = !empty($f[5]['decimal']) ? round((float)($_POST['v_' . $col] ?? 0), 1) : (int)($_POST['v_' . $col] ?? 0);
                 } else {
                     $vals[$col] = trim($_POST['v_' . $col] ?? '');
                 }
             }
             if (!empty($c['before_save'])) $vals = ($c['before_save'])($vals, $id);
+            $errs = array_merge($errs, crud_validate($vals, $c, $_POST));
             $req = $c['required'] ?? array_key_first($c['fields']);
             if (($vals[$req] ?? '') === '' || $vals[$req] === 0 && $c['fields'][$req][1] !== 'number') $errs[] = $c['fields'][$req][0] . ' is required.';
             if ($errs) {
@@ -102,11 +133,11 @@ function admin_crud(array $c): void {
                 <div class="imgfield"><div style="flex:1 1 100%"><input type="file" name="g_<?= $col ?>[]" multiple accept="image/jpeg,image/png,image/webp,image/gif"><p class="help">Add more photos. Existing photo paths (one per line) can be edited or removed here.</p>
                 <textarea name="v_<?= $col ?>" rows="3"><?= e($v) ?></textarea></div></div>
               <?php elseif ($type === 'textarea'): ?>
-                <label for="v_<?= $col ?>"><?= e($f[0]) ?></label><textarea id="v_<?= $col ?>" name="v_<?= $col ?>"><?= e($v) ?></textarea>
+                <label for="v_<?= $col ?>"><?= e($f[0]) ?></label><textarea id="v_<?= $col ?>" name="v_<?= $col ?>" maxlength="<?= (int)((is_array($f[5] ?? null) ? ($f[5]['max'] ?? 0) : 0) ?: 20000) ?>"><?= e($v) ?></textarea>
               <?php elseif ($type === 'select'): ?>
                 <label for="v_<?= $col ?>"><?= e($f[0]) ?></label><select id="v_<?= $col ?>" name="v_<?= $col ?>"><?php foreach ($f[3] as $ov => $ol): ?><option value="<?= e($ov) ?>" <?= (string)$v === (string)$ov ? 'selected' : '' ?>><?= e($ol) ?></option><?php endforeach; ?></select>
               <?php else: ?>
-                <label for="v_<?= $col ?>"><?= e($f[0]) ?></label><input id="v_<?= $col ?>" name="v_<?= $col ?>" type="<?= $type === 'number' ? 'number' : 'text' ?>" value="<?= e($v) ?>">
+                <label for="v_<?= $col ?>"><?= e($f[0]) ?></label><?php $o = is_array($f[5] ?? null) ? $f[5] : []; $nl = ['price' => [0, 1000000], 'price_pp' => [0, 1000000], 'private_price' => [0, 1000000], 'sort_order' => [0, 9999], 'inventory' => [0, 1000]][$col] ?? [0, 10000000]; ?><input id="v_<?= $col ?>" name="v_<?= $col ?>" type="<?= $type === 'number' ? 'number' : 'text' ?>" value="<?= e($v) ?>"<?= $type === 'number' ? ' step="' . (!empty($o['decimal']) ? '0.1' : '1') . '" min="' . ($o['min'] ?? $nl[0]) . '" max="' . ($o['max'] ?? $nl[1]) . '"' : ' maxlength="' . ($o['max'] ?? db_col_max($c['table'], $col) ?? 250) . '"' ?><?= !empty($o['pattern']) ? ' title="' . e($o['msg'] ?? '') . '"' : '' ?>>
               <?php endif; ?>
               <?php if (!empty($f[2])): ?><p class="help"><?= e($f[2]) ?></p><?php endif; ?>
             </div>

@@ -3,14 +3,14 @@ require __DIR__ . '/_init.php'; require_once __DIR__ . '/_crud.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $a = $_POST['action'] ?? '';
     if ($a === 'upload') {
-        $errs = []; $paths = crud_multi_upload('files', $errs); $cat = trim($_POST['category'] ?? 'General') ?: 'General';
+        $errs = []; $paths = crud_multi_upload('files', $errs); $cat = mb_substr(trim($_POST['category'] ?? 'General') ?: 'General', 0, 80);
         $next = (int)val('SELECT COALESCE(MAX(sort_order),0) FROM jm_gallery') + 1;
-        foreach ($paths as $p) { q('INSERT INTO jm_gallery (title, category, image, sort_order) VALUES (?,?,?,?)', [ucfirst(trim(trim($_POST['title'] ?? '') ?: 'Jawai Mumal')), $cat, $p, $next++]); }
+        foreach ($paths as $p) { q('INSERT INTO jm_gallery (title, category, image, sort_order) VALUES (?,?,?,?)', [ucfirst(mb_substr(trim(trim($_POST['title'] ?? '') ?: 'Jawai Mumal'), 0, 150)), $cat, $p, $next++]); }
         if ($paths) flash('ok', count($paths) . ' photo(s) uploaded.');
         foreach ($errs as $er) flash('err', $er);
         if (!$paths && !$errs) flash('err', 'Choose at least one image.');
     } elseif ($a === 'save') {
-        q('UPDATE jm_gallery SET title=?, category=?, sort_order=? WHERE id=?', [trim($_POST['title'] ?? ''), trim($_POST['category'] ?? ''), (int)($_POST['sort_order'] ?? 0), (int)$_POST['id']]); flash('ok', 'Photo updated.');
+        q('UPDATE jm_gallery SET title=?, category=?, sort_order=? WHERE id=?', [mb_substr(trim($_POST['title'] ?? ''), 0, 150), mb_substr(trim($_POST['category'] ?? ''), 0, 80), max(0, min(9999, (int)($_POST['sort_order'] ?? 0))), (int)$_POST['id']]); flash('ok', 'Photo updated.');
     } elseif ($a === 'delete') {
         q('DELETE FROM jm_gallery WHERE id = ?', [(int)$_POST['id']]); flash('ok', 'Photo removed.');
     }

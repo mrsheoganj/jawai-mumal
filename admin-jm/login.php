@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Too many attempts. Please wait 10 minutes and try again.';
     } else {
         $u = trim($_POST['username'] ?? '');
+        if (strlen($u) > 60 || strlen($_POST['password'] ?? '') > 200) { $u = ''; $_POST['password'] = ''; }
         $user = row('SELECT * FROM jm_admins WHERE username = ?', [$u]);
         if ($user && password_verify($_POST['password'] ?? '', $user['password_hash'])) {
             session_regenerate_id(true);

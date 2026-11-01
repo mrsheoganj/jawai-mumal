@@ -7,7 +7,7 @@ admin_crud([
     'name' => ['Room name', 'text', '', null, 6], 'category' => ['Category (e.g. Deluxe, Suite)', 'text', 'Used for the filter buttons.', null, 3],
     'status' => ['Visibility', 'select', 'Hidden rooms disappear from the website.', ['active' => 'Visible', 'hidden' => 'Hidden'], 3],
     'tagline' => ['Short tagline', 'text', '', null, 12],
-    'price' => ['Price per night (₹)', 'number', 'Before GST.', null, 3], 'inventory' => ['Number of rooms of this type', 'number', '', null, 3],
+    'price' => ['Price per night (₹)', 'number', 'Before GST. Between ₹500 and ₹500,000.', null, 3, ['min' => 500, 'max' => 500000]], 'inventory' => ['Number of rooms of this type', 'number', '', null, 3],
     'size' => ['Room size', 'text', 'e.g. 260 sq ft', null, 3], 'sort_order' => ['Display order', 'number', 'Lower numbers appear first.', null, 3],
     'capacity' => ['Capacity', 'text', 'e.g. 2 adults + 1 child', null, 4], 'beds' => ['Beds', 'text', 'e.g. 1 King bed', null, 4], 'view_type' => ['View', 'text', 'e.g. Hill view', null, 4],
     'featured' => ['Show on the home page', 'check', '', null, 12],

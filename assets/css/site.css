@@ -636,3 +636,8 @@ body{background:#fff}
 .card__img img[src*="emblem-512"],.bcard__img img[src*="emblem-512"],.mason img[src*="emblem-512"]{object-fit:contain;background:#faf6ee;padding:12%}
 .fromnote{display:flex;gap:.5rem;align-items:center;justify-content:center;margin:2rem 0 0;font-size:1.1rem;color:var(--ink-2)}.fromnote strong{font-family:var(--serif);font-size:1.5rem;color:var(--gold-d)}
 .duo--one{grid-template-columns:minmax(0,1fr);max-width:460px;margin-left:auto}.duo--one .frame:first-child{margin-top:0}.duo--one .frame{aspect-ratio:3/4}
+.ferr{margin:.35rem 0 0;font-size:.85rem;color:var(--err,#b3261e);line-height:1.35}.bform .is-bad{border-color:var(--err,#b3261e)!important}
+/* footer WhatsApp buttons: white icon on green (the generic footer icon colour made it invisible) */
+.footer .wa-ico,.footer .wa-ico:hover{color:#fff}
+.footer__contact .wa-ico .i{color:#fff;margin:0}
+.footer__contact .wa-ico{align-self:center;flex:0 0 auto}

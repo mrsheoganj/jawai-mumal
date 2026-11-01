@@ -5,7 +5,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($a === 'regen') { set_setting('preview_key', bin2hex(random_bytes(8))); flash('ok', 'New secret link created. The old link and any saved previews no longer work.'); redirect('mode.php'); }
     $mode = in_array($_POST['site_mode'] ?? '', ['live', 'coming_soon', 'maintenance'], true) ? $_POST['site_mode'] : 'live';
     $launch = trim($_POST['launch_at'] ?? ''); $until = trim($_POST['maint_until'] ?? '');
-    $valid = fn($v) => $v === '' || (bool)date_create($v);
+    $valid = fn($v) => $v === '' || ((bool)date_create($v) && strtotime($v) < strtotime('+5 years') && strtotime($v) > strtotime('2020-01-01'));
     if (!$valid($launch) || !$valid($until)) { flash('err', 'Please enter a valid date and time.'); redirect('mode.php'); }
     if ($mode === 'coming_soon' && $launch === '') { flash('err', 'Please choose the launch date and time for Coming soon mode.'); redirect('mode.php'); }
     set_setting('site_mode', $mode); set_setting('launch_at', $launch); set_setting('maint_until', $until);

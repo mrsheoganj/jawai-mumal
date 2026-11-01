@@ -10,6 +10,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset(seo_pages()[$k])) { foreach (['title', 'desc', 'keywords', 'image'] as $f) set_setting("seo_{$k}_{$f}", ''); flash('ok', 'Restored the recommended SEO text for that page.'); }
         redirect('seo.php#pages');
     }
+    $errs = [];
+    foreach (seo_pages() as $k => $p) {
+        $lbl = $p[0];
+        if ($x = v_len(trim($_POST["p_{$k}_title"] ?? ''), 10, 120, "$lbl title")) $errs[] = $x;
+        if ($x = v_len(trim($_POST["p_{$k}_desc"] ?? ''), 30, 320, "$lbl description")) $errs[] = $x;
+        if ($x = v_len(trim($_POST["p_{$k}_keywords"] ?? ''), 0, 400, "$lbl keywords")) $errs[] = $x;
+        if ($x = v_media(trim($_POST["p_{$k}_image"] ?? ''), "$lbl share image")) $errs[] = $x;
+    }
+    if ($x = v_media(trim($_POST['seo_image'] ?? ''), 'Default share image')) $errs[] = $x;
+    if ($x = v_len(trim($_POST['seo_keywords'] ?? ''), 0, 600, 'Sitewide keywords')) $errs[] = $x;
+    if (!preg_match('/^[a-z]{2}(-[A-Z]{2})?$/', trim($_POST['seo_locale'] ?? ''))) $errs[] = 'Language / region must look like en-IN.';
+    if (!preg_match('/^[₹$€£]{1,5}$/u', trim($_POST['seo_price_range'] ?? ''))) $errs[] = 'Price range must be 1 to 5 currency symbols, for example ₹₹.';
+    foreach (seo_lines((string)($_POST['seo_same_as'] ?? '')) as $u) if ($x = v_url($u, true, 'Profile link')) { $errs[] = $x . " ($u)"; break; }
+    foreach (['seo_area_served' => 'Areas served', 'seo_amenities' => 'Amenities', 'seo_cuisine' => 'Cuisine', 'seo_robots_extra' => 'Extra robots.txt lines'] as $k => $l) if ($x = v_len(trim($_POST[$k] ?? ''), 0, 2000, $l)) $errs[] = $x;
+    $ga = trim($_POST['seo_ga4'] ?? ''); if ($ga !== '' && !preg_match('/^G-[A-Z0-9]{6,14}$/', $ga)) $errs[] = 'Google Analytics ID must look like G-XXXXXXXXXX.';
+    $gt = trim($_POST['seo_gtm'] ?? ''); if ($gt !== '' && !preg_match('/^GTM-[A-Z0-9]{4,10}$/', $gt)) $errs[] = 'Tag Manager ID must look like GTM-XXXXXXX.';
+    foreach (['seo_gsc' => 'Search Console code', 'seo_bing' => 'Bing code'] as $k => $l) { $c = trim($_POST[$k] ?? ''); if ($c !== '' && !preg_match('/^[A-Za-z0-9_\-]{10,100}$/', $c)) $errs[] = "$l should be only the code from the meta tag (letters, numbers, - and _)."; }
+    foreach (explode("\n", (string)($_POST['seo_robots_extra'] ?? '')) as $ln) { $ln = trim($ln); if ($ln !== '' && !preg_match('/^(User-agent|Disallow|Allow|Crawl-delay|Sitemap):/i', $ln)) { $errs[] = 'Extra robots.txt lines must start with User-agent:, Disallow:, Allow:, Crawl-delay: or Sitemap:'; break; } }
+    if ($errs) { foreach ($errs as $x) flash('err', $x); flash('err', 'Nothing was saved. Please fix the points above.'); redirect('seo.php'); }
     $def = seo_defaults();
     foreach (seo_pages() as $k => $p) {
         foreach (['title', 'desc', 'keywords'] as $f) {

@@ -16,31 +16,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!in_array($type, array_keys(booking_types()), true)) {
         $errors[] = 'Unknown request type.';
     } else {
-        $name   = trim($_POST['name'] ?? '');
-        $phone  = trim($_POST['phone'] ?? '');
-        $email  = trim($_POST['email'] ?? '');
-        $notes  = trim($_POST['notes'] ?? '');
-        $guests = max(1, min(500, (int)($_POST['guests'] ?? 1)));
+        $name   = v_clean($_POST['name'] ?? '');
+        $phone  = v_clean($_POST['phone'] ?? '');
+        $email  = v_clean($_POST['email'] ?? '');
+        $notes  = v_clean($_POST['notes'] ?? '');
+        $guests = (int)($_POST['guests'] ?? 1);
         $from   = trim($_POST['date_from'] ?? '');
         $to     = trim($_POST['date_to'] ?? '');
-        $slot   = trim($_POST['time_slot'] ?? '');
+        $slot   = v_clean($_POST['time_slot'] ?? '');
         $itemId = (int)($_POST['item_id'] ?? 0);
-        $itemName = trim($_POST['item_name'] ?? '');
+        $itemName = v_clean($_POST['item_name'] ?? '');
         $nights = 0; $amount = 0; $tax = 0;
         $isDate = fn($d) => (bool)preg_match('/^\d{4}-\d{2}-\d{2}$/', $d) && strtotime($d) !== false;
+        $maxGuests = ['stay' => 12, 'dine' => 30, 'safari' => 12, 'event' => 500, 'enquiry' => 50][$type] ?? 20;
+        $today = date('Y-m-d'); $horizon = date('Y-m-d', strtotime('+2 years'));
 
-        if (mb_strlen($name) < 2) $errors[] = 'Please enter your name.';
-        if (strlen(preg_replace('/\D/', '', $phone)) < 8) $errors[] = 'Please enter a valid phone number.';
-        if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'That email address does not look right.';
+        if ($e = v_name($name, 'Your name')) $errors[] = $e;
+        [$phoneNorm, $pe] = v_phone($phone); if ($pe) $errors[] = $pe; else $phone = $phoneNorm;
+        if ($e = v_email($email)) $errors[] = $e;
+        if ($e = v_note($notes, 600, 'Your request')) $errors[] = $e;
+        if ($guests < 1 || $guests > $maxGuests) $errors[] = 'Guests must be between 1 and ' . $maxGuests . ' for this request. For larger groups please message us on WhatsApp.';
+        if ($slot !== '' && !preg_match('/^[\p{L}\p{N} :.,\-\x{2013}&()\/]{1,40}$/u', $slot)) $errors[] = 'Please choose a valid time.';
+        if ($itemName !== '' && mb_strlen($itemName) > 80) $errors[] = 'That selection is not valid.';
+        if (($mode = $_POST['mode'] ?? 'shared') !== '' && !in_array($mode, ['shared', 'private'], true)) $errors[] = 'Please choose a jeep type.';
         if ($type !== 'enquiry') {
-            if (!$isDate($from) || $from < date('Y-m-d')) $errors[] = 'Please choose a date that is today or later.';
+            if ($e = v_date($from, $type === 'stay' ? 'check-in date' : 'date', $today, $horizon)) $errors[] = $e;
         } elseif ($notes === '') {
             $errors[] = 'Please tell us how we can help.';
+        } elseif (mb_strlen($notes) < 5) {
+            $errors[] = 'Please write a little more so we can help.';
         }
 
         if (!$errors) {
             if ($type === 'stay') {
-                if (!$isDate($to) || $to <= $from) $errors[] = 'Check-out must be after check-in.';
+                if ($e = v_date($to, 'check-out date', $today, $horizon)) $errors[] = $e;
+                elseif ($to <= $from) $errors[] = 'Check-out must be after check-in.';
                 else {
                     $nights = (int)round((strtotime($to) - strtotime($from)) / 86400);
                     if ($nights > 60) $errors[] = 'For stays longer than 60 nights please message us on WhatsApp.';

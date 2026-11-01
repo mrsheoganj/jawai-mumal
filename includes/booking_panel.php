@@ -30,10 +30,10 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
       <div class="f"><label for="s-room">Room</label>
         <select id="s-room" name="item_id"><option value="0" data-price="0">Any available room</option>
         <?php foreach ($bRooms as $r): ?><option value="<?= $r['id'] ?>" data-price="<?= (int)$r['price'] ?>" data-tax="<?= gst_rate((int)$r['price']) ?>"<?= $sel($preRoom, $r['id']) ?>><?= e($r['name']) ?>, <?= money($r['price']) ?>/night</option><?php endforeach; ?></select></div>
-      <div class="f f--4"><label for="s-n">Your name</label><input id="s-n" name="name" autocomplete="name" required></div>
-      <div class="f f--4"><label for="s-p">Phone / WhatsApp</label><input id="s-p" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></div>
-      <div class="f f--4"><label for="s-e">Email (optional)</label><input id="s-e" name="email" type="email" autocomplete="email"></div>
-      <div class="f f--12"><label for="s-no">Requests (optional)</label><input id="s-no" name="notes" placeholder="Arrival time, extra bed, celebration…"></div>
+      <div class="f f--4"><label for="s-n">Your name</label><input id="s-n" name="name" autocomplete="name" required minlength="2" maxlength="80" pattern="[\p{L}\p{M} .'\-]{2,80}" title="Letters and spaces only, 2 to 80 characters"></div>
+      <div class="f f--4"><label for="s-p">Phone / WhatsApp</label><input id="s-p" name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="20" pattern="\+?[0-9][0-9 ()\-]{6,19}" title="10-digit mobile number, or include your country code with +"></div>
+      <div class="f f--4"><label for="s-e">Email (optional)</label><input id="s-e" name="email" type="email" autocomplete="email" maxlength="120"></div>
+      <div class="f f--12"><label for="s-no">Requests (optional)</label><input id="s-no" name="notes" maxlength="600" placeholder="Arrival time, extra bed, celebration…"></div>
     </div>
     <div class="formfoot"><p><?= icon('shield-check', 18) ?><span><?= et('book.stay.note', 'No payment online. Our team confirms availability and the final rate on WhatsApp.') ?></span></p>
       <div><span class="est" data-est></span> <button class="btn btn--gold" type="submit"><?= et('book.stay.btn', 'Request booking') ?> <?= icon('arrow-right', 18) ?></button> <button class="wa-ico wa-ico--submit" type="submit" name="via" value="wa" aria-label="<?= e(t('book.wa', 'Book on WhatsApp')) ?>" title="<?= e(t('book.wa', 'Book on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?></button></div></div>
@@ -48,9 +48,9 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
       <div class="f"><label for="d-t">Time</label><select id="d-t" name="time_slot"><?php foreach ($slots as $s): ?><option><?= e($s) ?></option><?php endforeach; ?></select></div>
       <div class="f"><label for="d-g">Guests</label><select id="d-g" name="guests"><?= $guestOpts(2) ?></select></div>
       <div class="f"><label for="d-w">Seating</label><select id="d-w" name="item_name"><option>Restaurant</option><option>Café</option><option>Outdoor / terrace</option></select></div>
-      <div class="f f--4"><label for="d-n">Your name</label><input id="d-n" name="name" autocomplete="name" required></div>
-      <div class="f f--4"><label for="d-p">Phone / WhatsApp</label><input id="d-p" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></div>
-      <div class="f f--4"><label for="d-no">Requests (optional)</label><input id="d-no" name="notes" placeholder="Jain / vegetarian, birthday cake…"></div>
+      <div class="f f--4"><label for="d-n">Your name</label><input id="d-n" name="name" autocomplete="name" required minlength="2" maxlength="80" pattern="[\p{L}\p{M} .'\-]{2,80}" title="Letters and spaces only, 2 to 80 characters"></div>
+      <div class="f f--4"><label for="d-p">Phone / WhatsApp</label><input id="d-p" name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="20" pattern="\+?[0-9][0-9 ()\-]{6,19}" title="10-digit mobile number, or include your country code with +"></div>
+      <div class="f f--4"><label for="d-no">Requests (optional)</label><input id="d-no" name="notes" maxlength="600" placeholder="Jain / vegetarian, birthday cake…"></div>
     </div>
     <div class="formfoot"><p><?= icon('clock', 18) ?><span><?= et('book.dine.note', 'Table requests are confirmed on WhatsApp. Our kitchen is 100% vegetarian; Jain options on request.') ?></span></p>
       <button class="btn btn--gold" type="submit">Request a table <?= icon('arrow-right', 18) ?></button> <button class="wa-ico wa-ico--submit" type="submit" name="via" value="wa" aria-label="<?= e(t('book.wa', 'Book on WhatsApp')) ?>" title="<?= e(t('book.wa', 'Book on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?></button></div>
@@ -66,9 +66,9 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
       <div class="f"><label for="f-d">Date</label><input type="date" id="f-d" name="date_from" required></div>
       <div class="f"><label for="f-g">Guests</label><select id="f-g" name="guests"><?= $guestOpts(2) ?></select></div>
       <div class="f f--12"><span class="lbl">Jeep type</span><div class="seg"><label><input type="radio" name="mode" value="shared" checked> Shared jeep</label><label><input type="radio" name="mode" value="private"> Private jeep</label></div></div>
-      <div class="f f--4"><label for="f-n">Your name</label><input id="f-n" name="name" autocomplete="name" required></div>
-      <div class="f f--4"><label for="f-p">Phone / WhatsApp</label><input id="f-p" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></div>
-      <div class="f f--4"><label for="f-no">Requests (optional)</label><input id="f-no" name="notes" placeholder="Photography, pick-up point…"></div>
+      <div class="f f--4"><label for="f-n">Your name</label><input id="f-n" name="name" autocomplete="name" required minlength="2" maxlength="80" pattern="[\p{L}\p{M} .'\-]{2,80}" title="Letters and spaces only, 2 to 80 characters"></div>
+      <div class="f f--4"><label for="f-p">Phone / WhatsApp</label><input id="f-p" name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="20" pattern="\+?[0-9][0-9 ()\-]{6,19}" title="10-digit mobile number, or include your country code with +"></div>
+      <div class="f f--4"><label for="f-no">Requests (optional)</label><input id="f-no" name="notes" maxlength="600" placeholder="Photography, pick-up point…"></div>
     </div>
     <div class="formfoot"><p><?= icon('compass', 18) ?><span><?= et('book.safari.note', 'Safari timings depend on weather and tracker availability. We confirm the exact slot on WhatsApp.') ?></span></p>
       <div><button class="btn btn--gold" type="submit">Request safari <?= icon('arrow-right', 18) ?></button> <button class="wa-ico wa-ico--submit" type="submit" name="via" value="wa" aria-label="<?= e(t('book.wa', 'Book on WhatsApp')) ?>" title="<?= e(t('book.wa', 'Book on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?></button></div></div>
@@ -82,9 +82,9 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
       <div class="f"><label for="e-t">Occasion</label><select id="e-t" name="item_name"><option>Birthday party</option><option>Family function</option><option>Engagement / small wedding</option><option>Corporate meet</option><option>Personal celebration</option><option>Other</option></select></div>
       <div class="f"><label for="e-d">Date</label><input type="date" id="e-d" name="date_from" required></div>
       <div class="f"><label for="e-g">Guests</label><input type="number" id="e-g" name="guests" min="2" max="500" value="20" required></div>
-      <div class="f"><label for="e-p">Phone / WhatsApp</label><input id="e-p" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></div>
-      <div class="f f--6"><label for="e-n">Your name</label><input id="e-n" name="name" autocomplete="name" required></div>
-      <div class="f f--6"><label for="e-no">Plans & menu ideas (optional)</label><input id="e-no" name="notes" placeholder="Decoration, veg / non-veg, music…"></div>
+      <div class="f"><label for="e-p">Phone / WhatsApp</label><input id="e-p" name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="20" pattern="\+?[0-9][0-9 ()\-]{6,19}" title="10-digit mobile number, or include your country code with +"></div>
+      <div class="f f--6"><label for="e-n">Your name</label><input id="e-n" name="name" autocomplete="name" required minlength="2" maxlength="80" pattern="[\p{L}\p{M} .'\-]{2,80}" title="Letters and spaces only, 2 to 80 characters"></div>
+      <div class="f f--6"><label for="e-no">Plans & menu ideas (optional)</label><input id="e-no" name="notes" maxlength="600" placeholder="Decoration, cake, music…"></div>
     </div>
     <div class="formfoot"><p><?= icon('party', 18) ?><span><?= et('book.event.note', 'Party and personal functions are both available. We will message you on WhatsApp to discuss menu, space and budget.') ?></span></p>
       <button class="btn btn--gold" type="submit">Plan my event <?= icon('arrow-right', 18) ?></button> <button class="wa-ico wa-ico--submit" type="submit" name="via" value="wa" aria-label="<?= e(t('book.wa', 'Book on WhatsApp')) ?>" title="<?= e(t('book.wa', 'Book on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?></button></div>
@@ -95,10 +95,10 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
   <section class="panel" id="panel-enquiry" role="tabpanel" aria-labelledby="tab-enquiry" <?= $bookTab === 'enquiry' ? '' : 'hidden' ?>>
     <?= $formHead('enquiry') ?>
     <div class="fgrid">
-      <div class="f f--4"><label for="q-n">Your name</label><input id="q-n" name="name" autocomplete="name" required></div>
-      <div class="f f--4"><label for="q-p">Phone / WhatsApp</label><input id="q-p" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></div>
-      <div class="f f--4"><label for="q-e">Email (optional)</label><input id="q-e" name="email" type="email" autocomplete="email"></div>
-      <div class="f f--12"><label for="q-m">How can we help?</label><textarea id="q-m" name="notes" required placeholder="Dates, number of guests, anything you would like to know…"></textarea></div>
+      <div class="f f--4"><label for="q-n">Your name</label><input id="q-n" name="name" autocomplete="name" required minlength="2" maxlength="80" pattern="[\p{L}\p{M} .'\-]{2,80}" title="Letters and spaces only, 2 to 80 characters"></div>
+      <div class="f f--4"><label for="q-p">Phone / WhatsApp</label><input id="q-p" name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="20" pattern="\+?[0-9][0-9 ()\-]{6,19}" title="10-digit mobile number, or include your country code with +"></div>
+      <div class="f f--4"><label for="q-e">Email (optional)</label><input id="q-e" name="email" type="email" autocomplete="email" maxlength="120"></div>
+      <div class="f f--12"><label for="q-m">How can we help?</label><textarea id="q-m" name="notes" required minlength="5" maxlength="600" placeholder="Dates, number of guests, anything you would like to know…"></textarea></div>
     </div>
     <div class="formfoot"><p><?= icon('message', 18) ?><span><?= et('book.enquiry.note', 'We usually reply the same day.') ?></span></p>
       <button class="btn btn--gold" type="submit">Send enquiry <?= icon('send', 18) ?></button> <button class="wa-ico wa-ico--submit" type="submit" name="via" value="wa" aria-label="<?= e(t('book.wa', 'Book on WhatsApp')) ?>" title="<?= e(t('book.wa', 'Book on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?></button></div>
