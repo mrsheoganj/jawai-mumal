@@ -17,14 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($r['ok']) { q("UPDATE jm_bookings SET status = 'Confirmed' WHERE id = ? AND status IN ('New','Contacted')", [$id]); flash('ok', 'Confirmation email sent to ' . $b['email'] . ' and the booking is marked Confirmed.'); }
             else flash('err', 'Email failed: ' . $r['error'] . ' (see Admin > Email (SMTP)).');
         }
-    } elseif (($_POST['action'] ?? '') === 'reset') {
-        if (trim($_POST['confirm'] ?? '') !== 'RESET') { flash('err', 'Type RESET in capital letters to confirm.'); redirect('bookings.php#reset'); }
-        $scope = $_POST['scope'] ?? 'all';
-        $where = ['all' => '', 'new' => " WHERE status = 'New'", 'cancelled' => " WHERE status = 'Cancelled'", 'enquiry' => " WHERE type = 'enquiry'"][$scope] ?? '';
-        $n = (int)val('SELECT COUNT(*) FROM jm_bookings' . $where);
-        q('DELETE FROM jm_bookings' . $where);
-        if ($where === '') { try { db_type() === 'mysql' ? db()->exec('ALTER TABLE jm_bookings AUTO_INCREMENT = 1') : db()->exec("DELETE FROM sqlite_sequence WHERE name = 'jm_bookings'"); } catch (Throwable $e) {} }
-        flash('ok', $n . ' record(s) deleted. Your bookings list is clean.'); redirect('bookings.php');
     } elseif (($_POST['action'] ?? '') === 'delete' && $id) {
         q('DELETE FROM jm_bookings WHERE id = ?', [$id]); flash('ok', 'Booking deleted.');
     }
@@ -74,10 +66,4 @@ admin_head('Bookings & enquiries', 'bookings');
   <?php endforeach; ?>
   <?php if (!$list): ?><tr><td colspan="6" class="muted" style="text-align:center;padding:2rem">No bookings match.</td></tr><?php endif; ?>
   </tbody></table></div>
-<div class="card" id="reset" style="margin-top:1.4rem"><h2>Go-live cleanup</h2>
-  <p class="muted" style="margin-top:0">Done testing? Remove the test bookings and enquiries before you launch. This cannot be undone — <a href="?<?= e(http_build_query(['export' => 1])) ?>">download a CSV backup</a> first if you want one.</p>
-  <form method="post" class="grid" style="align-items:end"><?= csrf_field() ?><input type="hidden" name="action" value="reset">
-    <div class="c4"><label for="rs">What to delete</label><select id="rs" name="scope"><option value="all">Everything (all bookings &amp; enquiries)</option><option value="new">Only “New” requests</option><option value="enquiry">Only plain enquiries</option><option value="cancelled">Only cancelled</option></select></div>
-    <div class="c4"><label for="rc">Type RESET to confirm</label><input id="rc" name="confirm" autocomplete="off" placeholder="RESET"></div>
-    <div class="c4"><button class="btn btn--danger"><?= icon('trash', 16) ?> Reset now</button></div></form></div>
 <?php admin_foot(); ?>
