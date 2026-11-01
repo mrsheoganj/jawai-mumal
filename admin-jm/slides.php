@@ -18,7 +18,8 @@ admin_crud([
   <?php },
   'fields' => [
     'device' => ['Show on', 'select', 'Phones and computers can have different photos and text.', ['both' => 'Phones and computers', 'desktop' => 'Computers & big screens only', 'mobile' => 'Phones only'], 12],
-    'image' => ['Banner photo', 'image', 'Computers: landscape 2400 × 1350 px. Phones: portrait 1080 × 1620 px. Under 400 KB (JPG or WebP) loads fastest.'],
+    'image' => ['Photo for computers & big screens', 'image', 'Landscape, about 2400 × 1350 px (16:9). Under 400 KB (JPG or WebP) loads fastest.'],
+    'image_mobile' => ['Photo for phones (optional)', 'image', 'Portrait, about 1080 × 1620 px (2:3), subject in the middle. Leave empty to use the computer photo on phones too.'],
     'eyebrow' => ['Small line above the title', 'text', '', null, 6], 'title' => ['Title', 'text', '', null, 6],
     'text' => ['Short description', 'textarea'],
     'cta_label' => ['Main button text', 'text', '', null, 3], 'cta_url' => ['Main button link', 'text', 'e.g. #book, safari.php, restaurant.php or a full https:// link', null, 3],

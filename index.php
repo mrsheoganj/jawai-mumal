@@ -11,8 +11,9 @@ if (!$forD) $forD = $forM; if (!$forM) $forM = $forD;
 $firstD = $forD[0] ?? null; $firstM = $forM[0] ?? null;
 $inD = array_flip(array_column($forD, 'id')); $inM = array_flip(array_column($forM, 'id'));
 $preloads = [];
-if ($firstD && $firstM && $firstD['id'] === $firstM['id']) $preloads[] = [$firstD['image'], ''];
-else { if ($firstD) $preloads[] = [$firstD['image'], '(min-width: 701px)']; if ($firstM) $preloads[] = [$firstM['image'], '(max-width: 700px)']; }
+$imgD = $firstD ? $firstD['image'] : null; $imgM = $firstM ? (trim((string)($firstM['image_mobile'] ?? '')) ?: $firstM['image']) : null;
+if ($imgD && $imgM && $imgD === $imgM) $preloads[] = [$imgD, ''];
+else { if ($imgD) $preloads[] = [$imgD, '(min-width: 701px)']; if ($imgM) $preloads[] = [$imgM, '(max-width: 700px)']; }
 include __DIR__ . '/includes/header.php';
 
 $featRooms = rows("SELECT * FROM jm_rooms WHERE status='active' ORDER BY featured DESC, sort_order, id LIMIT 3");
@@ -36,7 +37,10 @@ $n = count($slides);
     $cls = 'hslide' . ($d ? ' dv-d' : '') . ($m ? ' dv-m' : '') . ($first ? ' is-active' : '');
     $isH1 = $firstD && $s['id'] === $firstD['id']; ?>
   <div class="<?= $cls ?>" role="group" aria-roledescription="slide" aria-label="Slide <?= $i + 1 ?>"<?= $first ? '' : ' aria-hidden="true"' ?>>
-    <img class="hslide__bg" src="<?= e(img($s['image'])) ?>" alt="<?= e(trim(strip_tags((string)($s['title'] ?? ''))) ?: setting('site_name') . ' – Bera, Jawai') ?>"<?= $first ? ' fetchpriority="high"' : ' loading="lazy"' ?>>
+    <picture>
+      <?php if (trim((string)($s['image_mobile'] ?? '')) !== ''): ?><source media="(max-width: 700px)" srcset="<?= e(img($s['image_mobile'])) ?>"><?php endif; ?>
+      <img class="hslide__bg" src="<?= e(img($s['image'])) ?>" alt="<?= e(trim(strip_tags((string)($s['title'] ?? ''))) ?: setting('site_name') . ' – Bera, Jawai') ?>"<?= $first ? ' fetchpriority="high"' : ' loading="lazy"' ?>>
+    </picture>
     <div class="wrap">
       <div class="hero__in">
         <?php if ($s['eyebrow']): ?><span class="eyebrow"><?= e($s['eyebrow']) ?></span><?php endif; ?>

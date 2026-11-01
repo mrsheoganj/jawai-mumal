@@ -692,3 +692,5 @@ body{background:#fff}
 }
 /* slider arrows and dots are for computers only; phones swipe */
 @media (max-width:700px){.hero__ctl{display:none!important}}
+
+.hslide picture{position:absolute;inset:0;display:block;z-index:-2}.hslide picture .hslide__bg{z-index:auto}
