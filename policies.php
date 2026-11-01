@@ -9,7 +9,7 @@ page_head(t('policies.head.eyebrow', 'Good to know'), t('policies.head.title', '
 $blocks = [
   ['calendar-check', t('policies.b1.title', 'Booking & confirmation'), t('policies.b1.text', 'A request on the website or WhatsApp is not a confirmed booking until our team confirms availability and the final rate by call or WhatsApp.
 No payment is taken online. Advance payment, if needed, is arranged directly with the team.')],
-  ['clock', t('policies.b2.title', 'Check-in & check-out'), t('policies.b2.text', 'Check-in from 12:00 PM and check-out by 11:00 AM. Early check-in or late check-out is subject to availability — please ask in advance.
+  ['clock', t('policies.b2.title', 'Check-in & check-out'), t('policies.b2.text', 'Check-in from 12:00 PM and check-out by 11:00 AM. Early check-in or late check-out is subject to availability, please ask in advance.
 All adult guests must show a valid photo ID at check-in. Foreign guests need their passport and visa details.')],
   ['refresh', t('policies.b3.title', 'Changes & cancellation'), t('policies.b3.text', 'Please tell us as early as possible if your plans change; we will try to move your dates free of charge, subject to availability.
 Cancellation terms and any advance refund are agreed with the team when the booking is confirmed.')],

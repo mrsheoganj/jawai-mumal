@@ -4,16 +4,6 @@
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* Preloader (once per session) */
-  var pre = $('#preloader');
-  if (pre && !document.documentElement.classList.contains('no-pre')) {
-    var start = Date.now(), hide = function () {
-      var wait = Math.max(0, 1500 - (Date.now() - start));
-      setTimeout(function () { pre.classList.add('is-done'); try { sessionStorage.setItem('jmPre', '1'); } catch (e) {} }, wait);
-    };
-    if (document.readyState === 'complete') hide(); else window.addEventListener('load', hide);
-    setTimeout(hide, 4000);
-  }
 
   /* Header */
   var nav = $('#nav'), tgl = $('#navtoggle');
@@ -31,13 +21,6 @@
   /* Drawer backdrop */
   var bd = $('#navbd'); if (bd) bd.addEventListener('click', function () { nav.classList.remove('is-open'); if (tgl) tgl.setAttribute('aria-expanded', 'false'); });
 
-  /* Word-by-word headings */
-  $$('.sechead h2, .cta h2, .pagehead h1').forEach(function (h) {
-    if (reduce || h.children.length) return;
-    var words = h.textContent.trim().split(/\s+/); h.setAttribute('aria-label', h.textContent.trim());
-    h.classList.add('words'); h.innerHTML = words.map(function (w, i) { return '<span aria-hidden="true" style="--w:' + i + '">' + w.replace(/&/g, '&amp;') + '&nbsp;</span>'; }).join('');
-    var host = h.closest('.rv') || h; if (!h.closest('.rv')) { h.classList.add('rv'); }
-  });
 
   /* Reveal on scroll */
   var rv = $$('.rv');
@@ -67,18 +50,6 @@
     play();
   }
 
-  /* Count-up numbers */
-  var counters = $$('.stat b, .jkm b');
-  var runCount = function (el) {
-    var m = el.textContent.trim().match(/^(\d+(?:\.\d+)?)(\D*)$/); if (!m || reduce) return;
-    var end = parseFloat(m[1]), dec = (m[1].split('.')[1] || '').length, suf = m[2], t0 = null, dur = 1400;
-    var step = function (t) { t0 = t0 || t; var p = Math.min(1, (t - t0) / dur), v = end * (1 - Math.pow(1 - p, 3)); el.textContent = (dec ? v.toFixed(dec) : Math.round(v)) + suf; if (p < 1) requestAnimationFrame(step); };
-    el.textContent = '0' + suf; requestAnimationFrame(step);
-  };
-  if ('IntersectionObserver' in window) {
-    var cio = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) { runCount(en.target); cio.unobserve(en.target); } }); }, { threshold: .6 });
-    counters.forEach(function (c) { cio.observe(c); });
-  }
 
   /* Scroll progress + parallax (one rAF-throttled handler) */
   var prog = $('#progress'), heroBgs = $$('.hslide__bg'), ticking = false;

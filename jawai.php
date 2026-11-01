@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/db.php';
-$pageTitle = 'Explore Jawai — Leopards, Dam, Villages & How to Reach'; $pageDesc = 'A guide to Jawai in Pali, Rajasthan: leopard hills, Jawai Dam, wildlife, Rabari culture, best time to visit and how to reach Bera from Udaipur and Jodhpur.';
+$pageTitle = 'Explore Jawai, Leopards, Dam, Villages & How to Reach'; $pageDesc = 'A guide to Jawai in Pali, Rajasthan: leopard hills, Jawai Dam, wildlife, Rabari culture, best time to visit and how to reach Bera from Udaipur and Jodhpur.';
 $active = 'jawai';
 $attrs = rows("SELECT * FROM jm_attractions WHERE status='active' ORDER BY sort_order, id");
 $groups = []; foreach ($attrs as $a) { $groups[$a['category']][] = $a; }
@@ -12,7 +12,7 @@ page_head(t('jawai.head.eyebrow', 'Explore Jawai'), t('jawai.head.title', 'Explo
   <div class="wrap split">
     <div class="rv"><span class="eyebrow eyebrow--dark"><?= et('jawai.about.eyebrow', 'About Jawai') ?></span><h2><?= et('jawai.about.title', 'Leopards, granite hills and a working countryside') ?></h2>
       <p><?= et('jawai.about.p1', 'Jawai is a stretch of granite hills around the Jawai Dam in Pali district, roughly halfway between Udaipur and Jodhpur. Leopards den in the caves and rest on the rocks here, a short walk from villages, farms and hill temples. The Rabari herders who graze their animals on these hills have lived alongside them for generations.') ?></p>
-      <p><?= et('jawai.about.p2', 'It is not a fenced national park — it is a lived-in landscape. That is why the leopards are so visible, and why how we behave around them matters. Jawai Mumal sits in Bera village on the Bera–Bali road, in the middle of it all.') ?></p></div>
+      <p><?= et('jawai.about.p2', 'It is not a fenced national park, it is a lived-in landscape. That is why the leopards are so visible, and why how we behave around them matters. Jawai Mumal sits in Bera village on the Bera–Bali road, in the middle of it all.') ?></p></div>
     <div class="duo rv d1"><figure class="frame"><img src="<?= imgu('jawai.about.img1', 'assets/images/leopard-log.jpg') ?>" alt="Leopard in the Jawai granite hills, Rajasthan" loading="lazy"></figure><figure class="frame"><img src="<?= imgu('jawai.about.img2', 'assets/images/leopard-log.jpg') ?>" alt="" loading="lazy"></figure></div>
   </div>
   <div class="wrap"><div class="stats rv">
@@ -36,7 +36,7 @@ page_head(t('jawai.head.eyebrow', 'Explore Jawai'), t('jawai.head.title', 'Explo
 
 <section class="sec sec--dark">
   <div class="wrap">
-    <div class="sechead rv"><span class="eyebrow"><?= et('jawai.season.eyebrow', 'Best time to visit') ?></span><h2><?= et('jawai.season.title', 'Jawai through the seasons') ?></h2><p><?= et('jawai.season.sub', 'Leopards live here all year — each season simply offers a different Jawai. October to March is the main safari season.') ?></p></div>
+    <div class="sechead rv"><span class="eyebrow"><?= et('jawai.season.eyebrow', 'Best time to visit') ?></span><h2><?= et('jawai.season.title', 'Jawai through the seasons') ?></h2><p><?= et('jawai.season.sub', 'Leopards live here all year, each season simply offers a different Jawai. October to March is the main safari season.') ?></p></div>
     <div class="season season--3">
       <div class="rv"><?= icon('moon', 28) ?><h3><?= et('jawai.s1.title', 'Winter') ?></h3><small><?= et('jawai.s1.when', 'November – February') ?></small><p><?= et('jawai.s1.text', 'Cool, clear mornings, often 8–12°C at dawn. The reservoir is full and migratory birds arrive in thousands; leopards bask on the warm rock. The best season for safaris and the busiest.') ?></p></div>
       <div class="rv d1"><?= icon('sun', 28) ?><h3><?= et('jawai.s2.title', 'Summer') ?></h3><small><?= et('jawai.s2.when', 'March – June') ?></small><p><?= et('jawai.s2.text', 'Hot and dry, often above 40°C by May. Water levels drop, crocodiles bask on sandbanks and wildlife gathers near what water is left. Drives run very early and very late.') ?></p></div>

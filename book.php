@@ -93,12 +93,12 @@ include __DIR__ . '/includes/header.php';
     <?php if ($done): ?>
       <div class="done rv">
         <div class="pillar__ic"><?= icon('check', 30) ?></div>
-        <h1 style="font-size:2.4rem">Thank you — request received</h1>
+        <h1 style="font-size:2.4rem">Thank you, request received</h1>
         <p>Your reference number is</p>
         <div class="code"><?= e($done) ?></div>
         <?php if ($b): ?>
           <p><strong><?= e($b['item_name']) ?></strong><?php if ($b['date_from']): ?><br><?= e(fmt_date($b['date_from'])) ?><?= $b['date_to'] ? ' → ' . e(fmt_date($b['date_to'])) : '' ?><?= $b['time_slot'] ? ' · ' . e($b['time_slot']) : '' ?><?php endif; ?><br><?= (int)$b['guests'] ?> guest<?= $b['guests'] > 1 ? 's' : '' ?></p>
-          <?php if ($b['amount'] > 0): ?><p>Estimated: <strong><?= money($b['amount'] + $b['tax']) ?></strong><?= $b['tax'] ? ' (incl. GST)' : '' ?> — final rate is confirmed by our team.</p><?php endif; ?>
+          <?php if ($b['amount'] > 0): ?><p>Estimated: <strong><?= money($b['amount'] + $b['tax']) ?></strong><?= $b['tax'] ? ' (incl. GST)' : '' ?>, final rate is confirmed by our team.</p><?php endif; ?>
         <?php endif; ?>
         <p><?= et('done.text', 'Your request is saved. Our team will message you on WhatsApp shortly to confirm. To speed things up, send the details to us on WhatsApp.') ?></p>
         <div class="hero__cta" style="justify-content:center">
@@ -109,7 +109,7 @@ include __DIR__ . '/includes/header.php';
       <div class="sechead" style="margin-bottom:2rem">
         <span class="eyebrow eyebrow--dark"><?= et('bookpage.eyebrow', 'Reservations') ?></span>
         <h1 style="font-size:clamp(2.2rem,5vw,3.6rem)"><?= et('bookpage.title', 'Book your stay') ?></h1>
-        <p><?= et('bookpage.sub', 'Choose what you need and send a request. We reply personally — no payment is taken online.') ?></p>
+        <p><?= et('bookpage.sub', 'Choose what you need and send a request. We reply personally, no payment is taken online.') ?></p>
       </div>
       <?php foreach ($errors as $er): ?><div class="alert alert--err" role="alert"><?= e($er) ?></div><?php endforeach; ?>
       <?php include __DIR__ . '/includes/booking_panel.php'; ?>

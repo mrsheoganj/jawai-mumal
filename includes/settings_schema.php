@@ -14,10 +14,8 @@ function settings_schema(): array {
         'logo_light'     => ['Brand', 'Logo for dark backgrounds (transparent PNG)', 'image', 'assets/brand/wordmark-light.png'],
         'logo_emblem'    => ['Brand', 'Round emblem logo', 'image', 'assets/brand/emblem-512.png'],
         'font_pair'      => ['Brand', 'Website fonts', 'select:playfair-inter|baskerville-source|dmserif-dmsans|cormorant-jost', 'playfair-inter', 'Applies to the whole website and the admin panel.'],
-        'meta_description' => ['Brand', 'Search engine description', 'textarea', 'Jawai Mumal — hotel, pure-vegetarian Rajasthani restaurant and leopard safaris in Bera, Pali, Rajasthan, in the heart of Jawai leopard country.'],
+        'meta_description' => ['Brand', 'Search engine description', 'textarea', 'Jawai Mumal, hotel, pure-vegetarian Rajasthani restaurant and leopard safaris in Bera, Pali, Rajasthan, in the heart of Jawai leopard country.'],
 
-        'show_open_badge' => ['Brand', 'Show the “Now Open” badge on the home banner', 'select:1|0', '1'],
-        'open_label'     => ['Brand', 'Badge text', 'text', 'Now Open'],
 
         
         

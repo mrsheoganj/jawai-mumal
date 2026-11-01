@@ -26,7 +26,6 @@ $n = count($slides);
     <img class="hslide__bg" src="<?= e(img($s['image'])) ?>" alt="<?= e(trim(strip_tags((string)($s['title'] ?? ''))) ?: setting('site_name') . ' – Bera, Jawai') ?>"<?= $i ? ' loading="lazy"' : ' fetchpriority="high"' ?>>
     <div class="wrap">
       <div class="hero__in">
-        <?php if (setting('show_open_badge') === '1' && $i === 0): ?><div class="badge-soon"><i></i><?= e(setting('open_label')) ?></div><?php endif; ?>
         <?php if ($s['eyebrow']): ?><span class="eyebrow"><?= e($s['eyebrow']) ?></span><?php endif; ?>
         <<?= $i === 0 ? 'h1' : 'h2 class="h1"' ?>><?= e($s['title']) ?></<?= $i === 0 ? 'h1' : 'h2' ?>>
         <?php if ($s['text']): ?><p><?= e($s['text']) ?></p><?php endif; ?>
@@ -60,24 +59,18 @@ $n = count($slides);
       <div class="rv">
         <span class="eyebrow eyebrow--dark"><?= et('home.about.eyebrow', 'Welcome') ?></span>
         <h2><?= et('home.about.title', 'A hotel and kitchen in the heart of Jawai') ?></h2>
-        <p><?= et('home.about.p1', 'Jawai Mumal is a family-run hotel and restaurant in Bera village on the Bera–Bali road, in Pali district of Rajasthan. Granite hills, village lanes, Rabari herders and wild leopards all share this landscape — and we are right in the middle of it.') ?></p>
-        <p><?= et('home.about.p2', 'Stay in a comfortable room, eat a pure-vegetarian Rajasthani meal cooked the village way, and head out for a sunrise or sunset leopard safari with local trackers. Good food, comfortable stay, happy moments — a place where every guest feels special.') ?></p>
+        <p><?= et('home.about.p1', 'Jawai Mumal is a family-run hotel and restaurant in Bera village on the Bera–Bali road, in Pali district of Rajasthan. Granite hills, village lanes, Rabari herders and wild leopards all share this landscape, and we are right in the middle of it.') ?></p>
+        <p><?= et('home.about.p2', 'Stay in a comfortable room, eat a pure-vegetarian Rajasthani meal cooked the village way, and head out for a sunrise or sunset leopard safari with local trackers. Good food, comfortable stay, happy moments, a place where every guest feels special.') ?></p>
         <p style="color:var(--gold-d);font-weight:500"><?= et('home.about.founders', 'Founded by Devendra Singh & Nilesh Singh Chouhan') ?></p>
         <div class="hero__cta"><a class="link" href="<?= url('contact.php') ?>"><?= et('home.about.link', 'Meet the team & find us') ?> <?= icon('arrow-right', 18) ?></a></div>
       </div>
-      <div class="duo rv d1">
-        <figure class="frame"><img src="<?= imgu('home.about.img1', 'assets/images/hotel-day.jpg') ?>" alt="<?= et('home.about.alt1', 'Jawai Mumal hotel in Bera village') ?>" loading="lazy"><figcaption><?= et('home.about.cap1', 'Jawai Mumal, Bera') ?></figcaption></figure>
-        <figure class="frame"><img src="<?= imgu('home.about.img2', 'assets/images/hotel-front.jpg') ?>" alt="<?= et('home.about.alt2', 'Jawai Mumal hotel entrance in the evening') ?>" loading="lazy"><figcaption><?= et('home.about.cap2', 'Evening view') ?></figcaption></figure>
+      <div class="duo duo--one rv d1">
+        <figure class="frame"><img src="<?= imgu('home.about.img1', 'assets/images/hotel-front.jpg') ?>" alt="<?= et('home.about.alt1', 'Jawai Mumal hotel in Bera village') ?>" loading="lazy"></figure>
       </div>
-    </div>
-    <div class="stats rv">
-      <?php for ($i = 1; $i <= 4; $i++): ?><div class="stat"><b><?= e(setting("stat{$i}_value")) ?></b><span><?= e(setting("stat{$i}_label")) ?></span></div><?php endfor; ?>
     </div>
   </div>
 </section>
 
-<!-- ============ MARQUEE ============ -->
-<div class="marq" aria-hidden="true"><div class="marq__in"><?php $mq = lines(t('home.marquee', "Leopards on granite\nJawai Dam\nRabari villages\nWinter flamingos\nRajasthani village food\nSunrise safaris\nStarlit skies")); for ($k = 0; $k < 2; $k++) foreach ($mq as $w) echo '<span>' . e($w) . '</span>'; ?></div></div>
 
 <!-- ============ THREE PILLARS ============ -->
 <section class="sec sec--sand">
@@ -134,7 +127,7 @@ $n = count($slides);
     <div class="rv d1">
       <span class="eyebrow eyebrow--dark"><?= et('home.food.eyebrow', 'Restaurant & café · 100% vegetarian') ?></span>
       <h2><?= et('home.food.title', 'Rajasthani food, the Jawai village way') ?></h2>
-      <p><?= et('home.food.p1', 'Dal baati churma dunked in ghee, ker sangri from the desert, gatte ki sabzi, kadhi and bajra roti hot off the griddle with garlic chutney — the food of the villages around Jawai, cooked fresh in our kitchen.') ?></p>
+      <p><?= et('home.food.p1', 'Dal baati churma dunked in ghee, ker sangri from the desert, gatte ki sabzi, kadhi and bajra roti hot off the griddle with garlic chutney, the food of the villages around Jawai, cooked fresh in our kitchen.') ?></p>
       <p><?= et('home.food.p2', 'Add tandoor classics, mirchi vada and pyaaz kachori, kulhad chai and cold chaas, and finish with moong dal halwa or malpua. Jain options on request.') ?></p>
       <ul class="checks" style="color:var(--ink-2)">
         <li><?= icon('check', 16) ?><?= et('home.food.c1', 'Pure vegetarian kitchen') ?></li><li><?= icon('check', 16) ?><?= et('home.food.c2', 'Village-style thali') ?></li><li><?= icon('check', 16) ?><?= et('home.food.c3', 'Café, chai & fresh drinks') ?></li><li><?= icon('check', 16) ?><?= et('home.food.c4', 'Group & party menus') ?></li>
@@ -190,7 +183,7 @@ $n = count($slides);
       <img src="<?= imgu('home.events.img', 'assets/images/food-bowls.jpg') ?>" alt="Vegetarian food for parties and celebrations at Jawai Mumal" loading="lazy">
       <span class="eyebrow"><?= et('home.events.eyebrow', 'Party & personal bookings') ?></span>
       <h2><?= et('home.events.title', 'Parties, celebrations & private functions') ?></h2>
-      <p><?= et('home.events.text', 'Birthdays, family get-togethers, small weddings, corporate meets or a quiet personal celebration — party and personal bookings are both available. Tell us your date, guest count and menu ideas and we will plan the rest.') ?></p>
+      <p><?= et('home.events.text', 'Birthdays, family get-togethers, small weddings, corporate meets or a quiet personal celebration, party and personal bookings are both available. Tell us your date, guest count and menu ideas and we will plan the rest.') ?></p>
       <div class="hero__cta"><a class="btn btn--gold" href="<?= url('book.php?type=event') ?>"><?= et('home.events.btn', 'Plan an event') ?> <?= icon('arrow-right', 18) ?></a><a class="wa-ico wa-ico--light" target="_blank" rel="noopener" href="<?= e(wa_link(t('home.events.wamsg', 'Hello Jawai Mumal, I would like to plan a party or function.'))) ?>" aria-label="<?= e(t('wa.aria', 'Chat on WhatsApp')) ?>" title="<?= e(t('wa.aria', 'Chat on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?></a></div>
     </div>
   </div>
@@ -243,7 +236,7 @@ $n = count($slides);
       <p style="white-space:pre-line"><?= e(setting('address')) ?></p>
       <ul class="footer__contact" style="list-style:none;padding:0;display:grid;gap:1rem;margin:1.5rem 0">
         <?php foreach (['owner1', 'owner2'] as $o): ?>
-          <li style="display:flex;gap:.9rem;align-items:center"><span style="flex:1"><strong style="font:600 1.15rem var(--serif)"><?= e(setting($o . '_name')) ?></strong><br><small style="color:var(--muted)"><?= e(setting($o . '_role')) ?> · <?= e(setting($o . '_phone')) ?></small></span><a class="wa-ico wa-ico--sm" target="_blank" rel="noopener" href="<?= e(wa_to(setting($o . '_phone'), t('home.find.wamsg', 'Hello, I would like to know more about Jawai Mumal.'))) ?>" aria-label="<?= e(t('wa.aria', 'Chat on WhatsApp')) ?> — <?= e(setting($o . '_name')) ?>" title="WhatsApp <?= e(setting($o . '_name')) ?>"><?= icon('whatsapp', 22) ?></a></li>
+          <li style="display:flex;gap:.9rem;align-items:center"><span style="flex:1"><strong style="font:600 1.15rem var(--serif)"><?= e(setting($o . '_name')) ?></strong><br><small style="color:var(--muted)"><?= e(setting($o . '_role')) ?> · <?= e(setting($o . '_phone')) ?></small></span><a class="wa-ico wa-ico--sm" target="_blank" rel="noopener" href="<?= e(wa_to(setting($o . '_phone'), t('home.find.wamsg', 'Hello, I would like to know more about Jawai Mumal.'))) ?>" aria-label="<?= e(t('wa.aria', 'Chat on WhatsApp')) ?>, <?= e(setting($o . '_name')) ?>" title="WhatsApp <?= e(setting($o . '_name')) ?>"><?= icon('whatsapp', 22) ?></a></li>
         <?php endforeach; ?>
       </ul>
       <div class="hero__cta"><a class="btn btn--line" href="<?= e(maps_open_url()) ?>" target="_blank" rel="noopener"><?= icon('navigation', 18) ?> <?= et('home.find.btn', 'Get directions') ?></a></div>

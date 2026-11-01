@@ -29,7 +29,7 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
       <div class="f"><label for="s-g">Guests</label><select id="s-g" name="guests"><?= $guestOpts(2) ?></select></div>
       <div class="f"><label for="s-room">Room</label>
         <select id="s-room" name="item_id"><option value="0" data-price="0">Any available room</option>
-        <?php foreach ($bRooms as $r): ?><option value="<?= $r['id'] ?>" data-price="<?= (int)$r['price'] ?>" data-tax="<?= gst_rate((int)$r['price']) ?>"<?= $sel($preRoom, $r['id']) ?>><?= e($r['name']) ?> — <?= money($r['price']) ?>/night</option><?php endforeach; ?></select></div>
+        <?php foreach ($bRooms as $r): ?><option value="<?= $r['id'] ?>" data-price="<?= (int)$r['price'] ?>" data-tax="<?= gst_rate((int)$r['price']) ?>"<?= $sel($preRoom, $r['id']) ?>><?= e($r['name']) ?>, <?= money($r['price']) ?>/night</option><?php endforeach; ?></select></div>
       <div class="f f--4"><label for="s-n">Your name</label><input id="s-n" name="name" autocomplete="name" required></div>
       <div class="f f--4"><label for="s-p">Phone / WhatsApp</label><input id="s-p" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></div>
       <div class="f f--4"><label for="s-e">Email (optional)</label><input id="s-e" name="email" type="email" autocomplete="email"></div>

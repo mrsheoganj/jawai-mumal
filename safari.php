@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/db.php';
-$pageTitle = 'Jawai Leopard Safari'; $pageDesc = 'Dawn and dusk leopard safaris in open 4x4 jeeps with local trackers, Jawai Dam birding, photography drives and Rabari village visits — from Jawai Mumal, Bera.';
+$pageTitle = 'Jawai Leopard Safari'; $pageDesc = 'Dawn and dusk leopard safaris in open 4x4 jeeps with local trackers, Jawai Dam birding, photography drives and Rabari village visits, from Jawai Mumal, Bera.';
 $active = 'safari'; $bookTab = 'safari';
 $safaris = rows("SELECT * FROM jm_safaris WHERE status='active' ORDER BY sort_order, id");
 seo_ld(seo_breadcrumb_ld([['Safari', 'safari']]));
@@ -14,7 +14,7 @@ page_head(t('safari.head.eyebrow', 'Safari'), t('safari.head.title', 'Jawai Leop
     <div class="split" style="margin-bottom:4rem">
       <div class="rv"><span class="eyebrow eyebrow--dark"><?= et('safari.intro.eyebrow', 'Our safaris') ?></span><h2><?= et('safari.intro.title', 'Tracking leopards the patient way') ?></h2>
         <p><?= et('safari.intro.p1', 'Jawai\'s leopards do not hide in dense forest. They rest on and inside great granite domes, and the land tells you where they are: a langur barking from a ridge, a peacock\'s sharp alarm call, fresh pugmarks in a sandy riverbed. Our trackers read each sign, position the jeep quietly, switch off the engine and wait.') ?></p>
-        <p><?= et('safari.intro.p2', 'Drives run twice a day, in the morning from about 6 to 9 AM and in the evening from about 4 to 7 PM, when leopards are most often out on the rocks. A sighting is never guaranteed — but over a two or three day stay the chances are very good.') ?></p></div>
+        <p><?= et('safari.intro.p2', 'Drives run twice a day, in the morning from about 6 to 9 AM and in the evening from about 4 to 7 PM, when leopards are most often out on the rocks. A sighting is never guaranteed, but over a two or three day stay the chances are very good.') ?></p></div>
       <div class="duo rv d1"><figure class="frame"><img src="<?= imgu('safari.intro.img1', 'assets/images/leopard-log.jpg') ?>" alt="Leopard seen on a Jawai safari" loading="lazy"></figure><figure class="frame"><img src="<?= imgu('safari.intro.img2', 'assets/images/leopard-log.jpg') ?>" alt="" loading="lazy"></figure></div>
     </div>
     <div class="fac" style="margin-bottom:4.5rem">
@@ -23,7 +23,7 @@ page_head(t('safari.head.eyebrow', 'Safari'), t('safari.head.title', 'Jawai Leop
       <div class="fac__item rv d2"><span class="fac__ic"><?= icon('eye', 24) ?></span><div><h3><?= et('safari.f3.title', 'Binoculars on board') ?></h3><p><?= et('safari.f3.text', 'Binoculars in the jeep, camera beanbags on request, and tea or coffee in the field.') ?></p></div></div>
     </div>
 
-    <div class="sechead rv"><span class="eyebrow eyebrow--dark"><?= et('safari.list.eyebrow', 'Choose your drive') ?></span><h2><?= et('safari.list.title', 'Safari experiences') ?></h2><p><?= et('safari.list.sub', 'Tell us the date and guests — we arrange the jeep, tracker and timing and confirm everything personally.') ?></p></div>
+    <div class="sechead rv"><span class="eyebrow eyebrow--dark"><?= et('safari.list.eyebrow', 'Choose your drive') ?></span><h2><?= et('safari.list.title', 'Safari experiences') ?></h2><p><?= et('safari.list.sub', 'Tell us the date and guests, we arrange the jeep, tracker and timing and confirm everything personally.') ?></p></div>
     <?php foreach ($safaris as $s): ?>
       <article class="row rv" id="s<?= (int)$s['id'] ?>">
         <div class="row__img"><img src="<?= e(img($s['image'])) ?>" alt="<?= e($s['title']) ?>" loading="lazy"></div>
@@ -47,7 +47,7 @@ page_head(t('safari.head.eyebrow', 'Safari'), t('safari.head.title', 'Jawai Leop
   <div class="wrap split">
     <div class="rv"><span class="eyebrow"><?= et('safari.ethics.eyebrow', 'Respect for the wild') ?></span><h2><?= et('safari.ethics.title', 'How we watch wildlife') ?></h2>
       <p><?= et('safari.ethics.p', 'Jawai works because people and leopards have shared these hills for generations. We keep it that way.') ?></p>
-      <ul class="checks"><?php foreach (lines(t('safari.ethics.list', "We never block an animal's path or crowd a sighting\nNo calls, baiting or chasing — ever\nEngines off while we watch, from a respectful distance\nSmall groups and no convoys\nWe leave before an animal is disturbed\nLocal trackers and village families benefit directly")) as $li): ?><li><?= icon('check', 16) ?><?= e($li) ?></li><?php endforeach; ?></ul></div>
+      <ul class="checks"><?php foreach (lines(t('safari.ethics.list', "We never block an animal's path or crowd a sighting\nNo calls, baiting or chasing, ever\nEngines off while we watch, from a respectful distance\nSmall groups and no convoys\nWe leave before an animal is disturbed\nLocal trackers and village families benefit directly")) as $li): ?><li><?= icon('check', 16) ?><?= e($li) ?></li><?php endforeach; ?></ul></div>
     <div class="frame rv d1" style="aspect-ratio:4/3"><img src="<?= imgu('safari.ethics.img', 'assets/images/leopard-log.jpg') ?>" alt="Leopard at rest on a Jawai safari" loading="lazy"></div>
   </div>
 </section>
@@ -60,7 +60,7 @@ page_head(t('safari.head.eyebrow', 'Safari'), t('safari.head.title', 'Jawai Leop
       <div class="fac__item rv d1"><span class="fac__ic"><?= icon('leaf', 24) ?></span><div><h3><?= et('safari.t2.title', 'Wear earthy colours') ?></h3><p><?= et('safari.t2.text', 'Khaki, olive and stone shades, with warm layers for winter mornings (dawn can be 8–12°C), a hat and closed shoes.') ?></p></div></div>
       <div class="fac__item rv d2"><span class="fac__ic"><?= icon('camera', 24) ?></span><div><h3><?= et('safari.t3.title', 'Bring a zoom lens') ?></h3><p><?= et('safari.t3.text', 'A 70–200 mm or 100–400 mm lens suits most sightings. We carry beanbags.') ?></p></div></div>
       <div class="fac__item rv"><span class="fac__ic"><?= icon('shield-check', 24) ?></span><div><h3><?= et('safari.t4.title', 'Stay seated, keep quiet') ?></h3><p><?= et('safari.t4.text', 'Follow your tracker, keep voices low and never leave the jeep. Sightings are never guaranteed.') ?></p></div></div>
-      <div class="fac__item rv d1"><span class="fac__ic"><?= icon('droplets', 24) ?></span><div><h3><?= et('safari.t5.title', 'Carry water & sunscreen') ?></h3><p><?= et('safari.t5.text', 'Dusty tracks and strong sun — bring water, a scarf and sunscreen.') ?></p></div></div>
+      <div class="fac__item rv d1"><span class="fac__ic"><?= icon('droplets', 24) ?></span><div><h3><?= et('safari.t5.title', 'Carry water & sunscreen') ?></h3><p><?= et('safari.t5.text', 'Dusty tracks and strong sun, bring water, a scarf and sunscreen.') ?></p></div></div>
       <div class="fac__item rv d2"><span class="fac__ic"><?= icon('calendar-check', 24) ?></span><div><h3><?= et('safari.t6.title', 'Book 3–4 drives') ?></h3><p><?= et('safari.t6.text', 'Morning and evening over two days gives a fair chance of excellent sightings. Winter weekends fill quickly.') ?></p></div></div>
     </div>
   </div>

@@ -234,7 +234,7 @@ function booking_wa_message(array $b, bool $toGuest = false): string {
     } else {
         $L[] = 'Hello ' . setting('site_name') . ', I would like to send this request:';
     }
-    $L[] = '*' . ($types[$b['type']] ?? $b['type']) . '* — ' . $b['item_name'];
+    $L[] = '*' . ($types[$b['type']] ?? $b['type']) . '*: ' . $b['item_name'];
     if ($b['date_from']) {
         $L[] = ($b['type'] === 'stay' ? 'Check-in: ' : 'Date: ') . date('D, d M Y', strtotime($b['date_from']));
         if ($b['date_to']) $L[] = 'Check-out: ' . date('D, d M Y', strtotime($b['date_to'])) . ' (' . (int)$b['nights'] . ' night' . ($b['nights'] > 1 ? 's' : '') . ')';

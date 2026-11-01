@@ -25,19 +25,10 @@ if (seo_cfg('blog_in_menu') === '1') $nav['blog'] = [t('nav.blog', 'Journal'), '
 <link rel="apple-touch-icon" href="<?= url('assets/brand/icon-180.png') ?>">
 <?= font_head() ?>
 <link rel="stylesheet" href="<?= asset('assets/css/site.css') ?>">
-<script>try{if(sessionStorage.getItem('jmPre'))document.documentElement.classList.add('no-pre')}catch(e){}</script>
 </head>
 <body class="<?= e($bodyClass ?? '') ?>" data-tax="<?= e(setting('tax_percent')) ?>">
 <a class="skip" href="#main">Skip to content</a>
 
-<div class="progress" id="progress" aria-hidden="true"></div>
-<div class="preloader" id="preloader" aria-hidden="true">
-  <div class="preloader__mark">
-    <svg class="preloader__ring" viewBox="0 0 120 120"><circle cx="60" cy="60" r="56" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
-    <img src="<?= e(img(setting('logo_emblem'))) ?>" alt="" width="150" height="150">
-  </div>
-  <p class="preloader__text"><?= e($siteName) ?></p>
-</div>
 
 <header class="nav" id="nav">
   <div class="wrap nav__in">

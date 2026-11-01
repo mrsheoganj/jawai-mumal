@@ -30,8 +30,8 @@ $o2 = [setting('owner2_name'), setting('owner2_role'), setting('owner2_phone')];
     <div>
       <h3><?= et('footer.contact', 'Contact') ?></h3>
       <ul class="footer__contact">
-        <li><?= icon('user', 18) ?><span><?= e($o1[0]) ?> <small><?= e($o1[1]) ?> · <?= e($o1[2]) ?></small></span><a class="wa-ico wa-ico--sm" href="<?= e(wa_to($o1[2], t('footer.wamsg', 'Hello, I would like to know more about Jawai Mumal.'))) ?>" target="_blank" rel="noopener" aria-label="<?= e(t('wa.aria', 'Chat on WhatsApp')) ?> — <?= e($o1[0]) ?>" title="WhatsApp <?= e($o1[0]) ?>"><?= icon('whatsapp', 20) ?></a></li>
-        <li><?= icon('user', 18) ?><span><?= e($o2[0]) ?> <small><?= e($o2[1]) ?> · <?= e($o2[2]) ?></small></span><a class="wa-ico wa-ico--sm" href="<?= e(wa_to($o2[2], t('footer.wamsg', 'Hello, I would like to know more about Jawai Mumal.'))) ?>" target="_blank" rel="noopener" aria-label="<?= e(t('wa.aria', 'Chat on WhatsApp')) ?> — <?= e($o2[0]) ?>" title="WhatsApp <?= e($o2[0]) ?>"><?= icon('whatsapp', 20) ?></a></li>
+        <li><?= icon('user', 18) ?><span><?= e($o1[0]) ?> <small><?= e($o1[1]) ?> · <?= e($o1[2]) ?></small></span><a class="wa-ico wa-ico--sm" href="<?= e(wa_to($o1[2], t('footer.wamsg', 'Hello, I would like to know more about Jawai Mumal.'))) ?>" target="_blank" rel="noopener" aria-label="<?= e(t('wa.aria', 'Chat on WhatsApp')) ?>, <?= e($o1[0]) ?>" title="WhatsApp <?= e($o1[0]) ?>"><?= icon('whatsapp', 20) ?></a></li>
+        <li><?= icon('user', 18) ?><span><?= e($o2[0]) ?> <small><?= e($o2[1]) ?> · <?= e($o2[2]) ?></small></span><a class="wa-ico wa-ico--sm" href="<?= e(wa_to($o2[2], t('footer.wamsg', 'Hello, I would like to know more about Jawai Mumal.'))) ?>" target="_blank" rel="noopener" aria-label="<?= e(t('wa.aria', 'Chat on WhatsApp')) ?>, <?= e($o2[0]) ?>" title="WhatsApp <?= e($o2[0]) ?>"><?= icon('whatsapp', 20) ?></a></li>
         <?php if (setting('email')): ?><li><?= icon('mail', 18) ?><span><a href="mailto:<?= e(setting('email')) ?>"><?= e(setting('email')) ?></a></span></li><?php endif; ?>
         <li><?= icon('map-pin', 18) ?><span><?= nl2br(e(setting('address'))) ?></span></li>
       </ul>

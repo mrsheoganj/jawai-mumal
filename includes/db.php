@@ -179,7 +179,17 @@ function jm_migrate_pricing_v3(): void {
 }
 jm_migrate_images();
 jm_migrate_images_v2();
+/** v4: calmer copy. Replace spaced em dashes in saved content with commas. */
+function jm_migrate_copy_v4(): void {
+    if (get_setting_raw('copy_v4') === '1') return;
+    $tables = ['jm_settings' => ['svalue'], 'jm_rooms' => ['tagline', 'description'], 'jm_menu' => ['description'], 'jm_safaris' => ['description', 'highlights'], 'jm_attractions' => ['description'], 'jm_faqs' => ['question', 'answer'], 'jm_slides' => ['text', 'title'], 'jm_blog' => ['body', 'excerpt', 'meta_description']];
+    foreach ($tables as $t => $cols) foreach ($cols as $c) {
+        try { q("UPDATE $t SET $c = REPLACE($c, ?, ?) WHERE $c LIKE ?", [' — ', ', ', '% — %']); } catch (Throwable $e) {}
+    }
+    set_setting('copy_v4', '1');
+}
 jm_migrate_pricing_v3();
+jm_migrate_copy_v4();
 if (get_setting_raw('blog_seeded') !== '1') { require_once __DIR__ . '/seed_blog.php'; jm_seed_blog(); }
 upd_maybe_auto();   // live sync with GitHub (if enabled)
 jm_gate();

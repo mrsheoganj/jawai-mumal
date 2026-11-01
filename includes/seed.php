@@ -23,11 +23,11 @@ function jm_seed(PDO $pdo): void {
     $menu = [
         ['Jawai Village Thali', 'Village Rajasthani', 450, 1, 'Medium', 'The full village-style meal: dal, seasonal sabzi, kadhi, bajra roti with ghee, rice, papad, chutney, salad and a sweet.', $I.'food-thali.jpg', 'House special'],
         ['Dal Baati Churma', 'Village Rajasthani', 380, 1, 'Medium', 'Wheat baati baked and dunked in ghee, five-lentil panchmel dal, garlic chutney and sweet churma.', $I.'food-bowls.jpg', 'Signature'],
-        ['Ker Sangri', 'Village Rajasthani', 320, 1, 'Medium', 'Desert beans and berries tempered with cumin, dry mango and mustard oil — a classic of the Marwar villages.', '', 'Local'],
+        ['Ker Sangri', 'Village Rajasthani', 320, 1, 'Medium', 'Desert beans and berries tempered with cumin, dry mango and mustard oil, a classic of the Marwar villages.', '', 'Local'],
         ['Gatte ki Sabzi', 'Village Rajasthani', 290, 1, 'Medium', 'Gram-flour dumplings simmered in a spiced yoghurt gravy.', '', ''],
         ['Rajasthani Kadhi', 'Village Rajasthani', 220, 1, 'Mild', 'Tangy buttermilk and gram-flour curry with whole spices.', '', ''],
         ['Bajra Roti with Ghee & Lasun Chutney', 'Village Rajasthani', 90, 1, 'Medium', 'Pearl-millet flatbread cooked on a griddle, served with white butter, ghee and red garlic chutney.', '', 'Village favourite'],
-        ['Raab (winter special)', 'Village Rajasthani', 160, 1, '', 'Warm millet porridge cooked in buttermilk with jaggery and ghee — a winter morning comfort. Available in season.', '', 'Seasonal'],
+        ['Raab (winter special)', 'Village Rajasthani', 160, 1, '', 'Warm millet porridge cooked in buttermilk with jaggery and ghee, a winter morning comfort. Available in season.', '', 'Seasonal'],
         ['Mirchi Vada', 'Snacks & Chaat', 120, 1, 'Hot', 'Large green chilli stuffed with spiced potato, dipped in gram-flour batter and fried.', '', 'Popular'],
         ['Pyaaz Kachori', 'Snacks & Chaat', 90, 1, 'Medium', 'Flaky kachori filled with spiced onion, served with tamarind and mint chutneys.', '', ''],
         ['Dahi Vada', 'Snacks & Chaat', 130, 1, 'Mild', 'Soft lentil dumplings in whisked curd with sweet and tangy chutneys.', '', ''],
@@ -48,7 +48,7 @@ function jm_seed(PDO $pdo): void {
         ['Churma Ladoo', 'Desserts', 120, 1, '', 'Crumbled wheat and ghee rolled with jaggery.', '', 'Local'],
         ['Gulab Jamun', 'Desserts', 150, 1, '', 'Warm milk dumplings in cardamom syrup.', '', ''],
         ['Kulhad Masala Chai', 'Café & Drinks', 60, 1, '', 'Strong milk tea with ginger and cardamom, served in a clay kulhad.', '', ''],
-        ['Masala Chaas', 'Café & Drinks', 70, 1, '', 'Spiced buttermilk with roasted cumin and mint — the village summer drink.', '', ''],
+        ['Masala Chaas', 'Café & Drinks', 70, 1, '', 'Spiced buttermilk with roasted cumin and mint, the village summer drink.', '', ''],
         ['Sweet Lassi', 'Café & Drinks', 110, 1, '', 'Thick chilled curd drink, sweet or salted.', '', ''],
         ['Cold Coffee', 'Café & Drinks', 140, 1, '', 'Chilled coffee with ice cream.', '', ''],
         ['Fresh Lime Soda', 'Café & Drinks', 90, 1, '', 'Sweet, salted or mixed.', '', ''],
@@ -75,14 +75,14 @@ function jm_seed(PDO $pdo): void {
         ['Jawai Bandh Leopard Conservation Reserve', 'Wildlife', 'Nearby', 'A notified conservation reserve around the Jawai hills that helps protect leopards and their habitat while local herding communities continue to graze their animals nearby.', ''],
         ['Jawai Dam (Jawai Bandh)', 'Nature', '15 km · about 30 min', 'Completed in 1957 on the Jawai river, one of western Rajasthan\'s largest reservoirs. Mugger crocodiles, winter flamingos, cranes and raptors, with granite hills all around.', ''],
         ['Rabari Villages', 'Culture', 'Nearby', 'Meet the Rabari herders, known for their red turbans and silver jewellery, whose long tradition of living beside leopards is the heart of Jawai\'s story.', ''],
-        ['Village Food & Chai Stops', 'Experience', 'In and around Bera', 'Bajra roti with ghee, buttermilk, ker sangri and kulhad chai — ask us to arrange a village-style meal or a chai halt on your drive.', $I.'food-thali.jpg'],
+        ['Village Food & Chai Stops', 'Experience', 'In and around Bera', 'Bajra roti with ghee, buttermilk, ker sangri and kulhad chai, ask us to arrange a village-style meal or a chai halt on your drive.', $I.'food-thali.jpg'],
         ['Granite Hill Sunrise & Sunset Points', 'Nature', 'Nearby', 'Quiet viewpoints over the boulder-strewn hills, perfect for golden-hour photographs and a flask of tea.', ''],
         ['Stargazing & Campfire', 'Experience', 'At the hotel', 'Clear desert skies away from city light. Ask the team to arrange an evening campfire.', $I.'hotel-front.jpg'],
         ['Ranakpur Jain Temples', 'Heritage', '48 km · about 1 hr', 'A marble temple complex with 1,444 carved pillars set in a forested valley.', ''],
         ['Kumbhalgarh Fort', 'Heritage', '81 km · about 1 hr 40 min', 'A 15th-century hill fort with one of the longest continuous walls in the world.', ''],
         ['Mount Abu', 'Nature', '99 km · about 2 hrs', 'Rajasthan\'s only hill station, with Nakki Lake, the Dilwara temples and cool air.', ''],
-        ['Udaipur — City of Lakes', 'Heritage', '114 km · about 2 hrs', 'City Palace, Lake Pichola and royal-era havelis.', $I.'hotel-front.jpg'],
-        ['Jodhpur — Mehrangarh Fort', 'Heritage', '175 km · about 3 hrs', 'The Blue City and its giant fortress above the old town.', ''],
+        ['Udaipur, City of Lakes', 'Heritage', '114 km · about 2 hrs', 'City Palace, Lake Pichola and royal-era havelis.', $I.'hotel-front.jpg'],
+        ['Jodhpur, Mehrangarh Fort', 'Heritage', '175 km · about 3 hrs', 'The Blue City and its giant fortress above the old town.', ''],
     ];
     foreach ($att as $i => $a) { $st->execute([$a[0], $a[1], $a[2], $a[3], $a[4], 'active', $i]); }
 
@@ -103,12 +103,12 @@ function jm_seed(PDO $pdo): void {
     // ---------- FAQs
     $st = $pdo->prepare('INSERT INTO jm_faqs (question,answer,sort_order) VALUES (?,?,?)');
     $faq = [
-        ['Where is Jawai Mumal?', 'In Bera village on the Bera–Bali road, near the Up-Tehsil office, in Pali district, Rajasthan — in the middle of Jawai leopard country.'],
-        ['Are leopard sightings guaranteed?', 'No honest operator can guarantee a wild animal sighting. Jawai\'s leopards live on open granite hills rather than in thick forest, so the chances over a stay of two or three days are very good — and our trackers read the signs to help you find them.'],
+        ['Where is Jawai Mumal?', 'In Bera village on the Bera–Bali road, near the Up-Tehsil office, in Pali district, Rajasthan, in the middle of Jawai leopard country.'],
+        ['Are leopard sightings guaranteed?', 'No honest operator can guarantee a wild animal sighting. Jawai\'s leopards live on open granite hills rather than in thick forest, so the chances over a stay of two or three days are very good, and our trackers read the signs to help you find them.'],
         ['What is the best time to visit Jawai?', 'November to February is the most comfortable: cool, clear mornings (often 8–12°C at dawn), basking leopards and migratory birds on the dam. March to June is hot but rewarding for sightings. July to September is green and dramatic, with fewer visitors.'],
         ['How many safari drives should we book?', 'Three or four drives (morning and evening on two days) give a fair chance of good sightings. Photographers often book more.'],
         ['How is Jawai different from a national park?', 'Jawai is an open, lived-in landscape of granite hills, villages and farms rather than a fenced park. Drives are in private open jeeps on village tracks, with no crowded convoys or fixed zones.'],
-        ['Is the restaurant vegetarian?', 'Yes — our kitchen is 100% vegetarian, with Rajasthani village food, tandoor dishes and a café. Jain options are available on request.'],
+        ['Is the restaurant vegetarian?', 'Yes, our kitchen is 100% vegetarian, with Rajasthani village food, tandoor dishes and a café. Jain options are available on request.'],
         ['Can I book party or personal functions?', 'Yes. Birthdays, family functions, small weddings, corporate meets and personal celebrations are all welcome. Use the Party & Events tab or message us on WhatsApp with your date and guest count.'],
         ['What are check-in and check-out times?', 'Check-in is from 12:00 PM and check-out is by 11:00 AM. Early check-in or late check-out can be arranged on request.'],
         ['Is it suitable for children and older travellers?', 'Very much. Private jeeps let us set a gentle pace, shorten drives and plan comfortable breaks.'],
@@ -123,9 +123,9 @@ function jm_seed_slides(PDO $pdo): void {
     $I = 'assets/images/';
     $st = $pdo->prepare('INSERT INTO jm_slides (image,eyebrow,title,text,cta_label,cta_url,cta2_label,cta2_url,status,sort_order) VALUES (?,?,?,?,?,?,?,?,?,?)');
     $rows = [
-        [$I.'hotel-front.jpg', 'Bera · Jawai · Rajasthan', 'Stay in the heart of Jawai leopard country', 'A comfortable hotel, a pure-vegetarian Rajasthani kitchen and guided leopard safaris — all in Bera village, Pali.', 'Book your stay', '#book', 'Jawai safari', 'safari.php', 'active', 1],
+        [$I.'hotel-front.jpg', 'Bera · Jawai · Rajasthan', 'Stay in the heart of Jawai leopard country', 'A comfortable hotel, a pure-vegetarian Rajasthani kitchen and guided leopard safaris, all in Bera village, Pali.', 'Book your stay', '#book', 'Jawai safari', 'safari.php', 'active', 1],
         [$I.'leopard-log.jpg', 'Jawai Safari', 'Leopards on the granite hills', 'Sunrise and sunset drives in open 4x4 jeeps with local trackers who read every alarm call and pugmark.', 'See safaris', 'safari.php', 'Request a safari', 'book.php?type=safari', 'active', 2],
-        [$I.'food-thali.jpg', 'Village flavours', 'Rajasthani food, the village way', 'Dal baati churma, ker sangri, bajra roti with ghee and more — a 100% vegetarian kitchen.', 'View the menu', 'restaurant.php', 'Reserve a table', 'book.php?type=dine', 'active', 3],
+        [$I.'food-thali.jpg', 'Village flavours', 'Rajasthani food, the village way', 'Dal baati churma, ker sangri, bajra roti with ghee and more, a 100% vegetarian kitchen.', 'View the menu', 'restaurant.php', 'Reserve a table', 'book.php?type=dine', 'active', 3],
     ];
     foreach ($rows as $r) { $st->execute($r); }
 }

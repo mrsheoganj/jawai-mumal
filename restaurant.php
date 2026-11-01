@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/db.php';
-$pageTitle = 'Restaurant & Café — Vegetarian Rajasthani Food'; $pageDesc = 'Pure vegetarian Rajasthani village food at Jawai Mumal, Bera: dal baati churma, ker sangri, bajra roti, tandoor dishes, desserts and café. Party bookings available.';
+$pageTitle = 'Restaurant & Café, Vegetarian Rajasthani Food'; $pageDesc = 'Pure vegetarian Rajasthani village food at Jawai Mumal, Bera: dal baati churma, ker sangri, bajra roti, tandoor dishes, desserts and café. Party bookings available.';
 $active = 'dining'; $bookTab = 'dine';
 $items = rows("SELECT * FROM jm_menu WHERE available=1 ORDER BY sort_order, id");
 $cats = array_values(array_unique(array_column($items, 'category')));
@@ -23,8 +23,8 @@ page_head(t('restaurant.head.eyebrow', 'Dining'), t('restaurant.head.title', 'Re
     <div class="sechead"><span class="eyebrow eyebrow--dark"><?= et('restaurant.village.eyebrow', 'From the village kitchen') ?></span><h2><?= et('restaurant.village.title', 'Four things to try') ?></h2></div>
     <div class="fac" style="margin-bottom:4.5rem">
       <div class="fac__item rv"><span class="fac__ic"><?= icon('flame', 24) ?></span><div><h3><?= et('restaurant.v1.title', 'Bajra roti with ghee') ?></h3><p><?= et('restaurant.v1.text', 'Pearl-millet flatbread, the everyday bread of Rajasthan, with white butter, ghee and garlic chutney.') ?></p></div></div>
-      <div class="fac__item rv d1"><span class="fac__ic"><?= icon('leaf', 24) ?></span><div><h3><?= et('restaurant.v2.title', 'Ker sangri') ?></h3><p><?= et('restaurant.v2.text', 'A desert classic of wild beans and berries, tangy and spiced — best with bajra roti.') ?></p></div></div>
-      <div class="fac__item rv d2"><span class="fac__ic"><?= icon('utensils', 24) ?></span><div><h3><?= et('restaurant.v3.title', 'Dal baati churma') ?></h3><p><?= et('restaurant.v3.text', 'Baked wheat baatis dunked in ghee with five-lentil dal and sweet churma — the dish Rajasthan is known for.') ?></p></div></div>
+      <div class="fac__item rv d1"><span class="fac__ic"><?= icon('leaf', 24) ?></span><div><h3><?= et('restaurant.v2.title', 'Ker sangri') ?></h3><p><?= et('restaurant.v2.text', 'A desert classic of wild beans and berries, tangy and spiced, best with bajra roti.') ?></p></div></div>
+      <div class="fac__item rv d2"><span class="fac__ic"><?= icon('utensils', 24) ?></span><div><h3><?= et('restaurant.v3.title', 'Dal baati churma') ?></h3><p><?= et('restaurant.v3.text', 'Baked wheat baatis dunked in ghee with five-lentil dal and sweet churma, the dish Rajasthan is known for.') ?></p></div></div>
       <div class="fac__item rv"><span class="fac__ic"><?= icon('coffee', 24) ?></span><div><h3><?= et('restaurant.v4.title', 'Kulhad chai & masala chaas') ?></h3><p><?= et('restaurant.v4.text', 'Ginger-cardamom chai in a clay cup, and spiced buttermilk for hot afternoons.') ?></p></div></div>
     </div>
 
