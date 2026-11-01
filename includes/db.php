@@ -214,7 +214,7 @@ function jm_migrate_single_room(): void {
     set_setting('single_room_v6', '1');
 }
 jm_migrate_copy_v4();
-/** v7: room types Premium (from 2500), Deluxe 3000, Super Deluxe 3500, Family 4500. */
+/** v7: room types Premium (from 2500), Deluxe 3000, Super Deluxe 3500. */
 function jm_migrate_room_types_v7(): void {
     if (get_setting_raw('room_types_v7') === '1') return;
     try {
@@ -223,7 +223,6 @@ function jm_migrate_room_types_v7(): void {
         $def = [
             ['deluxe-room', 'Deluxe Room', 'Deluxe', 'A little more space to spread out', 3000, '280 sq ft', '2 adults + 1 child', '1 King bed', 'Garden side', 'assets/images/room-bed.jpg', 'assets/images/room-modern.jpg', 'A roomier air-conditioned room with a king bed, sitting corner and good natural light, a relaxed base for a few days around Jawai.', 6, 1, 2],
             ['super-deluxe-room', 'Super Deluxe Room', 'Super Deluxe', 'Our most spacious double room', 3500, '320 sq ft', '2 adults + 2 children', '1 King bed + sofa', 'Hill side', 'assets/images/room-heritage.jpg', 'assets/images/room-desert-suite.jpg', 'Our most spacious double room, with a king bed, sofa seating and a large window, good for longer stays and small families.', 4, 1, 3],
-            ['family-room', 'Family Room', 'Family', 'Space for everyone, close together', 4500, '380 sq ft', '4 adults', '2 Queen beds', 'Garden side', 'assets/images/room-desert-suite.jpg', 'assets/images/room-heritage.jpg', 'Two queen beds and extra seating, so the whole family stays together comfortably.', 2, 0, 4],
         ];
         foreach ($def as $r) {
             $ex = row('SELECT * FROM jm_rooms WHERE slug = ?', [$r[0]]);
@@ -237,7 +236,14 @@ function jm_migrate_room_types_v7(): void {
     set_setting('room_types_v7', '1');
 }
 jm_migrate_single_room();
+/** v8: the Family Room is removed. */
+function jm_migrate_remove_family_v8(): void {
+    if (get_setting_raw('family_v8') === '1') return;
+    try { q("DELETE FROM jm_rooms WHERE slug = 'family-room' AND name = 'Family Room'"); } catch (Throwable $e) {}
+    set_setting('family_v8', '1');
+}
 jm_migrate_room_types_v7();
+jm_migrate_remove_family_v8();
 if (get_setting_raw('blog_seeded') !== '1') { require_once __DIR__ . '/seed_blog.php'; jm_seed_blog(); }
 upd_maybe_auto();   // live sync with GitHub (if enabled)
 jm_gate();
