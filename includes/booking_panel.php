@@ -65,7 +65,8 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
         <select id="f-s" name="item_id" required><?php foreach ($bSafaris as $s): ?><option value="<?= $s['id'] ?>"<?= $sel($preSaf, $s['id']) ?>><?= e($s['title']) ?></option><?php endforeach; ?></select></div>
       <div class="f"><label for="f-d">Date</label><input type="date" id="f-d" name="date_from" required></div>
       <div class="f"><label for="f-g">Guests</label><select id="f-g" name="guests"><?= $guestOpts(2) ?></select></div>
-      <div class="f f--12"><span class="lbl">Jeep type</span><div class="seg"><label><input type="radio" name="mode" value="shared" checked> Shared jeep</label><label><input type="radio" name="mode" value="private"> Private jeep</label></div></div>
+      <input type="hidden" name="mode" value="private">
+      <p class="f f--12 muted" style="margin:0;font-size:.92rem"><?= et('book.safari.private', 'Every safari is in a private open jeep for your group.') ?></p>
       <div class="f f--4"><label for="f-n">Your name</label><input id="f-n" name="name" autocomplete="name" required minlength="2" maxlength="80" pattern="[\p{L}\p{M} .'\-]{2,80}" title="Letters and spaces only, 2 to 80 characters"></div>
       <div class="f f--4"><label for="f-p">Phone / WhatsApp</label><input id="f-p" name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="25" pattern="\+?[0-9][0-9 ()\-]{6,24}" placeholder="98765 43210 or +44 7911 123456" title="Indian mobile or an international number. Add your country code with + for numbers outside India."></div>
       <div class="f f--4"><label for="f-no">Requests (optional)</label><input id="f-no" name="notes" maxlength="600" placeholder="Photography, pick-up point…"></div>

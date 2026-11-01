@@ -38,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($guests < 1 || $guests > $maxGuests) $errors[] = 'Guests must be between 1 and ' . $maxGuests . ' for this request. For larger groups please message us on WhatsApp.';
         if ($slot !== '' && !preg_match('/^[\p{L}\p{N} :.,\-\x{2013}&()\/]{1,40}$/u', $slot)) $errors[] = 'Please choose a valid time.';
         if ($itemName !== '' && mb_strlen($itemName) > 80) $errors[] = 'That selection is not valid.';
-        if (($mode = $_POST['mode'] ?? 'shared') !== '' && !in_array($mode, ['shared', 'private'], true)) $errors[] = 'Please choose a jeep type.';
         if ($type !== 'enquiry') {
             if ($e = v_date($from, $type === 'stay' ? 'check-in date' : 'date', $today, $horizon)) $errors[] = $e;
         } elseif ($notes === '') {
@@ -62,9 +61,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $s = row("SELECT * FROM jm_safaris WHERE id=? AND status='active'", [$itemId]);
                 if (!$s) $errors[] = 'Please choose a safari.';
                 else {
-                    $private = ($_POST['mode'] ?? '') === 'private';
+                    $private = true;   // all safaris are private jeeps
                     $amount = 0;   // safari rates are shared on enquiry
-                    $itemName = $s['title'] . ($private ? ' (private jeep)' : ' (shared jeep)');
+                    $itemName = $s['title'] . ' (private jeep)';
                 }
             } elseif ($type === 'dine') {
                 $itemName = $itemName ?: 'Restaurant';

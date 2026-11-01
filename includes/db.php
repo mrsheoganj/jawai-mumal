@@ -243,7 +243,21 @@ function jm_migrate_remove_family_v8(): void {
     set_setting('family_v8', '1');
 }
 jm_migrate_room_types_v7();
+/** v9: safaris are private jeeps only. */
+function jm_migrate_private_only_v9(): void {
+    if (get_setting_raw('private_v9') === '1') return;
+    try {
+        q("UPDATE jm_safaris SET vehicle = REPLACE(vehicle, 'Open 4x4 jeep', 'Private open 4x4 jeep') WHERE vehicle LIKE 'Open 4x4 jeep%'");
+        $sl = 'jawai-safari-cost-booking-what-is-included';
+        $rep = ["<h2>Shared vs private</h2>\n<ul>\n<li><strong>Per-person (shared):</strong> you join other guests in an open jeep, usually up to six. The most affordable option.</li>\n<li><strong>Private jeep:</strong> the whole vehicle is yours. Best for families, couples, photographers and anyone who wants to set the pace.</li>\n</ul>" => "<h2>Private jeep only</h2>\n<p>Every safari we run is in a private open jeep: the whole vehicle is yours, with your own driver and tracker. It suits families, couples and photographers, and lets you set the pace, stop for photographs and take breaks when you need them.</p>",
+                'depends on the season, the group size and the kind of drive' => 'depends on the season, the length of the drive and the kind of experience'];
+        foreach ($rep as $a => $b) q("UPDATE jm_blog SET body = REPLACE(body, ?, ?) WHERE slug = ?", [$a, $b, $sl]);
+        q("UPDATE jm_blog SET meta_title = 'Jawai Safari Cost & Booking Guide: Private Jeep', excerpt = 'How Jawai safaris work, what a private jeep includes and how to book without surprises.', meta_description = 'How much does a Jawai leopard safari cost? Private jeep safaris, what is included, how to book from Bera and tips to avoid surprises.' WHERE slug = ?", [$sl]);
+    } catch (Throwable $e) {}
+    set_setting('private_v9', '1');
+}
 jm_migrate_remove_family_v8();
+jm_migrate_private_only_v9();
 if (get_setting_raw('blog_seeded') !== '1') { require_once __DIR__ . '/seed_blog.php'; jm_seed_blog(); }
 upd_maybe_auto();   // live sync with GitHub (if enabled)
 jm_gate();

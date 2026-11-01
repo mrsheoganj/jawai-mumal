@@ -262,17 +262,14 @@ HTML];
 HTML];
 
     $P[] = ['jawai-safari-cost-booking-what-is-included', 'Jawai Safari Cost and Booking: What Is Included?', 'Safari', 'assets/images/leopard-log.jpg', '2026-10-01 09:00:00',
-        'How Jawai safaris are priced, what shared vs private jeeps mean and how to book without surprises.',
-        'Jawai Safari Cost & Booking Guide: Shared vs Private Jeep',
-        'How much does a Jawai leopard safari cost? Shared vs private jeep, what is included, how to book from Bera and tips to avoid surprises.',
+        'How Jawai safaris work, what a private jeep includes and how to book without surprises.',
+        'Jawai Safari Cost & Booking Guide: Private Jeep',
+        'How much does a Jawai leopard safari cost? Private jeep safaris, what is included, how to book from Bera and tips to avoid surprises.',
         'Jawai safari cost, Jawai safari price, Jawai safari booking, private jeep safari Jawai, Jawai safari charges',
         <<<'HTML'
 <p>Safari rates depend on the season, the group size and the kind of drive, so we share them on enquiry rather than print numbers that go out of date. The structure, however, stays the same and is worth understanding before you book.</p>
-<h2>Shared vs private</h2>
-<ul>
-<li><strong>Per-person (shared):</strong> you join other guests in an open jeep, usually up to six. The most affordable option.</li>
-<li><strong>Private jeep:</strong> the whole vehicle is yours. Best for families, couples, photographers and anyone who wants to set the pace.</li>
-</ul>
+<h2>Private jeep only</h2>
+<p>Every safari we run is in a private open jeep: the whole vehicle is yours, with your own driver and tracker. It suits families, couples and photographers, and lets you set the pace, stop for photographs and take breaks when you need them.</p>
 <h2>What is usually included</h2>
 <ul>
 <li>An open 4x4 jeep, driver and a local tracker.</li>
