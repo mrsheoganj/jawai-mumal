@@ -13,7 +13,7 @@ page_head(t('jawai.head.eyebrow', 'Explore Jawai'), t('jawai.head.title', 'Explo
     <div class="rv"><span class="eyebrow eyebrow--dark"><?= et('jawai.about.eyebrow', 'About Jawai') ?></span><h2><?= et('jawai.about.title', 'Leopards, granite hills and a working countryside') ?></h2>
       <p><?= et('jawai.about.p1', 'Jawai is a stretch of granite hills around the Jawai Dam in Pali district, roughly halfway between Udaipur and Jodhpur. Leopards den in the caves and rest on the rocks here, a short walk from villages, farms and hill temples. The Rabari herders who graze their animals on these hills have lived alongside them for generations.') ?></p>
       <p><?= et('jawai.about.p2', 'It is not a fenced national park — it is a lived-in landscape. That is why the leopards are so visible, and why how we behave around them matters. Jawai Mumal sits in Bera village on the Bera–Bali road, in the middle of it all.') ?></p></div>
-    <div class="duo rv d1"><figure class="frame"><img src="<?= imgu('jawai.about.img1', 'assets/images/leopard-log.jpg') ?>" alt="" loading="lazy"></figure><figure class="frame"><img src="<?= imgu('jawai.about.img2', 'assets/images/hills-terrace.jpg') ?>" alt="" loading="lazy"></figure></div>
+    <div class="duo rv d1"><figure class="frame"><img src="<?= imgu('jawai.about.img1', 'assets/images/leopard-log.jpg') ?>" alt="Leopard in the Jawai granite hills, Rajasthan" loading="lazy"></figure><figure class="frame"><img src="<?= imgu('jawai.about.img2', 'assets/images/hills-terrace.jpg') ?>" alt="" loading="lazy"></figure></div>
   </div>
   <div class="wrap"><div class="stats rv">
     <?php for ($i = 1; $i <= 4; $i++): ?><div class="stat"><b><?= e(setting("stat{$i}_value")) ?></b><span><?= e(setting("stat{$i}_label")) ?></span></div><?php endfor; ?>
@@ -51,7 +51,7 @@ page_head(t('jawai.head.eyebrow', 'Explore Jawai'), t('jawai.head.title', 'Explo
     <div class="sechead rv"><span class="eyebrow eyebrow--dark"><?= e($cat) ?></span><h2><?= e(['Wildlife' => 'Wildlife & reserve', 'Nature' => 'Nature & landscapes', 'Culture' => 'People & culture', 'Heritage' => 'Heritage day trips', 'Experience' => 'Experiences'][$cat] ?? $cat) ?></h2></div>
     <div class="grid">
       <?php foreach ($list as $i => $a): ?>
-        <article class="card attr rv d<?= $i % 3 ?>"><div class="card__img"><img src="<?= e(img($a['image'])) ?>" alt="" loading="lazy"></div>
+        <article class="card attr rv d<?= $i % 3 ?>"><div class="card__img"><img src="<?= e(img($a['image'])) ?>" alt="<?= e($a['name']) ?>" loading="lazy"></div>
           <div class="card__body"><span class="dist"><?= icon('map-pin', 14) ?><?= e($a['distance']) ?></span><h3><?= e($a['name']) ?></h3><p><?= e($a['description']) ?></p></div></article>
       <?php endforeach; ?>
     </div>

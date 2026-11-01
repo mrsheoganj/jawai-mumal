@@ -55,7 +55,10 @@ page_head($p['category'], $p['title'], $p['excerpt'], $p['image']);
 ?>
 <article class="sec"><div class="wrap wrap--narrow">
   <p class="bmeta"><?= e($fmt($p['published_at'])) ?> · <?= blog_reading_minutes($p['body']) ?> min read</p>
-  <div class="prose"><?= blog_body($p['body']) ?></div>
+  <?php [$bodyHtml, $toc] = blog_toc(blog_body($p['body'])); if (count($toc) >= 3): ?>
+  <nav class="toc" aria-label="In this article"><strong>In this article</strong><ol><?php foreach ($toc as $t): ?><li><a href="#<?= e($t[0]) ?>"><?= e($t[1]) ?></a></li><?php endforeach; ?></ol></nav>
+  <?php endif; ?>
+  <div class="prose"><?= $bodyHtml ?></div>
   <aside class="bcta">
     <h2>Plan your Jawai trip</h2>
     <p>Stay in Bera, eat pure-vegetarian Rajasthani food and set out for the leopard hills with our own trackers.</p>

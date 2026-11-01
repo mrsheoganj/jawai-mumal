@@ -14,6 +14,8 @@ if (seo_cfg('blog_in_menu') === '1') $nav['blog'] = [t('nav.blog', 'Journal'), '
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <?php seo_head($seoR); ?>
+<?php if (!empty($preloadImg)): ?><link rel="preload" as="image" href="<?= e(img($preloadImg)) ?>" fetchpriority="high">
+<?php endif; ?>
 <meta name="theme-color" content="#ffffff">
 <meta name="format-detection" content="telephone=no">
 <link rel="icon" href="<?= url('assets/brand/favicon.ico') ?>" sizes="any">

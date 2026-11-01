@@ -265,6 +265,15 @@ function blog_url(string $slug = ''): string { return $slug === '' ? url('blog')
 function blog_body(string $html): string {
     return preg_replace_callback('/\{\{([a-z0-9_\-\/\.?=&]+)\}\}/i', fn($m) => e(url($m[1])), $html);
 }
+/** Adds id anchors to <h2> headings and returns [html, toc[[id,text],...]] for a table of contents. */
+function blog_toc(string $html): array {
+    $toc = [];
+    $html = preg_replace_callback('~<h2>(.*?)</h2>~s', function ($m) use (&$toc) {
+        $id = slugify(strip_tags($m[1])); if ($id === '') $id = 'section-' . (count($toc) + 1);
+        $toc[] = [$id, trim(strip_tags($m[1]))]; return '<h2 id="' . e($id) . '">' . $m[1] . '</h2>';
+    }, $html);
+    return [$html, $toc];
+}
 function blog_published(): array {
     return rows("SELECT * FROM jm_blog WHERE status = 'published' AND published_at <= ? ORDER BY published_at DESC, id DESC", [date('Y-m-d H:i:s')]);
 }

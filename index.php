@@ -2,6 +2,7 @@
 require_once __DIR__ . '/includes/db.php';
 $active = 'home';
 $bookTab = 'stay';
+$preloadImg = val("SELECT image FROM jm_slides WHERE status='active' ORDER BY sort_order, id LIMIT 1") ?: 'assets/images/hills-green.jpg';
 include __DIR__ . '/includes/header.php';
 
 $slides    = rows("SELECT * FROM jm_slides WHERE status='active' ORDER BY sort_order, id");
@@ -22,7 +23,7 @@ $n = count($slides);
 <section class="hero" id="hero" data-count="<?= $n ?>" aria-roledescription="carousel" aria-label="Featured">
   <?php foreach ($slides as $i => $s): ?>
   <div class="hslide<?= $i === 0 ? ' is-active' : '' ?>" role="group" aria-roledescription="slide" aria-label="<?= $i + 1 ?> of <?= $n ?>"<?= $i ? ' aria-hidden="true"' : '' ?>>
-    <img class="hslide__bg" src="<?= e(img($s['image'])) ?>" alt=""<?= $i ? ' loading="lazy"' : ' fetchpriority="high"' ?>>
+    <img class="hslide__bg" src="<?= e(img($s['image'])) ?>" alt="<?= e(trim(strip_tags((string)($s['title'] ?? ''))) ?: setting('site_name') . ' – Bera, Jawai') ?>"<?= $i ? ' loading="lazy"' : ' fetchpriority="high"' ?>>
     <div class="wrap">
       <div class="hero__in">
         <?php if (setting('show_open_badge') === '1' && $i === 0): ?><div class="badge-soon"><i></i><?= e(setting('open_label')) ?></div><?php endif; ?>
@@ -83,9 +84,9 @@ $n = count($slides);
   <div class="wrap">
     <div class="sechead rv"><span class="eyebrow eyebrow--dark"><?= et('home.pillars.eyebrow', 'One address, three experiences') ?></span><h2><?= et('home.pillars.title', 'Stay. Dine. Explore.') ?></h2><p><?= et('home.pillars.sub', 'Everything for a Jawai trip, looked after by one local team.') ?></p></div>
     <div class="cards3 snap-m">
-      <a class="pillar rv" href="<?= url('rooms.php') ?>"><img src="<?= imgu('home.pillar1.img', 'assets/images/room-heritage.jpg') ?>" alt="" loading="lazy"><div class="pillar__in"><div class="pillar__ic"><?= icon('bed', 24) ?></div><h3><?= et('home.pillar1.title', 'Hotel') ?></h3><p><?= et('home.pillar1.text', 'Comfortable air-conditioned rooms and suites in Bera village.') ?><?= $lowest ? ' ' . et('home.pillar1.from', 'From') . ' ' . money($lowest) . ' ' . et('home.pillar1.night', 'a night.') : '' ?></p><span class="link"><?= et('home.pillar1.link', 'View rooms') ?> <?= icon('arrow-right', 16) ?></span></div></a>
-      <a class="pillar rv d1" href="<?= url('restaurant.php') ?>"><img src="<?= imgu('home.pillar2.img', 'assets/images/food-thali.jpg') ?>" alt="" loading="lazy"><div class="pillar__in"><div class="pillar__ic"><?= icon('utensils', 24) ?></div><h3><?= et('home.pillar2.title', 'Restaurant') ?></h3><p><?= et('home.pillar2.text', '100% vegetarian Rajasthani village food, tandoor and a relaxed café.') ?></p><span class="link"><?= et('home.pillar2.link', 'See the menu') ?> <?= icon('arrow-right', 16) ?></span></div></a>
-      <a class="pillar rv d2" href="<?= url('safari.php') ?>"><img src="<?= imgu('home.pillar3.img', 'assets/images/leopard-log.jpg') ?>" alt="" loading="lazy"><div class="pillar__in"><div class="pillar__ic"><?= icon('car', 24) ?></div><h3><?= et('home.pillar3.title', 'Jawai Safari') ?></h3><p><?= et('home.pillar3.text', 'Dawn and dusk leopard drives in open 4x4 jeeps with local trackers.') ?></p><span class="link"><?= et('home.pillar3.link', 'Explore safaris') ?> <?= icon('arrow-right', 16) ?></span></div></a>
+      <a class="pillar rv" href="<?= url('rooms.php') ?>"><img src="<?= imgu('home.pillar1.img', 'assets/images/room-heritage.jpg') ?>" alt="Comfortable air-conditioned room at Jawai Mumal, Bera" loading="lazy"><div class="pillar__in"><div class="pillar__ic"><?= icon('bed', 24) ?></div><h3><?= et('home.pillar1.title', 'Hotel') ?></h3><p><?= et('home.pillar1.text', 'Comfortable air-conditioned rooms and suites in Bera village.') ?><?= $lowest ? ' ' . et('home.pillar1.from', 'From') . ' ' . money($lowest) . ' ' . et('home.pillar1.night', 'a night.') : '' ?></p><span class="link"><?= et('home.pillar1.link', 'View rooms') ?> <?= icon('arrow-right', 16) ?></span></div></a>
+      <a class="pillar rv d1" href="<?= url('restaurant.php') ?>"><img src="<?= imgu('home.pillar2.img', 'assets/images/food-thali.jpg') ?>" alt="Pure vegetarian Rajasthani thali at Jawai Mumal" loading="lazy"><div class="pillar__in"><div class="pillar__ic"><?= icon('utensils', 24) ?></div><h3><?= et('home.pillar2.title', 'Restaurant') ?></h3><p><?= et('home.pillar2.text', '100% vegetarian Rajasthani village food, tandoor and a relaxed café.') ?></p><span class="link"><?= et('home.pillar2.link', 'See the menu') ?> <?= icon('arrow-right', 16) ?></span></div></a>
+      <a class="pillar rv d2" href="<?= url('safari.php') ?>"><img src="<?= imgu('home.pillar3.img', 'assets/images/leopard-log.jpg') ?>" alt="Leopard resting on a log in the Jawai hills" loading="lazy"><div class="pillar__in"><div class="pillar__ic"><?= icon('car', 24) ?></div><h3><?= et('home.pillar3.title', 'Jawai Safari') ?></h3><p><?= et('home.pillar3.text', 'Dawn and dusk leopard drives in open 4x4 jeeps with local trackers.') ?></p><span class="link"><?= et('home.pillar3.link', 'Explore safaris') ?> <?= icon('arrow-right', 16) ?></span></div></a>
     </div>
   </div>
 </section>
@@ -127,8 +128,8 @@ $n = count($slides);
 <section class="sec">
   <div class="wrap split split--rev">
     <div class="duo rv">
-      <figure class="frame"><img src="<?= imgu('home.food.img1', 'assets/images/food-thali.jpg') ?>" alt="" loading="lazy"></figure>
-      <figure class="frame"><img src="<?= imgu('home.food.img2', 'assets/images/food-paneer.jpg') ?>" alt="" loading="lazy"></figure>
+      <figure class="frame"><img src="<?= imgu('home.food.img1', 'assets/images/food-thali.jpg') ?>" alt="Rajasthani vegetarian curry served at Jawai Mumal" loading="lazy"></figure>
+      <figure class="frame"><img src="<?= imgu('home.food.img2', 'assets/images/food-paneer.jpg') ?>" alt="Paneer dish with rice at Jawai Mumal restaurant" loading="lazy"></figure>
     </div>
     <div class="rv d1">
       <span class="eyebrow eyebrow--dark"><?= et('home.food.eyebrow', 'Restaurant & café · 100% vegetarian') ?></span>
@@ -170,7 +171,7 @@ $n = count($slides);
     <div class="grid snap-m">
       <?php foreach ($attrs as $i => $a): ?>
         <article class="card attr rv d<?= $i % 3 ?>">
-          <div class="card__img"><img src="<?= e(img($a['image'])) ?>" alt="" loading="lazy"><span class="tag"><?= e($a['category']) ?></span></div>
+          <div class="card__img"><img src="<?= e(img($a['image'])) ?>" alt="<?= e($a['name']) ?>" loading="lazy"><span class="tag"><?= e($a['category']) ?></span></div>
           <div class="card__body"><span class="dist"><?= icon('map-pin', 14) ?><?= e($a['distance']) ?></span><h3><?= e($a['name']) ?></h3><p><?= e($a['description']) ?></p></div>
         </article>
       <?php endforeach; ?>
@@ -186,7 +187,7 @@ $n = count($slides);
 <section class="sec">
   <div class="wrap">
     <div class="cta rv">
-      <img src="<?= imgu('home.events.img', 'assets/images/food-bowls.jpg') ?>" alt="" loading="lazy">
+      <img src="<?= imgu('home.events.img', 'assets/images/food-bowls.jpg') ?>" alt="Vegetarian food for parties and celebrations at Jawai Mumal" loading="lazy">
       <span class="eyebrow"><?= et('home.events.eyebrow', 'Party & personal bookings') ?></span>
       <h2><?= et('home.events.title', 'Parties, celebrations & private functions') ?></h2>
       <p><?= et('home.events.text', 'Birthdays, family get-togethers, small weddings, corporate meets or a quiet personal celebration — party and personal bookings are both available. Tell us your date, guest count and menu ideas and we will plan the rest.') ?></p>

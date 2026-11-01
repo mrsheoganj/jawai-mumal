@@ -17,7 +17,7 @@ page_head(t('rooms.head.eyebrow', 'Stay'), t('rooms.head.title', 'Rooms & Suites
     <div class="grid">
       <?php foreach ($rooms as $i => $r): ?>
         <article class="card rv d<?= $i % 3 ?>" data-cat="<?= e($r['category']) ?>">
-          <a class="card__img" href="<?= url('room.php?slug=' . urlencode($r['slug'])) ?>" tabindex="-1" aria-hidden="true"><img src="<?= e(img($r['image'])) ?>" alt="" loading="lazy"><span class="tag"><?= e($r['category']) ?></span></a>
+          <a class="card__img" href="<?= url('room.php?slug=' . urlencode($r['slug'])) ?>" tabindex="-1" aria-hidden="true"><img src="<?= e(img($r['image'])) ?>" alt="<?= e($r['name']) ?> at Jawai Mumal, Bera" loading="lazy"><span class="tag"><?= e($r['category']) ?></span></a>
           <div class="card__body">
             <h3><a href="<?= url('room.php?slug=' . urlencode($r['slug'])) ?>" style="text-decoration:none"><?= e($r['name']) ?></a></h3>
             <p><?= e($r['tagline']) ?></p>

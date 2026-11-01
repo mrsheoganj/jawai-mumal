@@ -13,6 +13,7 @@ ErrorDocument 404 /404.php
 
     RewriteRule ^sitemap\.xml$ sitemap.php [L]
     RewriteRule ^robots\.txt$ robots.php [L]
+    RewriteRule ^llms\.txt$ llms.php [L]
     RewriteRule ^blog/?$ blog.php [L]
     RewriteRule ^blog/([a-z0-9-]+)/?$ blog.php?slug=$1 [L,QSA]
 
@@ -21,7 +22,7 @@ ErrorDocument 404 /404.php
     RewriteCond %{THE_REQUEST} \s/+index\.php[\s?]
     RewriteRule ^index\.php$ / [R=301,L]
     RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$
-    RewriteCond %{THE_REQUEST} \s/+(?!deploy-hook|404|config|robots|sitemap)([a-z0-9_-]+)\.php[\s?]
+    RewriteCond %{THE_REQUEST} \s/+(?!deploy-hook|404|config|robots|sitemap|llms)([a-z0-9_-]+)\.php[\s?]
     RewriteRule ^([a-z0-9_-]+)\.php$ /$1 [R=301,L,QSA]
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
@@ -64,6 +65,9 @@ ErrorDocument 404 /404.php
     ExpiresByType image/gif "access plus 1 month"
     ExpiresByType image/png "access plus 1 month"
     ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
     ExpiresByType text/css "access plus 1 week"
     ExpiresByType application/javascript "access plus 1 week"
 </IfModule>
