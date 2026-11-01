@@ -251,7 +251,7 @@ $n = count($slides);
       <p style="white-space:pre-line"><?= e(setting('address')) ?></p>
       <ul class="footer__contact" style="list-style:none;padding:0;display:grid;gap:1rem;margin:1.5rem 0">
         <?php foreach (['owner1', 'owner2'] as $o): ?>
-          <li style="display:flex;gap:.9rem;align-items:center"><span style="flex:1"><strong style="font:600 1.15rem var(--serif)"><?= e(setting($o . '_name')) ?></strong><br><small style="color:var(--muted)"><?= e(setting($o . '_role')) ?> · <?= e(setting($o . '_phone')) ?></small></span><a class="wa-ico wa-ico--sm" target="_blank" rel="noopener" href="<?= e(wa_to(setting($o . '_phone'), t('home.find.wamsg', 'Hello, I would like to know more about Jawai Mumal.'))) ?>" aria-label="<?= e(t('wa.aria', 'Chat on WhatsApp')) ?>, <?= e(setting($o . '_name')) ?>" title="WhatsApp <?= e(setting($o . '_name')) ?>"><?= icon('whatsapp', 22) ?></a></li>
+          <li style="display:flex;gap:.9rem;align-items:center"><span style="flex:1"><strong style="font:600 1.15rem var(--serif)"><?= e(setting($o . '_name')) ?></strong><br><small style="color:var(--muted)"><?= e(setting($o . '_role')) ?> · <?= e(setting($o . '_phone')) ?></small></span><a class="call-ico" href="tel:<?= e(preg_replace('/[^\d+]/', '', setting($o . '_phone'))) ?>" aria-label="<?= e(t('call.aria', 'Call')) ?> <?= e(setting($o . '_name')) ?>" title="<?= e(t('call.aria', 'Call')) ?> <?= e(setting($o . '_name')) ?>"><?= icon('phone', 22) ?></a></li>
         <?php endforeach; ?>
       </ul>
       <div class="hero__cta"><a class="btn btn--line" href="<?= e(maps_open_url()) ?>" target="_blank" rel="noopener"><?= icon('navigation', 18) ?> <?= et('home.find.btn', 'Get directions') ?></a></div>

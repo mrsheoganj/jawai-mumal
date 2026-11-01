@@ -694,3 +694,4 @@ body{background:#fff}
 @media (max-width:700px){.hero__ctl{display:none!important}}
 
 .hslide picture{position:absolute;inset:0;display:block;z-index:-2}.hslide picture .hslide__bg{z-index:auto}
+.call-ico{display:inline-grid;place-items:center;flex:0 0 auto;width:48px;height:48px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold-d);background:#fff;text-decoration:none;transition:background .2s,color .2s,transform .2s}.call-ico:hover{background:var(--gold);color:var(--ink-3);transform:scale(1.06)}
