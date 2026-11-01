@@ -695,3 +695,10 @@ body{background:#fff}
 
 .hslide picture{position:absolute;inset:0;display:block;z-index:-2}.hslide picture .hslide__bg{z-index:auto}
 .call-ico{display:inline-grid;place-items:center;flex:0 0 auto;width:48px;height:48px;border-radius:50%;border:1.5px solid var(--gold);color:var(--gold-d);background:#fff;text-decoration:none;transition:background .2s,color .2s,transform .2s}.call-ico:hover{background:var(--gold);color:var(--ink-3);transform:scale(1.06)}
+
+/* "Book on WhatsApp": logo plus text on every screen size */
+.wa-ico--submit{display:inline-flex!important;align-items:center;justify-content:center;gap:.7rem;width:auto;min-width:0;height:54px;padding:0 1.3rem!important;border-radius:999px;background:#fff!important;border:1px solid var(--line);color:var(--ink)!important;font:600 1rem var(--sans);letter-spacing:.02em;filter:none;white-space:nowrap}
+.wa-ico--submit:hover{border-color:#25d366}
+.wa-ico--submit .i{width:30px;height:30px;flex:none}
+.wa-ico--submit .wa-lbl{display:inline}
+@media (max-width:900px){.wa-ico--submit{width:100%}}

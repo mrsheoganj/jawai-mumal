@@ -36,7 +36,7 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
       <div class="f f--12"><label for="s-no">Requests (optional)</label><input id="s-no" name="notes" maxlength="600" placeholder="Arrival time, extra bed, celebration…"></div>
     </div>
     <div class="formfoot"><p><?= icon('shield-check', 18) ?><span><?= et('book.stay.note', 'No payment online. Our team confirms availability and the final rate on WhatsApp.') ?></span></p>
-      <div><span class="est" data-est></span> <button class="btn btn--gold" type="submit"><?= et('book.stay.btn', 'Request booking') ?> <?= icon('arrow-right', 18) ?></button> <button class="wa-ico wa-ico--submit" type="submit" name="via" value="wa" aria-label="<?= e(t('book.wa', 'Book on WhatsApp')) ?>" title="<?= e(t('book.wa', 'Book on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?></button></div></div>
+      <div><span class="est" data-est></span> <button class="btn btn--gold" type="submit"><?= et('book.stay.btn', 'Request booking') ?> <?= icon('arrow-right', 18) ?></button> <button class="wa-ico wa-ico--submit" type="submit" name="via" value="wa" aria-label="<?= e(t('book.wa', 'Book on WhatsApp')) ?>" title="<?= e(t('book.wa', 'Book on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?><span class="wa-lbl"><?= e(t('book.wa.lbl', 'Book on WhatsApp')) ?></span></button></div></div>
     </form>
   </section>
 
@@ -53,7 +53,7 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
       <div class="f f--4"><label for="d-no">Requests (optional)</label><input id="d-no" name="notes" maxlength="600" placeholder="Jain / vegetarian, birthday cake…"></div>
     </div>
     <div class="formfoot"><p><?= icon('clock', 18) ?><span><?= et('book.dine.note', 'Table requests are confirmed on WhatsApp. Our kitchen is 100% vegetarian; Jain options on request.') ?></span></p>
-      <button class="btn btn--gold" type="submit">Request a table <?= icon('arrow-right', 18) ?></button> <button class="wa-ico wa-ico--submit" type="submit" name="via" value="wa" aria-label="<?= e(t('book.wa', 'Book on WhatsApp')) ?>" title="<?= e(t('book.wa', 'Book on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?></button></div>
+      <button class="btn btn--gold" type="submit">Request a table <?= icon('arrow-right', 18) ?></button> <button class="wa-ico wa-ico--submit" type="submit" name="via" value="wa" aria-label="<?= e(t('book.wa', 'Book on WhatsApp')) ?>" title="<?= e(t('book.wa', 'Book on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?><span class="wa-lbl"><?= e(t('book.wa.lbl', 'Book on WhatsApp')) ?></span></button></div>
     </form>
   </section>
 
@@ -71,7 +71,7 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
       <div class="f f--4"><label for="f-no">Requests (optional)</label><input id="f-no" name="notes" maxlength="600" placeholder="Photography, pick-up point…"></div>
     </div>
     <div class="formfoot"><p><?= icon('compass', 18) ?><span><?= et('book.safari.note', 'Safari timings depend on weather and tracker availability. We confirm the exact slot on WhatsApp.') ?></span></p>
-      <div><button class="btn btn--gold" type="submit">Request safari <?= icon('arrow-right', 18) ?></button> <button class="wa-ico wa-ico--submit" type="submit" name="via" value="wa" aria-label="<?= e(t('book.wa', 'Book on WhatsApp')) ?>" title="<?= e(t('book.wa', 'Book on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?></button></div></div>
+      <div><button class="btn btn--gold" type="submit">Request safari <?= icon('arrow-right', 18) ?></button> <button class="wa-ico wa-ico--submit" type="submit" name="via" value="wa" aria-label="<?= e(t('book.wa', 'Book on WhatsApp')) ?>" title="<?= e(t('book.wa', 'Book on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?><span class="wa-lbl"><?= e(t('book.wa.lbl', 'Book on WhatsApp')) ?></span></button></div></div>
     </form>
   </section>
 
@@ -87,7 +87,7 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
       <div class="f f--6"><label for="e-no">Plans & menu ideas (optional)</label><input id="e-no" name="notes" maxlength="600" placeholder="Decoration, cake, music…"></div>
     </div>
     <div class="formfoot"><p><?= icon('party', 18) ?><span><?= et('book.event.note', 'Party and personal functions are both available. We will message you on WhatsApp to discuss menu, space and budget.') ?></span></p>
-      <button class="btn btn--gold" type="submit">Plan my event <?= icon('arrow-right', 18) ?></button> <button class="wa-ico wa-ico--submit" type="submit" name="via" value="wa" aria-label="<?= e(t('book.wa', 'Book on WhatsApp')) ?>" title="<?= e(t('book.wa', 'Book on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?></button></div>
+      <button class="btn btn--gold" type="submit">Plan my event <?= icon('arrow-right', 18) ?></button> <button class="wa-ico wa-ico--submit" type="submit" name="via" value="wa" aria-label="<?= e(t('book.wa', 'Book on WhatsApp')) ?>" title="<?= e(t('book.wa', 'Book on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?><span class="wa-lbl"><?= e(t('book.wa.lbl', 'Book on WhatsApp')) ?></span></button></div>
     </form>
   </section>
 
@@ -101,7 +101,7 @@ $formHead = function ($type) { return '<form method="post" action="' . e(url('bo
       <div class="f f--12"><label for="q-m">How can we help?</label><textarea id="q-m" name="notes" required minlength="5" maxlength="600" placeholder="Dates, number of guests, anything you would like to know…"></textarea></div>
     </div>
     <div class="formfoot"><p><?= icon('message', 18) ?><span><?= et('book.enquiry.note', 'We usually reply the same day.') ?></span></p>
-      <button class="btn btn--gold" type="submit">Send enquiry <?= icon('send', 18) ?></button> <button class="wa-ico wa-ico--submit" type="submit" name="via" value="wa" aria-label="<?= e(t('book.wa', 'Book on WhatsApp')) ?>" title="<?= e(t('book.wa', 'Book on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?></button></div>
+      <button class="btn btn--gold" type="submit">Send enquiry <?= icon('send', 18) ?></button> <button class="wa-ico wa-ico--submit" type="submit" name="via" value="wa" aria-label="<?= e(t('book.wa', 'Book on WhatsApp')) ?>" title="<?= e(t('book.wa', 'Book on WhatsApp')) ?>"><?= icon('whatsapp', 26) ?><span class="wa-lbl"><?= e(t('book.wa.enq', 'Message on WhatsApp')) ?></span></button></div>
     </form>
   </section>
 </div>
