@@ -646,3 +646,35 @@ body{background:#fff}
 @media (max-width:700px){.hslide:not(.dv-m){display:none!important}}
 @media (min-width:701px){.hslide:not(.dv-d){display:none!important}}
 .hero__ctl[hidden]{display:none!important}
+
+/* ===== WhatsApp: official brand green + glyph centred and large ===== */
+.wa-ico,.wa-float{background:#25d366!important;color:#fff!important}
+.wa-ico:hover,.wa-float:hover{background:#1ebe5b!important}
+.wa-ico{box-shadow:0 8px 20px -8px rgba(37,211,102,.9)}
+.wa-ico--sm{box-shadow:none}
+.wa-float{box-shadow:0 10px 26px -8px rgba(0,0,0,.45)}
+.wa-float::after{border-color:#25d366}
+.wa-ico,.wa-float{display:inline-grid;place-items:center;padding:0}
+.wa-ico .i,.wa-float .i{width:56%;height:56%;display:block;flex:none}
+.footer .wa-ico{display:inline-grid!important;place-items:center;padding:0!important;min-height:0;color:#fff}
+.footer .wa-ico--sm{width:44px;height:44px}
+
+/* ===== Mobile polish ===== */
+@media (max-width:900px){
+  .nav.is-solid,.nav.is-open{background:#fff;backdrop-filter:none;-webkit-backdrop-filter:none}
+  /* booking tabs: all five visible, icon above label, no sideways scrolling */
+  .tabs{overflow:visible}
+  .tab{flex:1 1 0;min-width:0;flex-direction:column;gap:.25rem;padding:.6rem .15rem;min-height:58px;font-size:.7rem;letter-spacing:.01em;line-height:1.15;text-align:center;border-bottom-width:3px}
+  .tab .i{width:20px;height:20px}
+  /* footer: compact rows, room for the bottom bar and the floating button */
+  .footer{padding-bottom:calc(112px + env(safe-area-inset-bottom))}
+  .footer li a:not(.wa-ico),.footer__contact a:not(.wa-ico){display:inline-flex;align-items:center;min-height:44px;padding:0}
+  .footer ul{gap:0}
+  .footer__contact{gap:.2rem}
+  .footer__contact li{align-items:center;gap:.8rem;padding:.4rem 0}
+  .footer__contact li>span{flex:1;min-width:0}
+  .footer__contact li:last-child{align-items:flex-start}
+  .footer__bar{flex-direction:column;align-items:flex-start;gap:.2rem;padding-bottom:.4rem}
+  .footer h3{margin-bottom:.4rem}
+  .wa-float{width:54px;height:54px}
+}

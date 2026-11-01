@@ -154,7 +154,7 @@
   window.addEventListener('pageshow', function (e) { if (e.persisted) document.body.classList.remove('is-leaving'); });
 
   /* Hide the floating WhatsApp button while a form is on screen (mobile) */
-  var bb = $$('.bookbox, .hero');
+  var bb = $$('.bookbox, .hero, .footer');
   if (bb.length && 'IntersectionObserver' in window) {
     var onScreen = new Set(); var fio = new IntersectionObserver(function (es) { es.forEach(function (en) { en.isIntersecting ? onScreen.add(en.target) : onScreen.delete(en.target); }); document.body.classList.toggle('fab-hide', onScreen.size > 0); }, { threshold: .08 });
     bb.forEach(function (b) { fio.observe(b); });
