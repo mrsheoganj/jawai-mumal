@@ -10,6 +10,7 @@ $nav = [
 if (seo_cfg('blog_in_menu') === '1') $nav['blog'] = [t('nav.blog', 'Journal'), 'blog'];
 ?><!DOCTYPE html>
 <html lang="en">
+<?php jm_track_crawler(); ?>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,7 +28,7 @@ if (seo_cfg('blog_in_menu') === '1') $nav['blog'] = [t('nav.blog', 'Journal'), '
 <link rel="stylesheet" href="<?= asset('assets/css/site.css') ?>">
 <noscript><style>.rv{opacity:1!important;transform:none!important}.preloader{display:none!important}</style></noscript>
 </head>
-<body class="<?= e($bodyClass ?? '') ?>" data-tax="<?= e(setting('tax_percent')) ?>">
+<body class="<?= e($bodyClass ?? '') ?>" data-tax="<?= e(setting('tax_percent')) ?>" data-hit="<?= e(url('hit.php')) ?>">
 <a class="skip" href="#main">Skip to content</a>
 
 

@@ -281,3 +281,28 @@
     });
   }
 })();
+
+/* Visit statistics: counts page views and WhatsApp / call / email taps. No cookies, no personal data (see includes/track.php). */
+(function () {
+  var body = document.body, url = body && body.getAttribute('data-hit');
+  if (!url || !navigator.sendBeacon || navigator.doNotTrack === '1') return;
+  var sn, ent = 0;
+  try { sn = sessionStorage.getItem('jm_sn'); if (!sn) { sn = Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-3); sessionStorage.setItem('jm_sn', sn); ent = 1; } }
+  catch (e) { sn = Math.random().toString(36).slice(2, 10); ent = 1; }
+  var tz = ''; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) {}
+  function send(ev, first) {
+    var d = new FormData();
+    d.append('ev', ev); d.append('p', location.pathname + location.search); d.append('s', sn); d.append('w', window.innerWidth || 0); d.append('z', tz); d.append('l', navigator.language || '');
+    if (first) {
+      d.append('e', '1'); d.append('r', document.referrer || '');
+      var m = /[?&]utm_source=([^&]+)/.exec(location.search); if (m) d.append('u', decodeURIComponent(m[1]));
+    }
+    try { navigator.sendBeacon(url, d); } catch (e) {}
+  }
+  send('pv', ent === 1);
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[href]') : null; if (!a) return;
+    var h = a.getAttribute('href') || '';
+    if (/wa\.me|whatsapp\.com/i.test(h)) send('wa'); else if (/^tel:/i.test(h)) send('call'); else if (/^mailto:/i.test(h)) send('mail');
+  }, true);
+})();

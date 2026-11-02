@@ -15,6 +15,11 @@ Bookings & enquiries (status, notes, confirmation email, CSV export) · Rooms ·
 
 **Forgot the admin password?** Use *Forgot your password?* on the sign-in page. A one-hour reset link is emailed to the admin email (info@jawaimumal.com). Change that address under *My account*.
 
+## 2b. Private pages (not linked anywhere, not in search engines)
+- **`/pk-crm`** – every booking and enquiry in one place: status pipeline, search and filters, one-tap WhatsApp / call / email, "Confirm & email guest", team notes, and Excel / PDF / CSV export. **Sign in with the admin user name and password.**
+- **`/pk-insights`** – live visitors, visits and page views, traffic sources, devices, countries, top pages, booking funnel, WhatsApp / call taps, Google and Bing crawl log. It asks for a password: the developer number, stored on the server as `INSIGHTS_PASS` in `config.local.php` (never in Git). Change it by editing that line.
+- Visit statistics use no cookies and store no IP address (a visitor is a one-way daily code). The hotel team is never counted while signed in.
+
 ## 3. Email – how it works
 - Mailbox used for sending: `booking@jawaimumal.com` (Hostinger SMTP `smtp.hostinger.com`, port 465, SSL). Its password is saved **encrypted in the database** (Admin → Email (SMTP)); change it there if the mailbox password changes.
 - Every new booking or enquiry: one alert to `info@jawaimumal.com` and one to `booking@jawaimumal.com`; the guest receives an acknowledgement from `booking@jawaimumal.com` (replies go to the same address).

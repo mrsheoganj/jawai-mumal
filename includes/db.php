@@ -61,12 +61,17 @@ function jm_install_schema(PDO $pdo, string $type): void {
         "CREATE TABLE IF NOT EXISTS jm_routes (id $pk, name VARCHAR(200) NOT NULL, kind VARCHAR(20) DEFAULT 'rail', code VARCHAR(20), km DECIMAL(8,1) DEFAULT 0, travel_time VARCHAR(60), note VARCHAR(255), lat VARCHAR(30), lng VARCHAR(30), geom TEXT, status VARCHAR(20) DEFAULT 'active', sort_order INT DEFAULT 0)$tail",
         "CREATE TABLE IF NOT EXISTS jm_mail_log (id $pk, created_at $ts, kind VARCHAR(30), to_addr VARCHAR(250), subject VARCHAR(300), status VARCHAR(12), error TEXT)$tail",
         "CREATE TABLE IF NOT EXISTS jm_attempts (id $pk, ip VARCHAR(64), created_at INT)$tail",
+        "CREATE TABLE IF NOT EXISTS jm_hits (id $pk, ts INT NOT NULL, d VARCHAR(10), h INT, sid VARCHAR(24), sn VARCHAR(16), ev VARCHAR(12), ent INT DEFAULT 0, path VARCHAR(190), ref VARCHAR(120), src VARCHAR(30), dev VARCHAR(10), br VARCHAR(24), os VARCHAR(24), cc VARCHAR(3), lg VARCHAR(12), sw INT)$tail",
         "CREATE TABLE IF NOT EXISTS jm_bookings (id $pk, code VARCHAR(30) UNIQUE, type VARCHAR(20) NOT NULL, guest_name VARCHAR(150) NOT NULL, phone VARCHAR(40) NOT NULL, email VARCHAR(150), item_id INT, item_name VARCHAR(250), date_from DATE, date_to DATE, time_slot VARCHAR(40), guests INT DEFAULT 1, nights INT DEFAULT 0, amount INT DEFAULT 0, tax INT DEFAULT 0, status VARCHAR(30) DEFAULT 'New', notes TEXT, admin_notes TEXT, created_at $ts)$tail",
     ];
     foreach ($t as $sql) { $pdo->exec($sql); }
 }
 
 jm_install_schema($pdo, $dbType);
+// Visit statistics: indexes (created once; ignored if they already exist)
+try { $pdo->query("SELECT 1 FROM jm_hits WHERE ts > 0 LIMIT 1"); if (!is_file(__DIR__ . '/../data/.hits_idx')) {
+    foreach (['CREATE INDEX jm_hits_ts ON jm_hits (ts)', 'CREATE INDEX jm_hits_d ON jm_hits (d)', 'CREATE INDEX jm_hits_ev ON jm_hits (ev)'] as $__ix) { try { $pdo->exec($__ix); } catch (Throwable $__e) {} }
+    @file_put_contents(__DIR__ . '/../data/.hits_idx', '1'); } } catch (Throwable $e) {}
 // Older databases: add the route geometry column
 try { $pdo->query('SELECT geom FROM jm_routes LIMIT 1'); } catch (Throwable $e) { try { $pdo->exec('ALTER TABLE jm_routes ADD COLUMN geom TEXT'); } catch (Throwable $e2) {} }
 
@@ -137,6 +142,8 @@ if (PHP_SAPI !== 'cli' && !headers_sent()) {   // basic security headers (also s
 }
 require_once __DIR__ . '/updater.php';
 require_once __DIR__ . '/mailer.php';
+require_once __DIR__ . '/track.php';
+require_once __DIR__ . '/crm.php';
 require_once __DIR__ . '/seo.php';
 require_once __DIR__ . '/validate.php';
 

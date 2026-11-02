@@ -19,7 +19,8 @@ Outside food and drinks are not permitted in the restaurant.')],
   ['car', t('policies.b5.title', 'Safaris'), t('policies.b5.text', 'Safari timings depend on weather, road conditions and availability. A wildlife sighting is never guaranteed.
 Follow your tracker and driver, stay seated, keep voices low and never feed or call animals.')],
   ['shield-check', t('policies.b6.title', 'Privacy'), t('policies.b6.text', 'We use your name, phone number and email only to handle your request and contact you about it. We do not sell or share your details.
-You can ask us to delete your request at any time.')],
+You can ask us to delete your request at any time.
+We also count visits with simple statistics that use no cookies and store no IP address or personal details.')],
 ];
 ?>
 <section class="sec">
