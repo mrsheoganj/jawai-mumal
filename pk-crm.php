@@ -62,11 +62,11 @@ $list = rows("SELECT * FROM jm_bookings$w ORDER BY " . crm_order($f['sort']) . "
 [$w2, $p2] = crm_where($f, false);
 $cnt = array_fill_keys(booking_statuses(), 0); foreach (rows("SELECT status, COUNT(*) c FROM jm_bookings$w2 GROUP BY status", $p2) as $r) $cnt[$r['status']] = (int)$r['c'];
 $todayStart = date('Y-m-d') . ' 00:00:00'; $weekStart = date('Y-m-d', strtotime('-6 days')) . ' 00:00:00';
-$k = ['new' => (int)val("SELECT COUNT(*) FROM jm_bookings WHERE status = 'New'"), 'today' => (int)val('SELECT COUNT(*) FROM jm_bookings WHERE created_at >= ?', [$todayStart]), 'week' => (int)val('SELECT COUNT(*) FROM jm_bookings WHERE created_at >= ?', [$weekStart]),
-      'confirmed' => (int)val("SELECT COUNT(*) FROM jm_bookings WHERE status = 'Confirmed'"), 'all' => (int)val('SELECT COUNT(*) FROM jm_bookings'),
+$k = ['new' => (int)val("SELECT COUNT(*) FROM jm_bookings WHERE status = 'New'"), 'today' => (int)val("SELECT COUNT(*) FROM jm_bookings WHERE status <> 'Spam' AND created_at >= ?", [$todayStart]), 'week' => (int)val("SELECT COUNT(*) FROM jm_bookings WHERE status <> 'Spam' AND created_at >= ?", [$weekStart]),
+      'confirmed' => (int)val("SELECT COUNT(*) FROM jm_bookings WHERE status = 'Confirmed'"), 'all' => (int)val("SELECT COUNT(*) FROM jm_bookings WHERE status <> 'Spam'"),
       'value' => (int)val("SELECT COALESCE(SUM(amount + tax),0) FROM jm_bookings WHERE status IN ('New','Contacted','Confirmed')")];
 $ago = function ($t) { $s = time() - strtotime($t); if ($s < 60) return 'just now'; if ($s < 3600) return floor($s / 60) . ' min ago'; if ($s < 86400) return floor($s / 3600) . ' h ago'; if ($s < 86400 * 7) return floor($s / 86400) . ' d ago'; return date('d M Y', strtotime($t)); };
-$types = booking_types(); $icon = ['New' => '●', 'Contacted' => '☎', 'Confirmed' => '✓', 'Completed' => '★', 'Cancelled' => '✕'];
+$types = booking_types(); $icon = ['New' => '●', 'Contacted' => '☎', 'Confirmed' => '✓', 'Completed' => '★', 'Cancelled' => '✕', 'Spam' => '⚠'];
 $act = fn($id, $a, $label, $cls = 'btn btn--sm', $extra = '', $confirm = '') => '<form method="post"' . ($confirm ? ' onsubmit="return confirm(\'' . e($confirm) . '\')"' : '') . '>' . csrf_field() . '<input type="hidden" name="id" value="' . (int)$id . '"><input type="hidden" name="back" value="' . e($keep()) . '">'
     . '<input type="hidden" name="action" value="' . ($a === 'email_confirm' || $a === 'delete' ? $a : 'status') . '">' . ($a !== 'email_confirm' && $a !== 'delete' ? '<input type="hidden" name="status" value="' . e($a) . '">' : '') . '<button class="' . $cls . '">' . $label . '</button></form>';
 ?><!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
@@ -122,7 +122,7 @@ $act = fn($id, $a, $label, $cls = 'btn btn--sm', $extra = '', $confirm = '') => 
       <?php if (in_array($st, ['New', 'Contacted'], true)) echo $act($b['id'], 'Confirmed', 'Confirm only'); ?>
       <?php if ($st === 'Confirmed') echo $act($b['id'], 'Completed', 'Mark completed', 'btn btn--sm btn--ok'); ?>
       <?php if (in_array($st, ['New', 'Contacted', 'Confirmed'], true)) echo $act($b['id'], 'Cancelled', 'Cancel', 'btn btn--sm btn--bad', '', 'Mark this request as cancelled?'); ?>
-      <?php if (in_array($st, ['Completed', 'Cancelled'], true)) echo $act($b['id'], 'New', 'Re-open'); ?>
+      <?php if (in_array($st, ['Completed', 'Cancelled'], true)) echo $act($b['id'], 'New', 'Re-open'); if ($st === 'Spam') echo $act($b['id'], 'New', 'Not spam, re-open'); ?>
       <span style="margin-left:auto"><?= $act($b['id'], 'delete', 'Delete', 'btn btn--sm btn--bad', '', 'Delete this record permanently?') ?></span>
       <details><summary>Edit status &amp; team notes</summary>
         <form method="post" style="display:grid;gap:.5rem;max-width:520px"><?= csrf_field() ?><input type="hidden" name="action" value="update"><input type="hidden" name="id" value="<?= (int)$b['id'] ?>"><input type="hidden" name="back" value="<?= e($keep()) ?>">

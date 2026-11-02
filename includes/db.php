@@ -144,6 +144,7 @@ require_once __DIR__ . '/updater.php';
 require_once __DIR__ . '/mailer.php';
 require_once __DIR__ . '/track.php';
 require_once __DIR__ . '/crm.php';
+function jm_mark_spam_v1(): void { if (get_setting_raw('spam_v1') === '1') return; try { foreach (rows("SELECT id, guest_name, email, notes FROM jm_bookings WHERE status = 'New'") as $b) if (booking_looks_spam((string)$b['guest_name'], (string)$b['email'], (string)$b['notes'])) q("UPDATE jm_bookings SET status = 'Spam' WHERE id = ?", [(int)$b['id']]); set_setting('spam_v1', '1'); } catch (Throwable $e) {} }
 require_once __DIR__ . '/seo.php';
 require_once __DIR__ . '/validate.php';
 
@@ -324,6 +325,7 @@ jm_migrate_remove_family_v8();
 jm_migrate_private_only_v9();
 if (get_setting_raw('blog_seeded') !== '1') { require_once __DIR__ . '/seed_blog.php'; jm_seed_blog(); }
 if (get_setting_raw('blog_batches_v1') !== '1') { require_once __DIR__ . '/seed_blog_lib.php'; jm_seed_blog_batches(); }
+jm_mark_spam_v1();
 if (get_setting_raw('blog_ext1_v1') !== '1') { require_once __DIR__ . '/seed_blog_lib.php'; jm_blog_extend_v1(); }
 if (get_setting_raw('blog_more_v1') !== '1' || get_setting_raw('blog_img_v7') !== '1') { require_once __DIR__ . '/seed_blog2.php'; jm_seed_blog_more(); jm_fix_blog_images(); }
 upd_maybe_auto();   // live sync with GitHub (if enabled)

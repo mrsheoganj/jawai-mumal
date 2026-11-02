@@ -75,13 +75,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if (!$errors) {
-            $code = booking_code($type);
+            $code = booking_code($type); $spam = booking_looks_spam($name, $email, $notes);
             q('INSERT INTO jm_bookings (code,type,guest_name,phone,email,item_id,item_name,date_from,date_to,time_slot,guests,nights,amount,tax,status,notes) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
               [$code, $type, mb_substr($name, 0, 150), mb_substr($phone, 0, 40), mb_substr($email, 0, 150), $itemId ?: null, mb_substr($itemName, 0, 250),
-               $isDate($from) ? $from : null, ($type === 'stay' && $isDate($to)) ? $to : null, mb_substr($slot, 0, 40), $guests, $nights, $amount, $tax, 'New', mb_substr($notes, 0, 2000)]);
+               $isDate($from) ? $from : null, ($type === 'stay' && $isDate($to)) ? $to : null, mb_substr($slot, 0, 40), $guests, $nights, $amount, $tax, $spam ? 'Spam' : 'New', mb_substr($notes, 0, 2000)]);
             $_SESSION['book_hits'] = array_merge(array_values($tries), [time()]);
             $saved = row('SELECT * FROM jm_bookings WHERE code = ?', [$code]);
-            if ($saved) notify_booking($saved);
+            if ($saved && !$spam) notify_booking($saved);
             if (($_POST['via'] ?? '') === 'wa' && $saved) redirect(wa_link(booking_wa_message($saved)));   // saved in admin AND opened in WhatsApp
             redirect(url('book.php?done=' . urlencode($code)));
         }

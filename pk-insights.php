@@ -47,7 +47,7 @@ function ins_totals(int $s, int $e): array {
     $ses = (int)val("SELECT COUNT(*) FROM (SELECT DISTINCT sn FROM jm_hits WHERE ev = 'pv' AND sn <> '' AND $W) x", $p);
     $bnc = (int)val("SELECT COUNT(*) FROM (SELECT sn FROM jm_hits WHERE ev = 'pv' AND sn <> '' AND $W GROUP BY sn HAVING COUNT(*) = 1) x", $p);
     $ev = ['wa' => 0, 'call' => 0, 'mail' => 0]; foreach (rows("SELECT ev, COUNT(*) c FROM jm_hits WHERE ev IN ('wa','call','mail') AND $W GROUP BY ev", $p) as $r) $ev[$r['ev']] = (int)$r['c'];
-    $req = (int)val('SELECT COUNT(*) FROM jm_bookings WHERE created_at >= ? AND created_at < ?', [$sd, $ed]);
+    $req = (int)val("SELECT COUNT(*) FROM jm_bookings WHERE status <> 'Spam' AND created_at >= ? AND created_at < ?", [$sd, $ed]);
     return ['visitors' => $vis, 'pageviews' => $pv, 'sessions' => $ses, 'bounce' => $bnc, 'wa' => $ev['wa'], 'call' => $ev['call'], 'mail' => $ev['mail'], 'requests' => $req];
 }
 function ins_data(int $days): array {
@@ -58,7 +58,7 @@ function ins_data(int $days): array {
     $series = [];
     if ($days === 1) { $m = []; foreach (rows("SELECT h, COUNT(*) pv, COUNT(DISTINCT sid) v FROM jm_hits WHERE ev = 'pv' AND $W GROUP BY h", $P) as $r) $m[(int)$r['h']] = $r; for ($h = 0; $h <= (int)date('G'); $h++) $series[] = ['l' => sprintf('%02d:00', $h), 'pv' => (int)($m[$h]['pv'] ?? 0), 'v' => (int)($m[$h]['v'] ?? 0)]; }
     else { $m = []; foreach (rows("SELECT d, COUNT(*) pv, COUNT(DISTINCT sid) v FROM jm_hits WHERE ev = 'pv' AND $W GROUP BY d", $P) as $r) $m[$r['d']] = $r; for ($i = 0; $i < $days; $i++) { $dd = date('Y-m-d', $start + $i * 86400); $series[] = ['l' => date('D d M', $start + $i * 86400), 'd' => $dd, 'pv' => (int)($m[$dd]['pv'] ?? 0), 'v' => (int)($m[$dd]['v'] ?? 0)]; } }
-    $bk = []; foreach (rows('SELECT SUBSTR(created_at,1,10) d, COUNT(*) c FROM jm_bookings WHERE created_at >= ? AND created_at < ? GROUP BY SUBSTR(created_at,1,10)', [date('Y-m-d H:i:s', $start), date('Y-m-d H:i:s', $end)]) as $r) $bk[$r['d']] = (int)$r['c'];
+    $bk = []; foreach (rows("SELECT SUBSTR(created_at,1,10) d, COUNT(*) c FROM jm_bookings WHERE status <> 'Spam' AND created_at >= ? AND created_at < ? GROUP BY SUBSTR(created_at,1,10)", [date('Y-m-d H:i:s', $start), date('Y-m-d H:i:s', $end)]) as $r) $bk[$r['d']] = (int)$r['c'];
     foreach ($series as &$s) { $s['b'] = $days === 1 ? null : ($bk[$s['d']] ?? 0); } unset($s);
     $hours = array_fill(0, 24, 0); foreach (rows("SELECT h, COUNT(*) c FROM jm_hits WHERE ev = 'pv' AND $W GROUP BY h", $P) as $r) $hours[(int)$r['h']] = (int)$r['c'];
     $wd = array_fill(1, 7, 0); if ($days > 1) foreach ($series as $s) $wd[(int)date('N', strtotime($s['d']))] += $s['v'];
@@ -72,9 +72,9 @@ function ins_data(int $days): array {
     $ses = (int)$cur['sessions'];
     $stay = (int)val("SELECT COUNT(DISTINCT sn) FROM jm_hits WHERE ev = 'pv' AND sn <> '' AND $W AND (path LIKE '/rooms%' OR path LIKE '/room?%' OR path LIKE '/safari%' OR path LIKE '/restaurant%' OR path LIKE '/jawai%')", $P);
     $form = (int)val("SELECT COUNT(DISTINCT sn) FROM jm_hits WHERE ev = 'pv' AND sn <> '' AND $W AND path LIKE '/book%'", $P);
-    $types = booking_types(); $byType = []; foreach (rows('SELECT type, COUNT(*) c FROM jm_bookings WHERE created_at >= ? AND created_at < ? GROUP BY type ORDER BY c DESC', [date('Y-m-d H:i:s', $start), date('Y-m-d H:i:s', $end)]) as $r) $byType[] = ['l' => $types[$r['type']] ?? $r['type'], 'n' => (int)$r['c']];
-    $byStatus = []; foreach (rows('SELECT status, COUNT(*) c FROM jm_bookings WHERE created_at >= ? AND created_at < ? GROUP BY status', [date('Y-m-d H:i:s', $start), date('Y-m-d H:i:s', $end)]) as $r) $byStatus[$r['status']] = (int)$r['c'];
-    $latest = array_map(fn($r) => ['code' => $r['code'], 'name' => $r['guest_name'], 'type' => $types[$r['type']] ?? $r['type'], 'item' => $r['item_name'], 'status' => $r['status'], 'at' => $r['created_at']], rows('SELECT code, guest_name, type, item_name, status, created_at FROM jm_bookings ORDER BY id DESC LIMIT 6'));
+    $types = booking_types(); $byType = []; foreach (rows("SELECT type, COUNT(*) c FROM jm_bookings WHERE status <> 'Spam' AND created_at >= ? AND created_at < ? GROUP BY type ORDER BY c DESC", [date('Y-m-d H:i:s', $start), date('Y-m-d H:i:s', $end)]) as $r) $byType[] = ['l' => $types[$r['type']] ?? $r['type'], 'n' => (int)$r['c']];
+    $byStatus = []; foreach (rows("SELECT status, COUNT(*) c FROM jm_bookings WHERE status <> 'Spam' AND created_at >= ? AND created_at < ? GROUP BY status", [date('Y-m-d H:i:s', $start), date('Y-m-d H:i:s', $end)]) as $r) $byStatus[$r['status']] = (int)$r['c'];
+    $latest = array_map(fn($r) => ['code' => $r['code'], 'name' => $r['guest_name'], 'type' => $types[$r['type']] ?? $r['type'], 'item' => $r['item_name'], 'status' => $r['status'], 'at' => $r['created_at']], rows("SELECT code, guest_name, type, item_name, status, created_at FROM jm_bookings WHERE status <> 'Spam' ORDER BY id DESC LIMIT 6"));
     $blogTop = array_map(fn($r) => ['l' => ins_label($r['path'], $blog), 'n' => (int)$r['c']], $top("SELECT path, COUNT(*) c FROM jm_hits WHERE ev = 'pv' AND path LIKE '/blog/%' AND $W GROUP BY path ORDER BY c DESC LIMIT 8", $P));
     $bots = array_map(fn($r) => ['l' => $r['br'], 'n' => (int)$r['c'], 'last' => date('d M, g:i a', (int)$r['last'])], $top("SELECT br, COUNT(*) c, MAX(ts) last FROM jm_hits WHERE ev = 'bot' AND $W GROUP BY br ORDER BY c DESC LIMIT 10", $P));
     $botFeed = array_map(fn($r) => ['bot' => $r['br'], 'l' => ins_label($r['path'], $blog), 'at' => date('d M, g:i a', (int)$r['ts'])], $top("SELECT br, path, ts FROM jm_hits WHERE ev = 'bot' ORDER BY id DESC LIMIT 8"));

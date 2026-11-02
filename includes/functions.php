@@ -139,7 +139,12 @@ function booking_code(string $type): string {
     $p = ['stay' => 'STY', 'dine' => 'DIN', 'safari' => 'SAF', 'event' => 'EVT', 'enquiry' => 'ENQ'][$type] ?? 'JM';
     return 'JM-' . $p . '-' . strtoupper(substr(bin2hex(random_bytes(3)), 0, 5));
 }
-function booking_statuses(): array { return ['New', 'Contacted', 'Confirmed', 'Completed', 'Cancelled']; }
+function booking_statuses(): array { return ['New', 'Contacted', 'Confirmed', 'Completed', 'Cancelled', 'Spam']; }
+/** Cold-outreach / link spam typed into the enquiry form (URLs or typical SEO-agency phrases). Such requests are saved as "Spam" and send no email. */
+function booking_looks_spam(string $name, string $email, string $notes): bool {
+    $t = $name . ' ' . $notes;
+    return (bool)preg_match('~https?://|www\.|\b[a-z0-9-]+\.(com|net|org|in|io|co)/|\b(seo|backlinks?|guest post|search engines?|serp|digital marketing|website traffic|more leads|first page of google|target keywords|link building|web design services|rank(ing)? (higher|your))\b~i', $t);
+}
 function booking_types(): array { return ['stay' => 'Stay', 'dine' => 'Table', 'safari' => 'Safari', 'event' => 'Party / Event', 'enquiry' => 'Enquiry']; }
 
 function page_url(): string { return strtok($_SERVER['REQUEST_URI'] ?? '', '?'); }
