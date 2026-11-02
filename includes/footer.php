@@ -54,5 +54,6 @@ $o2 = [setting('owner2_name'), setting('owner2_role'), setting('owner2_phone')];
 <a class="wa-float" href="<?= e(wa_link(t('sdial.msg', 'Hello Jawai Mumal, I would like to know more.'))) ?>" target="_blank" rel="noopener" aria-label="<?= et('wa.aria', 'Chat on WhatsApp') ?>" title="<?= et('wa.aria', 'Chat on WhatsApp') ?>"><?= icon('whatsapp', 28) ?></a>
 <?php seo_ld_print($GLOBALS['jm_seo'] ?? seo_resolve([])); ?>
 <script src="<?= asset('assets/js/site.js') ?>" defer></script>
+<script src="<?= asset('assets/js/motion.js') ?>" defer></script>
 </body>
 </html>

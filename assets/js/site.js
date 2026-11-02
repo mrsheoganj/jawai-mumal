@@ -33,7 +33,7 @@
   var hero = $('#hero');
   if (hero) {
     var all = $$('.hslide', hero), ctl = $('.hero__ctl', hero), dotsBox = $('.hdots', hero), pb = $('[data-hero=pause]', hero);
-    var slides = [], dots = [], cur = 0, timer = null, paused = reduce;
+    var slides = [], dots = [], cur = 0, timer = null, paused = reduce; if (paused) hero.classList.add('is-paused');
     var go = function (i) {
       cur = (i + slides.length) % slides.length;
       slides.forEach(function (s, k) { s.classList.toggle('is-active', k === cur); s.setAttribute('aria-hidden', k === cur ? 'false' : 'true'); });
@@ -53,7 +53,7 @@
     };
     $$('[data-hero=prev]', hero).forEach(function (b) { b.addEventListener('click', function () { go(cur - 1); play(); }); });
     $$('[data-hero=next]', hero).forEach(function (b) { b.addEventListener('click', function () { go(cur + 1); play(); }); });
-    if (pb) pb.addEventListener('click', function () { paused = !paused; pb.setAttribute('aria-label', paused ? 'Play slideshow' : 'Pause slideshow'); play(); });
+    if (pb) pb.addEventListener('click', function () { paused = !paused; hero.classList.toggle('is-paused', paused); pb.setAttribute('aria-label', paused ? 'Play slideshow' : 'Pause slideshow'); play(); });
     hero.addEventListener('mouseenter', function () { clearInterval(timer); });
     hero.addEventListener('mouseleave', play);
     hero.addEventListener('focusin', function () { clearInterval(timer); });

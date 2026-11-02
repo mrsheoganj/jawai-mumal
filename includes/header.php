@@ -13,6 +13,7 @@ if (seo_cfg('blog_in_menu') === '1') $nav['blog'] = [t('nav.blog', 'Journal'), '
 <?php jm_track_crawler(); ?>
 <head>
 <meta charset="utf-8">
+<script>document.documentElement.className+=' js'</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <?php seo_head($seoR); ?>
 <?php foreach ((array)($preloads ?? []) as $pl): ?><link rel="preload" as="image" href="<?= e(img($pl[0])) ?>"<?= !empty($pl[1]) ? ' media="' . e($pl[1]) . '"' : '' ?> fetchpriority="high">
@@ -26,6 +27,7 @@ if (seo_cfg('blog_in_menu') === '1') $nav['blog'] = [t('nav.blog', 'Journal'), '
 <link rel="apple-touch-icon" href="<?= url('assets/brand/icon-180.png') ?>">
 <?= font_head() ?>
 <link rel="stylesheet" href="<?= asset('assets/css/site.css') ?>">
+<link rel="stylesheet" href="<?= asset('assets/css/motion.css') ?>">
 <noscript><style>.rv{opacity:1!important;transform:none!important}.preloader{display:none!important}</style></noscript>
 </head>
 <body class="<?= e($bodyClass ?? '') ?>" data-tax="<?= e(setting('tax_percent')) ?>" data-hit="<?= e(url('hit.php')) ?>">
