@@ -6,10 +6,10 @@
 function mail_cfg(): array {
     $g = fn($k, $d = '') => (($v = get_setting_raw('smtp.' . $k)) !== null) ? (string)$v : $d;
     return [
-        'enabled' => $g('enabled', '0') === '1', 'host' => trim($g('host')), 'port' => (int)($g('port', '465') ?: 465), 'secure' => $g('secure', 'ssl'),
-        'user' => trim($g('user')), 'pass' => mail_secret_dec($g('pass')), 'insecure' => $g('insecure', '0') === '1',
-        'from_email' => trim($g('from_email')), 'from_name' => $g('from_name', setting('site_name')), 'reply_to' => trim($g('reply_to')), 'bcc' => trim($g('bcc')),
-        'notify_to' => trim($g('notify_to', setting('notify_email'))), 'notify_admin' => $g('notify_admin', '1') === '1', 'guest_confirm' => $g('guest_confirm', '1') === '1',
+        'enabled' => $g('enabled', '0') === '1', 'host' => trim($g('host', 'smtp.hostinger.com')), 'port' => (int)($g('port', '465') ?: 465), 'secure' => $g('secure', 'ssl'),
+        'user' => trim($g('user', 'booking@jawaimumal.com')), 'pass' => mail_secret_dec($g('pass')), 'insecure' => $g('insecure', '0') === '1',
+        'from_email' => trim($g('from_email', 'booking@jawaimumal.com')), 'from_name' => $g('from_name', setting('site_name')), 'reply_to' => trim($g('reply_to', 'booking@jawaimumal.com')), 'bcc' => trim($g('bcc')),
+        'notify_to' => trim($g('notify_to', 'info@jawaimumal.com, booking@jawaimumal.com')), 'notify_admin' => $g('notify_admin', '1') === '1', 'guest_confirm' => $g('guest_confirm', '1') === '1',
     ];
 }
 function mail_key(): string { return hash('sha256', (defined('APP_KEY') ? APP_KEY : 'jm|' . DB_NAME . '|' . DB_USER . '|' . DB_PASS . '|' . __DIR__), true); }

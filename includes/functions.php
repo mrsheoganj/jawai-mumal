@@ -146,7 +146,7 @@ function page_url(): string { return strtok($_SERVER['REQUEST_URI'] ?? '', '?');
 
 /** Dark banner at the top of inner pages. */
 function page_head(string $eyebrow, string $title, string $sub, string $image): void {
-    echo '<section class="pagehead"><img src="' . e(img($image)) . '" alt="' . e($title) . '" fetchpriority="high"><div class="wrap">'
+    echo '<section class="pagehead">' . ($image !== '' ? '<img src="' . e(img($image)) . '" alt="" fetchpriority="high">' : '') . '<div class="wrap">'
        . '<nav class="crumbs" aria-label="Breadcrumb"><a href="' . e(url('index.php')) . '">Home</a> / ' . e($eyebrow) . '</nav>'
        . '<span class="eyebrow">' . e($eyebrow) . '</span><h1 style="font-size:clamp(2.4rem,5.5vw,4.2rem)">' . e($title) . '</h1>'
        . ($sub !== '' ? '<p>' . e($sub) . '</p>' : '') . '</div></section>';

@@ -30,10 +30,12 @@ if ($fq !== '') { $where[] = '(code LIKE ? OR guest_name LIKE ? OR phone LIKE ?)
 $sql = 'SELECT * FROM jm_bookings' . ($where ? ' WHERE ' . implode(' AND ', $where) : '') . ' ORDER BY id DESC LIMIT 300';
 $list = rows($sql, $par);
 if (isset($_GET['export'])) {
+    $list = rows(str_replace(' LIMIT 300', '', $sql), $par);
+    $safe = fn($v) => is_string($v) && $v !== '' && strpos("=+-@\t\r", $v[0]) !== false ? "'" . $v : $v;   // stop spreadsheet formulas typed by guests
     header('Content-Type: text/csv; charset=utf-8'); header('Content-Disposition: attachment; filename="jawai-mumal-bookings-' . date('Y-m-d') . '.csv"');
     $o = fopen('php://output', 'w'); fwrite($o, "\xEF\xBB\xBF");
-    fputcsv($o, ['Ref', 'Received', 'Type', 'Guest', 'Phone', 'Email', 'For', 'From', 'To', 'Time', 'Guests', 'Nights', 'Estimate', 'GST', 'Status', 'Guest notes', 'Admin notes']);
-    foreach ($list as $b) fputcsv($o, [$b['code'], $b['created_at'], $b['type'], $b['guest_name'], $b['phone'], $b['email'], $b['item_name'], $b['date_from'], $b['date_to'], $b['time_slot'], $b['guests'], $b['nights'], $b['amount'], $b['tax'], $b['status'], $b['notes'], $b['admin_notes']]);
+    fputcsv($o, ['Ref', 'Received', 'Type', 'Guest', 'Phone', 'Email', 'For', 'From', 'To', 'Time', 'Guests', 'Nights', 'Estimate', 'GST', 'Status', 'Guest notes', 'Admin notes'], ',', '"', '\\');
+    foreach ($list as $b) fputcsv($o, array_map($safe, [$b['code'], $b['created_at'], $b['type'], $b['guest_name'], $b['phone'], $b['email'], $b['item_name'], $b['date_from'], $b['date_to'], $b['time_slot'], $b['guests'], $b['nights'], $b['amount'], $b['tax'], $b['status'], $b['notes'], $b['admin_notes']]), ',', '"', '\\');
     exit;
 }
 admin_head('Bookings & enquiries', 'bookings');

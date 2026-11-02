@@ -69,6 +69,10 @@ jm_install_schema($pdo, $dbType);
 // Older databases: add the route geometry column
 try { $pdo->query('SELECT geom FROM jm_routes LIMIT 1'); } catch (Throwable $e) { try { $pdo->exec('ALTER TABLE jm_routes ADD COLUMN geom TEXT'); } catch (Throwable $e2) {} }
 
+// Older databases: admin accounts get an email address (used for password reset)
+try { $pdo->query('SELECT email FROM jm_admins LIMIT 1'); } catch (Throwable $e) { try { $pdo->exec('ALTER TABLE jm_admins ADD COLUMN email VARCHAR(190)'); } catch (Throwable $e2) {} }
+try { $pdo->exec("UPDATE jm_admins SET email = 'info@jawaimumal.com' WHERE (email IS NULL OR email = '') AND id = (SELECT MIN(id) FROM (SELECT id FROM jm_admins) t)"); } catch (Throwable $e) {}
+
 // Admin login: never a known password. Uses DEFAULT_ADMIN_PASS from config.local.php, otherwise a random one saved to data/first-login.txt
 function jm_random_password(): string { $c = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789'; $p = ''; for ($i = 0; $i < 14; $i++) $p .= $c[random_int(0, strlen($c) - 1)]; return $p; }
 function jm_set_admin_password(PDO $pdo, string $pw, bool $announce): void {

@@ -25,6 +25,7 @@ if (seo_cfg('blog_in_menu') === '1') $nav['blog'] = [t('nav.blog', 'Journal'), '
 <link rel="apple-touch-icon" href="<?= url('assets/brand/icon-180.png') ?>">
 <?= font_head() ?>
 <link rel="stylesheet" href="<?= asset('assets/css/site.css') ?>">
+<noscript><style>.rv{opacity:1!important;transform:none!important}.preloader{display:none!important}</style></noscript>
 </head>
 <body class="<?= e($bodyClass ?? '') ?>" data-tax="<?= e(setting('tax_percent')) ?>">
 <a class="skip" href="#main">Skip to content</a>

@@ -17,7 +17,7 @@ function upd_get(string $url, ?string $saveTo = null, array $headers = []): ?str
         $o = [CURLOPT_TIMEOUT => 90, CURLOPT_FOLLOWLOCATION => true, CURLOPT_USERAGENT => $ua, CURLOPT_HTTPHEADER => $headers];
         if (($ca = getenv('CURL_CA_BUNDLE')) && is_file($ca)) $o[CURLOPT_CAINFO] = $ca;
         if ($fh) $o[CURLOPT_FILE] = $fh; else $o[CURLOPT_RETURNTRANSFER] = true;
-        curl_setopt_array($c, $o); $r = curl_exec($c); $code = (int)curl_getinfo($c, CURLINFO_HTTP_CODE); curl_close($c); if ($fh) fclose($fh);
+        curl_setopt_array($c, $o); $r = curl_exec($c); $code = (int)curl_getinfo($c, CURLINFO_HTTP_CODE); if (PHP_VERSION_ID < 80000) curl_close($c); if ($fh) fclose($fh);
         if ($r === false || $code >= 400) return null;
         return $saveTo ? 'ok' : (string)$r;
     }

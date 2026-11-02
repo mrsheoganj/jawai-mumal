@@ -59,6 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <img class="login__logo" src="<?= e(img(setting('logo_dark'))) ?>" alt="<?= e(setting('site_name')) ?>">
     <h1>Welcome back</h1>
     <p class="muted">Sign in to manage rooms, menu, safaris, bookings and the whole website.</p>
+    <?php foreach (flashes() as $fl): ?><div class="alert alert--<?= $fl[0] === 'err' ? 'err' : 'ok' ?>"><?= e($fl[1]) ?></div><?php endforeach; ?>
     <?php if (isset($_GET['bye'])): ?><div class="alert alert--ok">You have been signed out.</div><?php endif; ?>
     <div class="alert alert--err" id="lerr" role="alert" <?= $error ? '' : 'hidden' ?>><?= e($error) ?></div>
     <label for="u">Username</label>
@@ -67,6 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="inp"><?= icon('lock', 20) ?><input id="p" name="password" type="password" autocomplete="current-password" required><button type="button" class="eye" id="eye" aria-label="Show password"><?= icon('eye', 20) ?></button></div>
     <label class="remember"><input type="checkbox" name="remember" value="1" checked> <span>Keep me signed in on this device (30 days)</span></label>
     <button class="btn" id="lbtn" type="submit"><span>Sign in</span><?= icon('arrow-right', 18) ?></button>
+    <a class="back" href="forgot.php" style="display:block;margin-bottom:.4rem">Forgot your password?</a>
     <a class="back" href="<?= url('index.php') ?>">← Back to website</a>
   </form>
 </main>
