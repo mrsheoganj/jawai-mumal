@@ -49,6 +49,10 @@ seo_ld(['@context' => 'https://schema.org', '@type' => 'Article', 'headline' => 
     'author' => ['@type' => 'Organization', 'name' => setting('site_name'), 'url' => seo_abs()],
     'publisher' => ['@type' => 'Organization', 'name' => setting('site_name'), 'logo' => ['@type' => 'ImageObject', 'url' => seo_img_abs(setting('logo_emblem'))]],
     'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => $url], 'keywords' => (string)$p['keywords'], 'articleSection' => $p['category']]);
+// FAQ rich results: turn the "Frequently asked questions" block (h3 question + p answer) into FAQPage structured data
+if (preg_match('#<h2>\s*Frequently asked questions\s*</h2>(.*)$#is', (string)$p['body'], $fm) && preg_match_all('#<h3>(.*?)</h3>\s*<p>(.*?)</p>#is', $fm[1], $qa, PREG_SET_ORDER)) {
+    seo_ld(['@context' => 'https://schema.org', '@type' => 'FAQPage', 'mainEntity' => array_map(fn($x) => ['@type' => 'Question', 'name' => trim(strip_tags($x[1])), 'acceptedAnswer' => ['@type' => 'Answer', 'text' => trim(strip_tags($x[2]))]], $qa)]);
+}
 $related = rows("SELECT * FROM jm_blog WHERE status = 'published' AND published_at <= ? AND id <> ? ORDER BY (category = ?) DESC, published_at DESC LIMIT 3", [date('Y-m-d H:i:s'), $p['id'], $p['category']]);
 include __DIR__ . '/includes/header.php';
 page_head($p['category'], $p['title'], $p['excerpt'], $p['image']);

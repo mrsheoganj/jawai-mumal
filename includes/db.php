@@ -316,5 +316,6 @@ function jm_migrate_private_only_v9(): void {
 jm_migrate_remove_family_v8();
 jm_migrate_private_only_v9();
 if (get_setting_raw('blog_seeded') !== '1') { require_once __DIR__ . '/seed_blog.php'; jm_seed_blog(); }
+if (get_setting_raw('blog_more_v1') !== '1' || get_setting_raw('blog_img_v7') !== '1') { require_once __DIR__ . '/seed_blog2.php'; jm_seed_blog_more(); jm_fix_blog_images(); }
 upd_maybe_auto();   // live sync with GitHub (if enabled)
 jm_gate();
