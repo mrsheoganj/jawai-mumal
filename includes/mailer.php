@@ -117,11 +117,14 @@ function booking_rows(array $b): array {
     return ['Reference' => $b['code'], 'Request' => (booking_types()[$b['type']] ?? $b['type']) . ' — ' . $b['item_name'], 'Date' => mail_fill('{date}', $b), 'Guests' => (string)$b['guests'],
             'Estimate' => mail_fill('{estimate}', $b), 'Name' => $b['guest_name'], 'Phone' => $b['phone'], 'Email' => (string)$b['email'], 'Notes' => (string)$b['notes']];
 }
+/** Requests whose guest message starts with "TEST" are labelled [TEST] in every email subject, so test mail is easy to spot. */
+function booking_is_test(array $b): bool { return (bool)preg_match('/^\s*\[?test\b/i', (string)($b['notes'] ?? '')); }
+function booking_subject_tag(array $b): string { return booking_is_test($b) ? '[TEST] ' : ''; }
 /** Emails for a new booking/enquiry: one to the hotel team, one receipt to the guest (if they gave an email). */
 function send_booking_emails(array $b): void {
     $c = mail_cfg();
     if ($c['notify_admin'] && $c['notify_to'] !== '') {
-        $subj = mail_fill(mail_tpl('admin_subject', 'New {type} request {code} — {name}'), $b);
+        $subj = booking_subject_tag($b) . mail_fill(mail_tpl('admin_subject', 'New {type} request {code} — {name}'), $b);
         $intro = mail_fill(mail_tpl('admin_intro', "A new request has arrived on the website.\nReply to the guest on WhatsApp: {whatsapp}"), $b);
         $link = rtrim(setting('site_url'), '/') . '/' . ADMIN_DIR . '/bookings.php?q=' . $b['code'];
         $text = $intro . "\n\n" . implode("\n", array_map(fn($k, $v) => "$k: $v", array_keys(booking_rows($b)), booking_rows($b))) . "\n\nManage: $link";
@@ -129,7 +132,7 @@ function send_booking_emails(array $b): void {
         foreach (array_filter(array_map('trim', explode(',', $c['notify_to']))) as $to) jm_mail($to, $subj, $text, $html, 'admin-notice', (string)$b['email']);
     }
     if ($c['guest_confirm'] && filter_var((string)$b['email'], FILTER_VALIDATE_EMAIL)) {
-        $subj = mail_fill(mail_tpl('guest_subject', 'We received your request {code} — {hotel}'), $b);
+        $subj = booking_subject_tag($b) . mail_fill(mail_tpl('guest_subject', 'We received your request {code} — {hotel}'), $b);
         $intro = mail_fill(mail_tpl('guest_intro', "Dear {name},\nThank you for choosing {hotel}. We have received your request and our team will confirm availability and the final rate personally on WhatsApp."), $b);
         $foot = mail_fill(mail_tpl('guest_footer', "Questions? Message us on WhatsApp: {whatsapp}\nThis email is an acknowledgement, not a confirmed booking."), $b);
         $text = $intro . "\n\n" . implode("\n", array_map(fn($k, $v) => "$k: $v", array_keys(booking_rows($b)), booking_rows($b))) . "\n\n" . $foot;

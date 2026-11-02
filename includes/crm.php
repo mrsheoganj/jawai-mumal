@@ -18,7 +18,7 @@ function crm_post(): void {
         if (!$b || !filter_var((string)$b['email'], FILTER_VALIDATE_EMAIL)) flash('err', 'This guest did not give a valid email address.');
         else {
             $intro = mail_fill(mail_tpl('confirm_intro', "Dear {name},\nWe are pleased to confirm your {type}: {item} — {date}.\nWe look forward to welcoming you. For any change, reply on WhatsApp: {whatsapp}"), $b);
-            $r = jm_mail((string)$b['email'], mail_fill(mail_tpl('confirm_subject', 'Your booking {code} is confirmed — {hotel}'), $b), $intro . "\n\n" . implode("\n", array_map(fn($k, $v) => "$k: $v", array_keys(booking_rows($b)), booking_rows($b))), mail_html('Booking confirmed', $intro, booking_rows($b), setting('site_name') . ' · ' . setting('owner1_phone')), 'confirmation');
+            $r = jm_mail((string)$b['email'], booking_subject_tag($b) . mail_fill(mail_tpl('confirm_subject', 'Your booking {code} is confirmed — {hotel}'), $b), $intro . "\n\n" . implode("\n", array_map(fn($k, $v) => "$k: $v", array_keys(booking_rows($b)), booking_rows($b))), mail_html('Booking confirmed', $intro, booking_rows($b), setting('site_name') . ' · ' . setting('owner1_phone')), 'confirmation');
             if ($r['ok']) { q("UPDATE jm_bookings SET status = 'Confirmed' WHERE id = ? AND status IN ('New','Contacted')", [$id]); flash('ok', 'Confirmation email sent to ' . $b['email'] . ' and the booking is marked Confirmed.'); }
             else flash('err', 'Email failed: ' . $r['error'] . ' (see Admin > Email (SMTP)).');
         }
