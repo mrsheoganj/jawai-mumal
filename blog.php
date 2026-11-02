@@ -12,7 +12,7 @@ if ($slug === '') {
     seo_ld(['@context' => 'https://schema.org', '@type' => 'CollectionPage', 'name' => seo_field('blog', 'title'), 'url' => seo_abs('blog'), 'description' => seo_field('blog', 'desc'),
         'mainEntity' => ['@type' => 'ItemList', 'itemListElement' => array_map(fn($p, $i) => ['@type' => 'ListItem', 'position' => $i + 1, 'url' => seo_abs('blog/' . $p['slug']), 'name' => $p['title']], $posts, array_keys($posts))]]);
     include __DIR__ . '/includes/header.php';
-    page_head('Journal', 'Jawai Travel Journal', 'Practical guides to leopard safaris, seasons, food, culture and day trips around Bera and Jawai.', 'assets/images/hotel-front.jpg');
+    page_head('Journal', 'Jawai Travel Journal', 'Practical guides to leopard safaris, seasons, food, culture and day trips around Bera and Jawai.', 'assets/images/jawai-peafowl.jpg');
     ?>
 <section class="sec"><div class="wrap">
   <div class="bgrid">

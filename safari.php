@@ -7,7 +7,7 @@ seo_ld(seo_breadcrumb_ld([['Safari', 'safari']]));
 foreach ($safaris as $sf) seo_ld(['@context' => 'https://schema.org', '@type' => 'TouristTrip', 'name' => $sf['title'], 'description' => seo_clip((string)$sf['description'], 300),
   'image' => seo_img_abs($sf['image']), 'touristType' => 'Wildlife', 'provider' => ['@id' => seo_abs('#hotel')]]);
 include __DIR__ . '/includes/header.php';
-page_head(t('safari.head.eyebrow', 'Safari'), t('safari.head.title', 'Jawai Leopard Safari'), t('safari.head.sub', 'Granite hills, open jeeps and local trackers who know every rock.'), im('safari.head.img', 'assets/images/jawai-leopard-walk.jpg'));
+page_head(t('safari.head.eyebrow', 'Safari'), t('safari.head.title', 'Jawai Leopard Safari'), t('safari.head.sub', 'Granite hills, open jeeps and local trackers who know every rock.'), im('safari.head.img', 'assets/images/jawai-leopard-rock.jpg'));
 ?>
 <section class="sec">
   <div class="wrap">

@@ -38,7 +38,7 @@ function jm_blog_posts(): array {
 <p>If you are still choosing dates, read our guide to the <a href="{{blog/best-time-to-visit-jawai}}">best time to visit Jawai</a>.</p>
 HTML];
 
-    $P[] = ['best-time-to-visit-jawai', 'Best Time to Visit Jawai: Month-by-Month', 'Planning', 'assets/images/hotel-day.jpg', '2026-09-04 09:00:00',
+    $P[] = ['best-time-to-visit-jawai', 'Best Time to Visit Jawai: Month-by-Month', 'Planning', 'assets/images/jawai-bandh.jpg', '2026-09-04 09:00:00',
         'Jawai is a year-round destination. Here is what each season feels like and which months suit leopards, birds and comfort.',
         'Best Time to Visit Jawai, Rajasthan: Month-by-Month Guide',
         'The best time to visit Jawai for leopard safaris, birdwatching and comfortable weather – month by month, with notes on summer, monsoon and winter.',
@@ -61,7 +61,7 @@ HTML];
 <p>Whatever the month, a stay in Bera puts you minutes from the hills. Browse our <a href="{{rooms}}">rooms</a> or ask about dates on <a href="{{contact}}">WhatsApp</a>.</p>
 HTML];
 
-    $P[] = ['how-to-reach-jawai-from-udaipur-jodhpur-jaipur', 'How to Reach Jawai from Udaipur, Jodhpur, Jaipur & Delhi', 'Planning', 'assets/images/hotel-front.jpg', '2026-09-07 09:00:00',
+    $P[] = ['how-to-reach-jawai-from-udaipur-jodhpur-jaipur', 'How to Reach Jawai from Udaipur, Jodhpur, Jaipur & Delhi', 'Planning', 'assets/images/jawai-bullock-cart.jpg', '2026-09-07 09:00:00',
         'Road, rail and air routes to Jawai and Bera, with real driving distances from the nearest airports and stations.',
         'How to Reach Jawai: Airports, Trains & Road Distances',
         'How to reach Jawai and Bera, Pali, by air, train and road: Udaipur and Jodhpur airports, Jawai Bandh and Falna stations, driving times and tips.',
@@ -157,7 +157,7 @@ HTML];
 <p>Pair it with a dawn leopard drive for a fuller picture of the landscape; the <a href="{{blog/jawai-leopard-safari-complete-guide}}">safari guide</a> explains how.</p>
 HTML];
 
-    $P[] = ['jawai-3-day-itinerary-safari-kumbhalgarh-ranakpur', 'A 3-Day Jawai Itinerary: Safari, Villages and Kumbhalgarh', 'Itinerary', 'assets/images/jawai-leopard-walk.jpg', '2026-09-19 09:00:00',
+    $P[] = ['jawai-3-day-itinerary-safari-kumbhalgarh-ranakpur', 'A 3-Day Jawai Itinerary: Safari, Villages and Kumbhalgarh', 'Itinerary', 'assets/images/place-kumbhalgarh.jpg', '2026-09-19 09:00:00',
         'A practical three-day plan combining leopard safaris, the Jawai Dam, village culture and a heritage day trip.',
         '3-Day Jawai Itinerary: Leopards, Dam, Villages & Heritage',
         'A relaxed 3-day Jawai itinerary with two leopard safaris, Jawai Dam birdwatching, a Rabari village visit and a day trip to Ranakpur and Kumbhalgarh.',
@@ -185,7 +185,7 @@ HTML];
 <p>Want it arranged? Message us on <a href="{{contact}}">WhatsApp</a> and we will plan jeeps, meals and transport around your dates.</p>
 HTML];
 
-    $P[] = ['jawai-vs-ranthambore-which-safari', 'Jawai vs Ranthambore: Which Safari Is Right for You?', 'Wildlife', 'assets/images/jawai-leopard-walk.jpg', '2026-09-22 09:00:00',
+    $P[] = ['jawai-vs-ranthambore-which-safari', 'Jawai vs Ranthambore: Which Safari Is Right for You?', 'Wildlife', 'assets/images/jawai-leopard-boulder.jpg', '2026-09-22 09:00:00',
         'Leopards on open rocks or tigers in forest: how the two famous Rajasthan safaris differ.',
         'Jawai vs Ranthambore Safari: Differences & Which to Choose',
         'Comparing Jawai and Ranthambore for wildlife: leopards vs tigers, landscape, crowds, safari style, cost and who should choose which.',
@@ -261,7 +261,7 @@ HTML];
 <p>Our <a href="{{safari}}">Jawai Dam wetland and birding drive</a> runs in the morning with an experienced guide. Learn more about the reservoir itself in <a href="{{blog/jawai-dam-jawai-bandh-history-birds-crocodiles}}">our Jawai Dam guide</a>.</p>
 HTML];
 
-    $P[] = ['jawai-safari-cost-booking-what-is-included', 'Jawai Safari Cost and Booking: What Is Included?', 'Safari', 'assets/images/jawai-leopard-walk.jpg', '2026-10-01 09:00:00',
+    $P[] = ['jawai-safari-cost-booking-what-is-included', 'Jawai Safari Cost and Booking: What Is Included?', 'Safari', 'assets/images/jawai-leopard-portrait.jpg', '2026-10-01 09:00:00',
         'How Jawai safaris work, what a private jeep includes and how to book without surprises.',
         'Jawai Safari Cost & Booking Guide: Private Jeep',
         'How much does a Jawai leopard safari cost? Private jeep safaris, what is included, how to book from Bera and tips to avoid surprises.',
@@ -288,7 +288,7 @@ HTML];
 <p>Weekends, school holidays and December–January fill up quickly, so ask early.</p>
 HTML];
 
-    $P[] = ['jawai-wildlife-photography-tips', 'Jawai Wildlife Photography Tips for Leopards and Landscapes', 'Photography', 'assets/images/jawai-leopard-walk.jpg', '2026-10-04 09:00:00',
+    $P[] = ['jawai-wildlife-photography-tips', 'Jawai Wildlife Photography Tips for Leopards and Landscapes', 'Photography', 'assets/images/jawai-leopard-padma.jpg', '2026-10-04 09:00:00',
         'Light, lenses, camera settings and etiquette for photographing leopards on granite hills.',
         'Jawai Wildlife Photography Tips: Leopards & Landscapes',
         'Practical photography tips for Jawai leopard safaris: best light, lenses, camera settings, composition and ethical behaviour on the rocks.',
@@ -340,7 +340,7 @@ HTML];
 <p>Want a picnic breakfast or a village-style meal during your safari? Mention it when you <a href="{{book?type=safari}}">request a booking</a> and we will arrange it.</p>
 HTML];
 
-    $P[] = ['jawai-with-kids-family-travel-tips', 'Jawai with Kids: Family Travel Tips', 'Family', 'assets/images/hotel-day.jpg', '2026-10-10 09:00:00',
+    $P[] = ['jawai-with-kids-family-travel-tips', 'Jawai with Kids: Family Travel Tips', 'Family', 'assets/images/jawai-squirrel-chai.jpg', '2026-10-10 09:00:00',
         'How to plan a comfortable, safe and fun Jawai trip for families with children.',
         'Jawai with Kids: Family Safari & Stay Tips',
         'Travelling to Jawai with children: safari age and comfort tips, what to pack, family-friendly activities and how to plan a relaxed family trip.',
@@ -363,7 +363,7 @@ HTML];
 <p>A vegetarian kitchen that can adjust spice levels, a comfortable air-conditioned room and a hotel only minutes from the hills makes the logistics easy. Explore our <a href="{{rooms}}">family-friendly rooms</a> or tell us your needs on <a href="{{contact}}">WhatsApp</a>.</p>
 HTML];
 
-    $P[] = ['romantic-getaway-jawai-couples-honeymoon', 'A Romantic Getaway in Jawai: Couples and Honeymoon Ideas', 'Couples', 'assets/images/hotel-front.jpg', '2026-10-13 09:00:00',
+    $P[] = ['romantic-getaway-jawai-couples-honeymoon', 'A Romantic Getaway in Jawai: Couples and Honeymoon Ideas', 'Couples', 'assets/images/jawai-leopard-sunset.jpg', '2026-10-13 09:00:00',
         'Quiet hills, starry skies and good food: how to plan a memorable couples’ trip.',
         'Romantic Jawai Getaway: Honeymoon & Couples Ideas',
         'Plan a romantic Jawai trip for couples and honeymooners: private leopard safaris, sunset points, stargazing, village dinners and where to stay in Bera.',
@@ -410,7 +410,7 @@ HTML];
 <p>Looking for a full plan? Try our <a href="{{blog/jawai-3-day-itinerary-safari-kumbhalgarh-ranakpur}}">3-day Jawai itinerary</a>.</p>
 HTML];
 
-    $P[] = ['jawai-safari-rules-etiquette-responsible-travel', 'Jawai Safari Rules and Etiquette: Travelling Responsibly', 'Safari', 'assets/images/jawai-leopard-walk.jpg', '2026-10-19 09:00:00',
+    $P[] = ['jawai-safari-rules-etiquette-responsible-travel', 'Jawai Safari Rules and Etiquette: Travelling Responsibly', 'Safari', 'assets/images/jawai-leopard-temple.jpg', '2026-10-19 09:00:00',
         'How to behave on safari so wildlife and the local community stay undisturbed.',
         'Jawai Safari Rules & Etiquette: Responsible Wildlife Travel',
         'Do’s and don’ts for a Jawai leopard safari: staying in the vehicle, noise, flash, photography, respect for villagers and leaving no trace.',
@@ -441,7 +441,7 @@ HTML];
 <p>Leopards at Jawai live beside farms and herds. Respectful tourism gives communities a reason to keep tolerating them. Read more about that relationship in <a href="{{blog/rabari-community-jawai-culture-and-leopards}}">The Rabari of Jawai</a>, and our <a href="{{policies}}">policies page</a> for our safari conduct terms.</p>
 HTML];
 
-    $P[] = ['private-parties-events-celebrations-in-jawai-bera', 'Private Parties and Celebrations in Jawai and Bera', 'Events', 'assets/images/hotel-front.jpg', '2026-10-22 09:00:00',
+    $P[] = ['private-parties-events-celebrations-in-jawai-bera', 'Private Parties and Celebrations in Jawai and Bera', 'Events', 'assets/images/jawai-village-celebration.jpg', '2026-10-22 09:00:00',
         'Birthdays, anniversaries, family get-togethers and small corporate groups at a hotel near the leopard hills.',
         'Private Parties & Events in Jawai & Bera | Jawai Mumal',
         'Plan a birthday, anniversary, family reunion or small group event in Jawai: venue, vegetarian catering, stay, safari add-ons and how to enquire.',

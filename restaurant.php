@@ -7,7 +7,7 @@ $cats = array_values(array_unique(array_column($items, 'category')));
 seo_ld(seo_breadcrumb_ld([['Restaurant', 'restaurant']]));
 seo_ld(seo_restaurant_ld());
 include __DIR__ . '/includes/header.php';
-page_head(t('restaurant.head.eyebrow', 'Dining'), t('restaurant.head.title', 'Restaurant & Café'), t('restaurant.head.sub', '100% vegetarian. Village Rajasthani flavours, tandoor classics and an all-day café.'), im('restaurant.head.img', 'assets/images/food-thali-rajasthan.jpg'));
+page_head(t('restaurant.head.eyebrow', 'Dining'), t('restaurant.head.title', 'Restaurant & Café'), t('restaurant.head.sub', '100% vegetarian. Village Rajasthani flavours, tandoor classics and an all-day café.'), im('restaurant.head.img', 'assets/images/food-bajra-dal.jpg'));
 ?>
 <section class="sec">
   <div class="wrap">
@@ -17,7 +17,7 @@ page_head(t('restaurant.head.eyebrow', 'Dining'), t('restaurant.head.title', 'Re
         <p><?= et('restaurant.intro.p2', 'Round it out with tandoor favourites, North Indian gravies, fresh breads and a proper kulhad chai. The whole kitchen is vegetarian, and Jain preparations are available on request.') ?></p>
         <ul class="checks" style="color:var(--ink-2)"><li><?= icon('check', 16) ?><?= et('restaurant.intro.c1', '100% pure vegetarian') ?></li><li><?= icon('check', 16) ?><?= et('restaurant.intro.c2', 'Jain options on request') ?></li><li><?= icon('check', 16) ?><?= et('restaurant.intro.c3', 'Café, chai & cold drinks') ?></li><li><?= icon('check', 16) ?><?= et('restaurant.intro.c4', 'Group, party & catering menus') ?></li></ul>
         <div class="hero__cta"><a class="btn btn--gold" href="#book"><?= et('restaurant.intro.b1', 'Reserve a table') ?></a><a class="btn btn--line" href="<?= url('book.php?type=event') ?>"><?= et('restaurant.intro.b2', 'Plan a party') ?></a></div></div>
-      <div class="duo rv d1"><figure class="frame"><img src="<?= imgu('restaurant.intro.img1', 'assets/images/food-dal-baati-churma.jpg') ?>" alt="Rajasthani vegetarian bowls at Jawai Mumal restaurant, Bera" loading="lazy"></figure><figure class="frame"><img src="<?= imgu('restaurant.intro.img2', 'assets/images/food-thali-rajasthan.jpg') ?>" alt="" loading="lazy"></figure></div>
+      <div class="duo rv d1"><figure class="frame"><img src="<?= imgu('restaurant.intro.img1', 'assets/images/food-dal-baati-churma.jpg') ?>" alt="Dal baati churma, a Rajasthani classic" loading="lazy"></figure><figure class="frame"><img src="<?= imgu('restaurant.intro.img2', 'assets/images/food-kachori.jpg') ?>" alt="" loading="lazy"></figure></div>
     </div>
 
     <div class="sechead"><span class="eyebrow eyebrow--dark"><?= et('restaurant.village.eyebrow', 'From the village kitchen') ?></span><h2><?= et('restaurant.village.title', 'Four things to try') ?></h2></div>

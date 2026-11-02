@@ -5,7 +5,7 @@ $active = '';
 $seoKey = 'credits';
 seo_ld(seo_breadcrumb_ld([['Image credits', 'credits']]));
 include __DIR__ . '/includes/header.php';
-page_head(t('credits.head.eyebrow', 'Thank you'), t('credits.head.title', 'Image Credits'), t('credits.head.sub', 'The photographers behind the pictures of Jawai.'), im('credits.head.img', 'assets/images/jawai-hills-view.jpg'));
+page_head(t('credits.head.eyebrow', 'Thank you'), t('credits.head.title', 'Image Credits'), t('credits.head.sub', 'The photographers behind the pictures of Jawai.'), im('credits.head.img', ''));
 $credits = is_file(__DIR__ . '/includes/credits.php') ? (require __DIR__ . '/includes/credits.php') : [];
 ?>
 <section class="sec">

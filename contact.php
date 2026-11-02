@@ -4,7 +4,7 @@ $pageTitle = 'Contact & Directions'; $pageDesc = 'Message or visit Jawai Mumal i
 $active = 'contact'; $bookTab = 'enquiry';
 seo_ld(seo_breadcrumb_ld([['Contact', 'contact']]));
 include __DIR__ . '/includes/header.php';
-page_head(t('contact.head.eyebrow', 'Contact'), t('contact.head.title', 'Contact & Directions'), t('contact.head.sub', 'Message us directly, we are happy to help plan your stay, safari or celebration.'), im('contact.head.img', 'assets/images/hotel-front.jpg'));
+page_head(t('contact.head.eyebrow', 'Contact'), t('contact.head.title', 'Contact & Directions'), t('contact.head.sub', 'Message us directly, we are happy to help plan your stay, safari or celebration.'), im('contact.head.img', 'assets/images/jawai-boulders.jpg'));
 $owners = [['owner1_name', 'owner1_role', 'owner1_phone'], ['owner2_name', 'owner2_role', 'owner2_phone']];
 ?>
 <section class="sec">
@@ -27,7 +27,7 @@ $owners = [['owner1_name', 'owner1_role', 'owner1_phone'], ['owner2_name', 'owne
           <?php if (setting('email')): ?><li><?= icon('mail', 16) ?><a href="mailto:<?= e(setting('email')) ?>"><?= e(setting('email')) ?></a></li><?php endif; ?>
         </ul>
         <div class="hero__cta"><a class="btn btn--dark" target="_blank" rel="noopener" href="<?= e(maps_open_url()) ?>"><?= icon('navigation', 18) ?> <?= et('contact.maps', 'Open in Google Maps') ?></a></div>
-        <figure class="frame" style="margin-top:2rem;aspect-ratio:4/3"><img src="<?= imgu('contact.img', 'assets/images/hotel-day.jpg') ?>" alt="Jawai Mumal hotel building" loading="lazy" style="object-position:center 30%"></figure>
+        <figure class="frame" style="margin-top:2rem;aspect-ratio:4/3"><img src="<?= imgu('contact.img', 'assets/images/jawai-village-hut.jpg') ?>" alt="Village life near Bera, Jawai" loading="lazy" style="object-position:center 30%"></figure>
       </div>
       <iframe class="map rv d1" title="Map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="<?= e(map_embed_src()) ?>"></iframe>
     </div>

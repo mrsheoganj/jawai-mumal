@@ -193,6 +193,29 @@ function jm_migrate_images_v4(): void {
     } catch (Throwable $e) {}
     set_setting('img_remap_v4', '1');
 }
+/** v5: proper room photos for the three room types. */
+function jm_migrate_rooms_v5(): void {
+    if (get_setting_raw('rooms_v5') === '1') return;
+    $m = ['premium-room' => ['room-premium', ''], 'deluxe-room' => ['room-deluxe', ''], 'super-deluxe-room' => ['room-suite', '']];
+    foreach ($m as $slug => $im) { try { q("UPDATE jm_rooms SET image = ?, gallery = ? WHERE slug = ?", ["assets/images/{$im[0]}.jpg", $im[1], $slug]); } catch (Throwable $e) {} }
+    set_setting('rooms_v5', '1');
+}
+/** v6: one distinct real photo per place across the site; gallery rebuilt with many Jawai photos. Admin uploads are never touched. */
+function jm_migrate_images_v6(): void {
+    if (get_setting_raw('img_remap_v6') === '1') return;
+    $I = 'assets/images/';
+    foreach ([['classic-leopard-tracking-safari', 'jawai-leopard-stride'], ['jawai-dam-wetland-birding-drive', 'jawai-lake-birds'], ['private-4x4-expedition', 'jawai-leopard-rest'], ['wildlife-photography-safari', 'jawai-leopard-watch'], ['rabari-village-culture-visit', 'jawai-rabari-man']] as $r) { try { q("UPDATE jm_safaris SET image = ? WHERE slug = ?", [$I . $r[1] . '.jpg', $r[0]]); } catch (Throwable $e) {} }
+    foreach ([['Jawai Leopard Hills', 'jawai-leopard-boulder'], ['Jawai Bandh Leopard Conservation Reserve', 'jawai-jackal-sit'], ['Jawai Dam (Jawai Bandh)', 'jawai-hills-view'], ['Rabari Villages', 'jawai-women-bangles'], ['Village Food & Chai Stops', 'food-ker-sangri'], ['Granite Hill Sunrise & Sunset Points', 'jawai-granite-plain'], ['Stargazing & Campfire', 'jawai-leopard-sunset'], ['Ranakpur Jain Temples', 'place-ranakpur'], ['Kumbhalgarh Fort', 'place-kumbhalgarh'], ['Mount Abu', 'place-mount-abu'], ['Udaipur, City of Lakes', 'place-udaipur'], ['Jodhpur, Mehrangarh Fort', 'place-jodhpur']] as $r) { try { q("UPDATE jm_attractions SET image = ? WHERE name = ?", [$I . $r[1] . '.jpg', $r[0]]); } catch (Throwable $e) {} }
+    foreach ([['jawai-leopard-safari-complete-guide', 'jawai-leopard-walk'], ['best-time-to-visit-jawai', 'jawai-bandh'], ['how-to-reach-jawai-from-udaipur-jodhpur-jaipur', 'jawai-bullock-cart'], ['where-to-stay-in-jawai-bera-hotels-camps', 'hotel-front'], ['jawai-3-day-itinerary-safari-kumbhalgarh-ranakpur', 'place-kumbhalgarh'], ['jawai-vs-ranthambore-which-safari', 'jawai-leopard-boulder'], ['jawai-safari-cost-booking-what-is-included', 'jawai-leopard-portrait'], ['jawai-wildlife-photography-tips', 'jawai-leopard-padma'], ['rajasthani-vegetarian-food-to-eat-in-jawai', 'food-thali-rajasthan'], ['jawai-with-kids-family-travel-tips', 'jawai-squirrel-chai'], ['romantic-getaway-jawai-couples-honeymoon', 'jawai-leopard-sunset'], ['jawai-safari-rules-etiquette-responsible-travel', 'jawai-leopard-temple'], ['private-parties-events-celebrations-in-jawai-bera', 'jawai-village-celebration']] as $r) { try { q("UPDATE jm_blog SET image = ? WHERE slug = ?", [$I . $r[1] . '.jpg', $r[0]]); } catch (Throwable $e) {} }
+    foreach ([['Jawai Village Thali', 'food-thali-rajasthan'], ['Dal Baati Churma', 'food-dal-baati-churma'], ['Ker Sangri', 'food-ker-sangri'], ['Gatte ki Sabzi', 'food-gatte'], ['Bajra Roti%', 'food-bajra-dal'], ['Pyaaz Kachori', 'food-kachori']] as $r) { try { q("UPDATE jm_menu SET image = ? WHERE name LIKE ?", [$I . $r[1] . '.jpg', $r[0]]); } catch (Throwable $e) {} }
+    try {
+        q("UPDATE jm_menu SET image = '' WHERE name = 'Paneer Tikka' AND image LIKE 'assets/images/%'");
+        q("DELETE FROM jm_gallery WHERE image LIKE 'assets/images/%'");
+        $n = 0;
+        foreach ([['Leopard "Padma" near a jeep', 'Safari', 'jawai-leopard-padma'], ['Bajra roti with dal', 'Dining', 'food-bajra-dal'], ['Rabari herder', 'People', 'jawai-rabari-man'], ['Indian peafowl', 'Wildlife', 'jawai-peafowl'], ['Golden jackal on the run', 'Wildlife', 'jawai-jackal-run'], ['Village elder', 'People', 'jawai-elder'], ['Jawai Mumal, Bera', 'Hotel', 'hotel-day'], ['Leopard crossing the granite rocks', 'Safari', 'jawai-leopard-walk'], ['Rajasthani thali', 'Dining', 'food-thali-rajasthan'], ['Jawai Dam and hills', 'Landscape', 'jawai-hills-view'], ['Premium room', 'Rooms', 'room-premium'], ['Jawai Mumal at dusk', 'Hotel', 'hotel-front'], ['Leopard on a boulder', 'Safari', 'jawai-leopard-boulder'], ['Dal baati churma', 'Dining', 'food-dal-baati-churma'], ['Jawai Bandh reservoir', 'Landscape', 'jawai-bandh'], ['Deluxe room', 'Rooms', 'room-deluxe'], ['Leopard at sunset', 'Safari', 'jawai-leopard-sunset'], ['Leopard keeping watch', 'Safari', 'jawai-leopard-watch'], ['Leopard portrait', 'Safari', 'jawai-leopard-portrait'], ['Leopard on the move', 'Safari', 'jawai-leopard-stride'], ['Leopard at rest', 'Safari', 'jawai-leopard-rest'], ['Leopard on a rock', 'Safari', 'jawai-leopard-rock'], ['Leopard and priest', 'Safari', 'jawai-leopard-temple'], ['Golden jackal', 'Wildlife', 'jawai-jackal-sit'], ['Palm squirrel at tea time', 'Wildlife', 'jawai-squirrel-chai'], ['Greater flamingo', 'Wildlife', 'jawai-flamingo'], ['Granite plain', 'Landscape', 'jawai-granite-plain'], ['Granite hill', 'Landscape', 'jawai-granite-hill'], ['Boulders of Jawai', 'Landscape', 'jawai-boulders'], ['Rabari herder and flock', 'People', 'jawai-rabari'], ['Women of Jawai', 'People', 'jawai-women-bangles'], ['Bullock cart', 'People', 'jawai-bullock-cart'], ['Village hut', 'People', 'jawai-village-hut'], ['Wedding guests', 'People', 'jawai-village-celebration'], ['Gatte ki sabzi', 'Dining', 'food-gatte'], ['Pyaaz kachori', 'Dining', 'food-kachori'], ['Ghevar', 'Dining', 'food-ghevar'], ['Ker sangri', 'Dining', 'food-ker-sangri'], ['Suite bedroom', 'Rooms', 'room-suite'], ['Ranakpur Jain temple', 'Heritage', 'place-ranakpur'], ['Kumbhalgarh Fort', 'Heritage', 'place-kumbhalgarh'], ['Nakki Lake, Mount Abu', 'Heritage', 'place-mount-abu'], ['City Palace, Udaipur', 'Heritage', 'place-udaipur'], ['Mehrangarh Fort, Jodhpur', 'Heritage', 'place-jodhpur']] as $g) q("INSERT INTO jm_gallery (title,category,image,sort_order) VALUES (?,?,?,?)", [$g[0], $g[1], $I . $g[2] . '.jpg', ++$n]);
+    } catch (Throwable $e) {}
+    set_setting('img_remap_v6', '1');
+}
 /** v3: safari and table rates are no longer published (enquiry only). Update the one article that mentioned them. */
 function jm_migrate_pricing_v3(): void {
     if (get_setting_raw('pricing_v3') === '1') return;
@@ -225,6 +248,8 @@ function jm_migrate_copy_v4(): void {
 }
 jm_migrate_pricing_v3();
 jm_migrate_images_v4();
+jm_migrate_rooms_v5();
+jm_migrate_images_v6();
 /** v6: one room type, the Premium Room (rate starts from the price and varies by season). */
 function jm_migrate_single_room(): void {
     if (get_setting_raw('single_room_v6') === '1') return;

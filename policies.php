@@ -5,7 +5,7 @@ $active = '';
 $seoKey = 'policies';
 seo_ld(seo_breadcrumb_ld([['Policies', 'policies']]));
 include __DIR__ . '/includes/header.php';
-page_head(t('policies.head.eyebrow', 'Good to know'), t('policies.head.title', 'Policies & Terms'), t('policies.head.sub', 'Simple, fair rules so everyone enjoys their stay.'), im('policies.head.img', 'assets/images/hotel-day.jpg'));
+page_head(t('policies.head.eyebrow', 'Good to know'), t('policies.head.title', 'Policies & Terms'), t('policies.head.sub', 'Simple, fair rules so everyone enjoys their stay.'), im('policies.head.img', 'assets/images/jawai-bullock-cart.jpg'));
 $blocks = [
   ['calendar-check', t('policies.b1.title', 'Booking & confirmation'), t('policies.b1.text', 'A request on the website or WhatsApp is not a confirmed booking until our team confirms availability and the final rate by call or WhatsApp.
 No payment is taken online. Advance payment, if needed, is arranged directly with the team.')],
