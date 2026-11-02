@@ -7,7 +7,7 @@ seo_ld(seo_breadcrumb_ld([['Safari', 'safari']]));
 foreach ($safaris as $sf) seo_ld(['@context' => 'https://schema.org', '@type' => 'TouristTrip', 'name' => $sf['title'], 'description' => seo_clip((string)$sf['description'], 300),
   'image' => seo_img_abs($sf['image']), 'touristType' => 'Wildlife', 'provider' => ['@id' => seo_abs('#hotel')]]);
 include __DIR__ . '/includes/header.php';
-page_head(t('safari.head.eyebrow', 'Safari'), t('safari.head.title', 'Jawai Leopard Safari'), t('safari.head.sub', 'Granite hills, open jeeps and local trackers who know every rock.'), im('safari.head.img', 'assets/images/leopard-log.jpg'));
+page_head(t('safari.head.eyebrow', 'Safari'), t('safari.head.title', 'Jawai Leopard Safari'), t('safari.head.sub', 'Granite hills, open jeeps and local trackers who know every rock.'), im('safari.head.img', 'assets/images/jawai-leopard-walk.jpg'));
 ?>
 <section class="sec">
   <div class="wrap">
@@ -15,7 +15,7 @@ page_head(t('safari.head.eyebrow', 'Safari'), t('safari.head.title', 'Jawai Leop
       <div class="rv"><span class="eyebrow eyebrow--dark"><?= et('safari.intro.eyebrow', 'Our safaris') ?></span><h2><?= et('safari.intro.title', 'Tracking leopards the patient way') ?></h2>
         <p><?= et('safari.intro.p1', 'Jawai\'s leopards do not hide in dense forest. They rest on and inside great granite domes, and the land tells you where they are: a langur barking from a ridge, a peacock\'s sharp alarm call, fresh pugmarks in a sandy riverbed. Our trackers read each sign, position the jeep quietly, switch off the engine and wait.') ?></p>
         <p><?= et('safari.intro.p2', 'Drives run twice a day, in the morning from about 6 to 9 AM and in the evening from about 4 to 7 PM, when leopards are most often out on the rocks. A sighting is never guaranteed, but over a two or three day stay the chances are very good.') ?></p></div>
-      <div class="duo rv d1"><figure class="frame"><img src="<?= imgu('safari.intro.img1', 'assets/images/leopard-log.jpg') ?>" alt="Leopard seen on a Jawai safari" loading="lazy"></figure><figure class="frame"><img src="<?= imgu('safari.intro.img2', 'assets/images/leopard-log.jpg') ?>" alt="" loading="lazy"></figure></div>
+      <div class="duo rv d1"><figure class="frame"><img src="<?= imgu('safari.intro.img1', 'assets/images/jawai-leopard-walk.jpg') ?>" alt="Leopard seen on a Jawai safari" loading="lazy"></figure><figure class="frame"><img src="<?= imgu('safari.intro.img2', 'assets/images/jawai-leopard-padma.jpg') ?>" alt="Leopard on a granite boulder close to a safari jeep at Jawai" loading="lazy"></figure></div>
     </div>
     <div class="fac" style="margin-bottom:4.5rem">
       <div class="fac__item rv"><span class="fac__ic"><?= icon('car', 24) ?></span><div><h3><?= et('safari.f1.title', 'Open 4x4 jeeps') ?></h3><p><?= et('safari.f1.text', 'Light, raised-seat jeeps that take the village tracks and granite slopes, with up to six guests per vehicle.') ?></p></div></div>
@@ -48,7 +48,7 @@ page_head(t('safari.head.eyebrow', 'Safari'), t('safari.head.title', 'Jawai Leop
     <div class="rv"><span class="eyebrow"><?= et('safari.ethics.eyebrow', 'Respect for the wild') ?></span><h2><?= et('safari.ethics.title', 'How we watch wildlife') ?></h2>
       <p><?= et('safari.ethics.p', 'Jawai works because people and leopards have shared these hills for generations. We keep it that way.') ?></p>
       <ul class="checks"><?php foreach (lines(t('safari.ethics.list', "We never block an animal's path or crowd a sighting\nNo calls, baiting or chasing, ever\nEngines off while we watch, from a respectful distance\nSmall groups and no convoys\nWe leave before an animal is disturbed\nLocal trackers and village families benefit directly")) as $li): ?><li><?= icon('check', 16) ?><?= e($li) ?></li><?php endforeach; ?></ul></div>
-    <div class="frame rv d1" style="aspect-ratio:4/3"><img src="<?= imgu('safari.ethics.img', 'assets/images/leopard-log.jpg') ?>" alt="Leopard at rest on a Jawai safari" loading="lazy"></div>
+    <div class="frame rv d1" style="aspect-ratio:4/3"><img src="<?= imgu('safari.ethics.img', 'assets/images/jawai-leopard-temple.jpg') ?>" alt="Leopard at rest on a Jawai safari" loading="lazy"></div>
   </div>
 </section>
 

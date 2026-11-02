@@ -8,7 +8,7 @@
 function jm_blog_posts(): array {
     $P = [];
 
-    $P[] = ['jawai-leopard-safari-complete-guide', 'Jawai Leopard Safari: The Complete Guide', 'Wildlife', 'assets/images/leopard-log.jpg', '2026-09-01 09:00:00',
+    $P[] = ['jawai-leopard-safari-complete-guide', 'Jawai Leopard Safari: The Complete Guide', 'Wildlife', 'assets/images/jawai-leopard-walk.jpg', '2026-09-01 09:00:00',
         'What a Jawai leopard safari is like, where it happens, how long it lasts, what you will see and how to plan it from Bera.',
         'Jawai Leopard Safari Guide: Timings, Sightings & Tips',
         'Plan a Jawai leopard safari: how it works, best timings, what you will see, how long drives last, what to wear and how to book from Bera, Pali, Rajasthan.',
@@ -157,7 +157,7 @@ HTML];
 <p>Pair it with a dawn leopard drive for a fuller picture of the landscape; the <a href="{{blog/jawai-leopard-safari-complete-guide}}">safari guide</a> explains how.</p>
 HTML];
 
-    $P[] = ['jawai-3-day-itinerary-safari-kumbhalgarh-ranakpur', 'A 3-Day Jawai Itinerary: Safari, Villages and Kumbhalgarh', 'Itinerary', 'assets/images/leopard-log.jpg', '2026-09-19 09:00:00',
+    $P[] = ['jawai-3-day-itinerary-safari-kumbhalgarh-ranakpur', 'A 3-Day Jawai Itinerary: Safari, Villages and Kumbhalgarh', 'Itinerary', 'assets/images/jawai-leopard-walk.jpg', '2026-09-19 09:00:00',
         'A practical three-day plan combining leopard safaris, the Jawai Dam, village culture and a heritage day trip.',
         '3-Day Jawai Itinerary: Leopards, Dam, Villages & Heritage',
         'A relaxed 3-day Jawai itinerary with two leopard safaris, Jawai Dam birdwatching, a Rabari village visit and a day trip to Ranakpur and Kumbhalgarh.',
@@ -185,7 +185,7 @@ HTML];
 <p>Want it arranged? Message us on <a href="{{contact}}">WhatsApp</a> and we will plan jeeps, meals and transport around your dates.</p>
 HTML];
 
-    $P[] = ['jawai-vs-ranthambore-which-safari', 'Jawai vs Ranthambore: Which Safari Is Right for You?', 'Wildlife', 'assets/images/leopard-log.jpg', '2026-09-22 09:00:00',
+    $P[] = ['jawai-vs-ranthambore-which-safari', 'Jawai vs Ranthambore: Which Safari Is Right for You?', 'Wildlife', 'assets/images/jawai-leopard-walk.jpg', '2026-09-22 09:00:00',
         'Leopards on open rocks or tigers in forest: how the two famous Rajasthan safaris differ.',
         'Jawai vs Ranthambore Safari: Differences & Which to Choose',
         'Comparing Jawai and Ranthambore for wildlife: leopards vs tigers, landscape, crowds, safari style, cost and who should choose which.',
@@ -261,7 +261,7 @@ HTML];
 <p>Our <a href="{{safari}}">Jawai Dam wetland and birding drive</a> runs in the morning with an experienced guide. Learn more about the reservoir itself in <a href="{{blog/jawai-dam-jawai-bandh-history-birds-crocodiles}}">our Jawai Dam guide</a>.</p>
 HTML];
 
-    $P[] = ['jawai-safari-cost-booking-what-is-included', 'Jawai Safari Cost and Booking: What Is Included?', 'Safari', 'assets/images/leopard-log.jpg', '2026-10-01 09:00:00',
+    $P[] = ['jawai-safari-cost-booking-what-is-included', 'Jawai Safari Cost and Booking: What Is Included?', 'Safari', 'assets/images/jawai-leopard-walk.jpg', '2026-10-01 09:00:00',
         'How Jawai safaris work, what a private jeep includes and how to book without surprises.',
         'Jawai Safari Cost & Booking Guide: Private Jeep',
         'How much does a Jawai leopard safari cost? Private jeep safaris, what is included, how to book from Bera and tips to avoid surprises.',
@@ -288,7 +288,7 @@ HTML];
 <p>Weekends, school holidays and December–January fill up quickly, so ask early.</p>
 HTML];
 
-    $P[] = ['jawai-wildlife-photography-tips', 'Jawai Wildlife Photography Tips for Leopards and Landscapes', 'Photography', 'assets/images/leopard-log.jpg', '2026-10-04 09:00:00',
+    $P[] = ['jawai-wildlife-photography-tips', 'Jawai Wildlife Photography Tips for Leopards and Landscapes', 'Photography', 'assets/images/jawai-leopard-walk.jpg', '2026-10-04 09:00:00',
         'Light, lenses, camera settings and etiquette for photographing leopards on granite hills.',
         'Jawai Wildlife Photography Tips: Leopards & Landscapes',
         'Practical photography tips for Jawai leopard safaris: best light, lenses, camera settings, composition and ethical behaviour on the rocks.',
@@ -317,7 +317,7 @@ HTML];
 <p>No flash, no loud noises, no leaving the vehicle and no pressing for a closer approach. The animal’s comfort comes first. Our <a href="{{safari}}">wildlife photography safari</a> limits each jeep to three photographers so everyone has a clear view.</p>
 HTML];
 
-    $P[] = ['rajasthani-vegetarian-food-to-eat-in-jawai', 'Rajasthani Vegetarian Food to Eat in Jawai', 'Food', 'assets/images/food-thali.jpg', '2026-10-07 09:00:00',
+    $P[] = ['rajasthani-vegetarian-food-to-eat-in-jawai', 'Rajasthani Vegetarian Food to Eat in Jawai', 'Food', 'assets/images/food-thali-rajasthan.jpg', '2026-10-07 09:00:00',
         'Dal baati churma, ker sangri, bajra roti and more: a vegetarian guide to the flavours of Marwar.',
         'Rajasthani Vegetarian Food in Jawai: Dishes You Must Try',
         'A guide to Rajasthani vegetarian food around Jawai: dal baati churma, ker sangri, gatte ki sabzi, bajra roti, kadhi and sweets, and where to eat in Bera.',
@@ -410,7 +410,7 @@ HTML];
 <p>Looking for a full plan? Try our <a href="{{blog/jawai-3-day-itinerary-safari-kumbhalgarh-ranakpur}}">3-day Jawai itinerary</a>.</p>
 HTML];
 
-    $P[] = ['jawai-safari-rules-etiquette-responsible-travel', 'Jawai Safari Rules and Etiquette: Travelling Responsibly', 'Safari', 'assets/images/leopard-log.jpg', '2026-10-19 09:00:00',
+    $P[] = ['jawai-safari-rules-etiquette-responsible-travel', 'Jawai Safari Rules and Etiquette: Travelling Responsibly', 'Safari', 'assets/images/jawai-leopard-walk.jpg', '2026-10-19 09:00:00',
         'How to behave on safari so wildlife and the local community stay undisturbed.',
         'Jawai Safari Rules & Etiquette: Responsible Wildlife Travel',
         'Do’s and don’ts for a Jawai leopard safari: staying in the vehicle, noise, flash, photography, respect for villagers and leaving no trace.',

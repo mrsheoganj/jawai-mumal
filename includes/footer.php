@@ -37,6 +37,23 @@ $o2 = [setting('owner2_name'), setting('owner2_role'), setting('owner2_phone')];
       </ul>
     </div>
   </div>
+  <?php $credits = is_file(__DIR__ . '/credits.php') ? (require __DIR__ . '/credits.php') : []; if ($credits): ?>
+  <section class="wrap credits" aria-labelledby="credits-h">
+    <h3 id="credits-h"><?= et('footer.credits', 'Image credits') ?></h3>
+    <p class="credits__note">Photographs of Jawai, its leopards, people and food are shared by their photographers on Wikimedia Commons under open licences. Thank you to every one of them.</p>
+    <ul class="credits__grid">
+      <?php foreach ($credits as $c): ?>
+      <li>
+        <img src="<?= e(img($c['file'])) ?>" alt="" width="64" height="64" loading="lazy">
+        <span><b><?= e($c['label']) ?></b>
+          <?= e($c['author']) ?> ·
+          <?php if ($c['license_url']): ?><a href="<?= e($c['license_url']) ?>" target="_blank" rel="noopener license"><?= e($c['license']) ?></a><?php else: ?><?= e($c['license']) ?><?php endif; ?>
+          <?php if ($c['source']): ?> · <a href="<?= e($c['source']) ?>" target="_blank" rel="noopener">Source</a><?php endif; ?></span>
+      </li>
+      <?php endforeach; ?>
+    </ul>
+  </section>
+  <?php endif; ?>
   <div class="wrap footer__bar">
     <span>© <?= date('Y') ?> <?= e(setting('site_name')) ?>. <?= et('footer.rights', 'All rights reserved.') ?></span>
     <span><?= e(preg_replace('#^https?://#', '', setting('site_url'))) ?></span>

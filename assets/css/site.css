@@ -710,3 +710,13 @@ body{background:#fff}
 .call-ico:hover,.call-ico:hover .i{color:#fff!important}
 .call-ico{display:flex!important;align-items:center;justify-content:center;padding:0!important;min-height:0!important;line-height:0}
 .call-ico .i{display:block;margin:0!important;flex:none}
+
+/* Image credits (footer) */
+.credits{margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(250,246,236,.14)}
+.credits h3{margin:0 0 .5rem}
+.credits__note{margin:0 0 1.2rem;max-width:62ch;font-size:.9rem;opacity:.75}
+.credits__grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.9rem 1.4rem}
+.credits__grid li{display:flex;gap:.7rem;align-items:center;font-size:.82rem;line-height:1.4;opacity:.9}
+.credits__grid img{width:56px;height:56px;object-fit:cover;border-radius:8px;flex:none}
+.credits__grid b{display:block;font-weight:600}
+.credits__grid a{text-decoration:underline;text-underline-offset:2px}

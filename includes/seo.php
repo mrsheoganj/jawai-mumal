@@ -164,7 +164,7 @@ function seo_hotel_ld(): array {
 function seo_restaurant_ld(): array {
     return [
         '@context' => 'https://schema.org', '@type' => 'Restaurant', '@id' => seo_abs('#restaurant'), 'name' => setting('site_name') . ' Restaurant',
-        'url' => seo_abs('restaurant'), 'image' => seo_img_abs('assets/images/food-thali.jpg'), 'description' => seo_field('restaurant', 'desc'),
+        'url' => seo_abs('restaurant'), 'image' => seo_img_abs('assets/images/food-thali-rajasthan.jpg'), 'description' => seo_field('restaurant', 'desc'),
         'servesCuisine' => seo_lines(seo_cfg('seo_cuisine')), 'priceRange' => seo_cfg('seo_price_range'),
         'address' => ['@type' => 'PostalAddress', 'addressLocality' => 'Bera', 'addressRegion' => 'Rajasthan', 'addressCountry' => 'IN'],
         'openingHours' => 'Mo-Su 07:00-23:00', 'parentOrganization' => ['@id' => seo_abs('#hotel')],

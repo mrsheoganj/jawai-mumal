@@ -160,12 +160,38 @@ function jm_migrate_images_v2(): void {
     try {
         q("UPDATE jm_slides SET image = ? WHERE image IN (?, ?)", array_merge(['assets/images/hotel-front.jpg'], $gen));
         q("DELETE FROM jm_gallery WHERE image IN (?, ?)", $gen);
-        q("UPDATE jm_safaris SET image = ? WHERE slug = ?", ['assets/images/leopard-log.jpg', 'wildlife-photography-safari']);
+        q("UPDATE jm_safaris SET image = ? WHERE slug = ?", ['assets/images/jawai-leopard-walk.jpg', 'wildlife-photography-safari']);
         foreach (['jm_safaris', 'jm_attractions', 'jm_blog', 'jm_rooms', 'jm_menu'] as $t) q("UPDATE $t SET image = '' WHERE image IN (?, ?)", $gen);
-        foreach (['best-time-to-visit-jawai' => 'assets/images/hotel-day.jpg', 'how-to-reach-jawai-from-udaipur-jodhpur-jaipur' => 'assets/images/hotel-front.jpg', 'romantic-getaway-jawai-couples-honeymoon' => 'assets/images/hotel-front.jpg', 'jawai-wildlife-photography-tips' => 'assets/images/leopard-log.jpg'] as $sl => $im) q("UPDATE jm_blog SET image = ? WHERE slug = ? AND (image = '' OR image IS NULL)", [$im, $sl]);
+        foreach (['best-time-to-visit-jawai' => 'assets/images/hotel-day.jpg', 'how-to-reach-jawai-from-udaipur-jodhpur-jaipur' => 'assets/images/hotel-front.jpg', 'romantic-getaway-jawai-couples-honeymoon' => 'assets/images/hotel-front.jpg', 'jawai-wildlife-photography-tips' => 'assets/images/jawai-leopard-walk.jpg'] as $sl => $im) q("UPDATE jm_blog SET image = ? WHERE slug = ? AND (image = '' OR image IS NULL)", [$im, $sl]);
         q("UPDATE jm_gallery SET title = 'Rajasthani bowls' WHERE title = 'Restaurant hall'");
     } catch (Throwable $e) { /* optional tables may not exist */ }
     set_setting('img_remap_v2', '1');
+}
+/** v4: real Jawai-area photos (Wikimedia Commons, credited in the footer) replace the zoo leopard, European rooms and stock food. */
+function jm_migrate_images_v4(): void {
+    if (get_setting_raw('img_remap_v4') === '1') return;
+    $map = ['leopard-log' => 'jawai-leopard-walk', 'food-thali' => 'food-thali-rajasthan', 'food-bowls' => 'food-dal-baati-churma', 'food-paneer' => 'food-thali-rajasthan',
+            'room-modern' => 'hotel-day', 'room-bed' => 'hotel-front', 'room-heritage' => 'hotel-day', 'room-desert-suite' => 'hotel-front'];
+    foreach (['jm_settings', 'jm_rooms', 'jm_menu', 'jm_safaris', 'jm_attractions', 'jm_gallery', 'jm_testimonials', 'jm_slides', 'jm_routes', 'jm_blog'] as $t) {
+        try {
+            $cols = [];
+            if (db()->getAttribute(PDO::ATTR_DRIVER_NAME) === 'sqlite') { foreach (rows("PRAGMA table_info($t)") as $c) if (stripos($c['type'], 'INT') === false) $cols[] = $c['name']; }
+            else { foreach (rows("SHOW COLUMNS FROM $t") as $c) if (preg_match('/char|text/i', $c['Type'])) $cols[] = $c['Field']; }
+            foreach ($cols as $c) { if ($t === 'jm_blog' && !in_array($c, ['image'], true)) continue; foreach ($map as $a => $b)
+                q("UPDATE $t SET `$c` = REPLACE(`$c`, ?, ?) WHERE `$c` LIKE ?", ["assets/images/$a.jpg", "assets/images/$b.jpg", "%assets/images/$a.jpg%"]); }
+        } catch (Throwable $e) { /* table or column not present: ignore */ }
+    }
+    $att = ['Jawai Bandh Leopard Conservation Reserve' => 'jawai-leopard-padma', 'Jawai Dam (Jawai Bandh)' => 'jawai-hills-view', 'Rabari Villages' => 'jawai-rabari', 'Granite Hill Sunrise & Sunset Points' => 'jawai-bandh'];
+    foreach ($att as $n => $im) { try { q("UPDATE jm_attractions SET image = ? WHERE name = ? AND (image IS NULL OR image = '')", ["assets/images/$im.jpg", $n]); } catch (Throwable $e) {} }
+    $blog = ['best-time-to-visit-jawai' => 'jawai-hills-view', 'how-to-reach-jawai-from-udaipur-jodhpur-jaipur' => 'jawai-bandh', 'jawai-3-day-itinerary-safari-kumbhalgarh-ranakpur' => 'jawai-rabari', 'jawai-wildlife-photography-tips' => 'jawai-leopard-padma', 'jawai-safari-rules-etiquette-responsible-travel' => 'jawai-leopard-temple'];
+    foreach ($blog as $slug => $im) { try { q("UPDATE jm_blog SET image = ? WHERE slug = ?", ["assets/images/$im.jpg", $slug]); } catch (Throwable $e) {} }
+    try {
+        $has = (int)val("SELECT COUNT(*) FROM jm_gallery WHERE image = ?", ['assets/images/jawai-rabari.jpg']);
+        if (!$has) { $n = (int)val("SELECT COALESCE(MAX(sort_order),0) FROM jm_gallery");
+            foreach ([['Rabari herder at Jawai', 'Safari', 'jawai-rabari'], ['Jawai Dam and granite hills', 'Safari', 'jawai-hills-view'], ['Leopard and safari jeep', 'Safari', 'jawai-leopard-padma'], ['Greater flamingo, Jawai', 'Safari', 'jawai-flamingo'], ['Village life, Bera', 'Safari', 'jawai-village-hut']] as $g)
+                q("INSERT INTO jm_gallery (title,category,image,sort_order) VALUES (?,?,?,?)", [$g[0], $g[1], "assets/images/$g[2].jpg", ++$n]); }
+    } catch (Throwable $e) {}
+    set_setting('img_remap_v4', '1');
 }
 /** v3: safari and table rates are no longer published (enquiry only). Update the one article that mentioned them. */
 function jm_migrate_pricing_v3(): void {
@@ -198,6 +224,7 @@ function jm_migrate_copy_v4(): void {
     set_setting('copy_v4', '1');
 }
 jm_migrate_pricing_v3();
+jm_migrate_images_v4();
 /** v6: one room type, the Premium Room (rate starts from the price and varies by season). */
 function jm_migrate_single_room(): void {
     if (get_setting_raw('single_room_v6') === '1') return;
@@ -205,7 +232,7 @@ function jm_migrate_single_room(): void {
         $std = row("SELECT * FROM jm_rooms WHERE slug = 'standard-room'");
         if ($std && $std['name'] === 'Standard Room') {
             q("UPDATE jm_rooms SET slug='premium-room', name='Premium Room', category='Premium', tagline=?, description=?, image=?, featured=1, sort_order=1 WHERE id=?",
-              ['Calm, bright and made for easy stays', 'Our one room type: a comfortable air-conditioned Premium Room with a king bed, soft lighting and a quiet work corner, a good base for travellers and couples exploring Jawai. Rates start from the price shown and vary with the season; we confirm the exact rate for your dates on WhatsApp.', 'assets/images/room-modern.jpg', $std['id']]);
+              ['Calm, bright and made for easy stays', 'Our one room type: a comfortable air-conditioned Premium Room with a king bed, soft lighting and a quiet work corner, a good base for travellers and couples exploring Jawai. Rates start from the price shown and vary with the season; we confirm the exact rate for your dates on WhatsApp.', 'assets/images/hotel-day.jpg', $std['id']]);
         }
         foreach (['deluxe-room' => 'Deluxe Room', 'heritage-suite' => 'Heritage Suite', 'granite-hill-room' => 'Granite Hill Room', 'family-room' => 'Family Room', 'terrace-suite' => 'Terrace Suite'] as $sl => $nm)
             q("UPDATE jm_rooms SET status='hidden', featured=0 WHERE slug = ? AND name = ?", [$sl, $nm]);
@@ -221,8 +248,8 @@ function jm_migrate_room_types_v7(): void {
         $am = "Air conditioning\nFree Wi-Fi\nHot water 24 hours\nTea & coffee maker\nWork desk\nDaily housekeeping";
         q("UPDATE jm_rooms SET description = ?, featured = 1, sort_order = 1 WHERE slug = 'premium-room' AND description LIKE ?", ['A comfortable air-conditioned room with a king bed, soft lighting and a quiet work corner. Our starting rate; rates vary with the season and we confirm the exact rate for your dates on WhatsApp.', 'Our one room type%']);
         $def = [
-            ['deluxe-room', 'Deluxe Room', 'Deluxe', 'A little more space to spread out', 3000, '280 sq ft', '2 adults + 1 child', '1 King bed', 'Garden side', 'assets/images/room-bed.jpg', 'assets/images/room-modern.jpg', 'A roomier air-conditioned room with a king bed, sitting corner and good natural light, a relaxed base for a few days around Jawai.', 6, 1, 2],
-            ['super-deluxe-room', 'Super Deluxe Room', 'Super Deluxe', 'Our most spacious double room', 3500, '320 sq ft', '2 adults + 2 children', '1 King bed + sofa', 'Hill side', 'assets/images/room-heritage.jpg', 'assets/images/room-desert-suite.jpg', 'Our most spacious double room, with a king bed, sofa seating and a large window, good for longer stays and small families.', 4, 1, 3],
+            ['deluxe-room', 'Deluxe Room', 'Deluxe', 'A little more space to spread out', 3000, '280 sq ft', '2 adults + 1 child', '1 King bed', 'Garden side', 'assets/images/hotel-front.jpg', 'assets/images/hotel-day.jpg', 'A roomier air-conditioned room with a king bed, sitting corner and good natural light, a relaxed base for a few days around Jawai.', 6, 1, 2],
+            ['super-deluxe-room', 'Super Deluxe Room', 'Super Deluxe', 'Our most spacious double room', 3500, '320 sq ft', '2 adults + 2 children', '1 King bed + sofa', 'Hill side', 'assets/images/hotel-day.jpg', 'assets/images/hotel-front.jpg', 'Our most spacious double room, with a king bed, sofa seating and a large window, good for longer stays and small families.', 4, 1, 3],
         ];
         foreach ($def as $r) {
             $ex = row('SELECT * FROM jm_rooms WHERE slug = ?', [$r[0]]);
