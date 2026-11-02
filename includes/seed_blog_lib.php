@@ -81,3 +81,26 @@ function jm_seed_blog_batches(): void {
         set_setting('blog_batches_v1', '1');
     } catch (Throwable $e) { /* table not ready yet: try again on the next request */ }
 }
+
+/** Adds in-depth sections to existing articles once (marker prevents repeats; text typed in Admin is kept, sections are inserted before the FAQ or the closing call-to-action). */
+function jm_blog_extend_v1(): void {
+    if (get_setting_raw('blog_ext1_v1') === '1') return;
+    try {
+        require_once __DIR__ . '/seed_blog_ext1.php';
+        foreach (jm_blog_ext_1() as $slug => $secs) {
+            $r = row('SELECT id, body FROM jm_blog WHERE slug = ?', [$slug]); if (!$r) continue;
+            $body = (string)$r['body']; if (strpos($body, '<!--ext1-->') !== false) continue;
+            $html = "<!--ext1-->\n"; foreach ($secs as $s) $html .= '<h2>' . htmlspecialchars($s[0], ENT_QUOTES, 'UTF-8') . "</h2>\n" . jm_blog_body($s[1]);
+            if (($p = strpos($body, '<h2>Frequently asked questions</h2>')) !== false) $body = substr($body, 0, $p) . $html . substr($body, $p);
+            elseif (($p = strrpos($body, '<p>')) !== false && strpos(substr($body, $p), '{{') !== false) $body = substr($body, 0, $p) . $html . substr($body, $p);
+            else $body .= "\n" . $html;
+            $faq = jm_blog_faq_1()[$slug] ?? [];
+            if ($faq && strpos($body, '<h2>Frequently asked questions</h2>') === false) {
+                $body .= "\n<h2>Frequently asked questions</h2>\n";
+                foreach ($faq as $qa) $body .= '<h3>' . htmlspecialchars($qa[0], ENT_QUOTES, 'UTF-8') . "</h3>\n<p>" . htmlspecialchars($qa[1], ENT_QUOTES, 'UTF-8') . "</p>\n";
+            }
+            q('UPDATE jm_blog SET body = ? WHERE id = ?', [$body, (int)$r['id']]);
+        }
+        set_setting('blog_ext1_v1', '1');
+    } catch (Throwable $e) { /* try again on the next request */ }
+}
