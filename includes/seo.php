@@ -17,6 +17,7 @@ function seo_pages(): array {
         'contact'    => ['Contact & directions', 'contact'],
         'book'       => ['Booking / enquiry', 'book'],
         'policies'   => ['Policies', 'policies'],
+        'credits'    => ['Image credits', 'credits'],
         'blog'       => ['Travel journal (blog index)', 'blog'],
     ];
 }
@@ -68,6 +69,11 @@ function seo_defaults(): array {
             'title' => 'Policies: Booking, Cancellation & Safari Rules | Jawai Mumal',
             'desc'  => 'Booking, check-in, cancellation, safari-conduct and privacy policies for Jawai Mumal, Bera, Jawai.',
             'keywords' => 'Jawai Mumal policies, cancellation policy, safari rules Jawai',
+        ],
+        'credits' => [
+            'title' => 'Image Credits | Jawai Mumal',
+            'desc'  => 'Photographers and licences behind the pictures of Jawai, its leopards, people and food used on the Jawai Mumal website.',
+            'keywords' => 'Jawai Mumal image credits, photo credits, Wikimedia Commons Jawai',
         ],
         'blog' => [
             'title' => 'Jawai Travel Journal: Leopard Safari, Stay & Food Guides',
