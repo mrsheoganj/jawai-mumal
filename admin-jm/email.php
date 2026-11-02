@@ -39,6 +39,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if (!empty($_SESSION['mail_test'])) { $testResult = $_SESSION['mail_test']; unset($_SESSION['mail_test']); }
 $c = mail_cfg(); $hasPass = $c['pass'] !== '';
 $logs = rows('SELECT * FROM jm_mail_log ORDER BY id DESC LIMIT 40');
+if (isset($_GET['export'])) {
+    require_once __DIR__ . '/../includes/export.php';
+    $all = rows('SELECT * FROM jm_mail_log ORDER BY id DESC');
+    $cols = [['When', 18], ['Kind', 16], ['To', 30], ['Subject', 44], ['Status', 10, 'c'], ['Error', 40]];
+    $data = array_map(fn($m) => [$m['created_at'] ? date('d M Y H:i', strtotime($m['created_at'])) : '', $m['kind'], $m['to_addr'], $m['subject'], $m['status'], (string)$m['error']], $all);
+    $sub = 'Email log · ' . count($all) . ' message' . (count($all) === 1 ? '' : 's') . ' · generated ' . date('d M Y, H:i');
+    if ($_GET['export'] === 'pdf') export_pdf(export_filename('jawai-mumal-email-log', 'pdf'), 'Email log', $sub, $cols, $data);
+    export_xlsx(export_filename('jawai-mumal-email-log', 'xlsx'), 'Email log', setting('site_name') . ' – Email log', $sub, $cols, $data);
+}
 $tv = fn($k, $d) => e(mail_tpl($k, $d));
 admin_head('Email (SMTP)', 'email');
 ?>
@@ -83,7 +92,8 @@ admin_head('Email (SMTP)', 'email');
   <p style="margin:1.2rem 0 0" class="actions"><button class="btn btn--gold" name="action" value="save" type="submit"><?= icon('check', 18) ?> Save email settings</button></p>
 </form>
 <div class="card"><div class="toolbar" style="margin:0 0 .6rem"><h2 style="margin:0">Email log</h2>
-  <form method="post"><?= csrf_field() ?><input type="hidden" name="action" value="clearlog"><button class="btn btn--danger btn--sm" data-confirm="Clear the email log?"><?= icon('trash', 16) ?> Clear log</button></form></div>
+  <a class="btn btn--line btn--sm" href="?export=xlsx"><?= icon('download', 16) ?> Excel</a> <a class="btn btn--line btn--sm" href="?export=pdf"><?= icon('download', 16) ?> PDF</a>
+  <form method="post" style="display:inline"><?= csrf_field() ?><input type="hidden" name="action" value="clearlog"><button class="btn btn--danger btn--sm" data-confirm="Clear the email log?"><?= icon('trash', 16) ?> Clear log</button></form></div>
   <?php if ($logs): ?><div class="tablewrap" style="border:0"><table><thead><tr><th>When</th><th>Type</th><th>To</th><th>Subject</th><th>Result</th></tr></thead><tbody>
     <?php foreach ($logs as $l): ?><tr><td><?= e(date('d M, g:i a', strtotime($l['created_at']))) ?></td><td><span class="pill"><?= e($l['kind']) ?></span></td><td><?= e($l['to_addr']) ?></td><td><?= e($l['subject']) ?></td><td><?= $l['status'] === 'sent' ? pill_status('Confirmed') : '<span class="pill pill--New">failed</span><br><span class="muted">' . e($l['error']) . '</span>' ?></td></tr><?php endforeach; ?>
   </tbody></table></div><?php else: ?><p class="muted">No emails have been sent yet.</p><?php endif; ?></div>

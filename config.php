@@ -8,6 +8,8 @@ if (is_file(__DIR__ . '/config.local.php')) {
     require __DIR__ . '/config.local.php';
 }
 
+date_default_timezone_set('Asia/Kolkata');   // hotel time (the Hostinger server itself runs on UTC)
+
 if (session_status() === PHP_SESSION_NONE) {
     // Sessions are saved in our own folder (shared hosting otherwise deletes them after ~24 minutes) and kept for 30 days.
     $__sd = __DIR__ . '/data/sessions';

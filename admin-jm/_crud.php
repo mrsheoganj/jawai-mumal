@@ -103,6 +103,34 @@ function admin_crud(array $c): void {
         }
     }
 
+    // ---------- Export (Excel / PDF / CSV of everything in this list, built from the field definitions)
+    if (isset($_GET['export'])) {
+        require_once __DIR__ . '/../includes/export.php';
+        $fmt = in_array($_GET['export'], ['xlsx', 'pdf', 'csv'], true) ? $_GET['export'] : 'xlsx';
+        [$ws, $wp] = !empty($c['where']) ? ($c['where'])() : ['', []];
+        $all = rows("SELECT * FROM $t" . ($ws ? " WHERE $ws" : '') . " ORDER BY " . ($c['order'] ?? 'id'), $wp);
+        $ex = [];   // [label, col, type, options, width]
+        foreach ($c['fields'] as $col => $f) {
+            $ty = $f[1] ?? 'text'; if (in_array($ty, ['image', 'gallery'], true)) continue;
+            $money = in_array($col, ['price', 'amount', 'price_from', 'price_up_to'], true) || (strpos($col, 'price') !== false && $ty === 'number');
+            $ex[] = [$f[0], $col, $ty, $f[3] ?? null, $ty === 'textarea' ? 44 : ($money ? 12 : ($ty === 'number' || $ty === 'check' || $ty === 'select' ? 11 : 24)), $money ? 'm' : ($ty === 'number' ? 'n' : ($ty === 'check' || $ty === 'select' ? 'c' : 's'))];
+        }
+        $val = function ($r, $x) { $v = $r[$x[1]] ?? ''; if ($x[2] === 'check') return $v ? 'Yes' : 'No'; if ($x[2] === 'select' && is_array($x[3])) return $x[3][$v] ?? $v; return $v; };
+        $title = $c['title']; $sub = $title . ' · ' . count($all) . ' record' . (count($all) === 1 ? '' : 's') . ' · generated ' . date('d M Y, H:i');
+        $base = 'jawai-mumal-' . preg_replace('/[^a-z0-9]+/', '-', strtolower($title));
+        if ($fmt === 'csv') {
+            $safe = fn($v) => is_string($v) && $v !== '' && strpos("=+-@\t\r", $v[0]) !== false ? "'" . $v : $v;
+            header('Content-Type: text/csv; charset=utf-8'); header('Content-Disposition: attachment; filename="' . export_filename($base, 'csv') . '"');
+            $o = fopen('php://output', 'w'); fwrite($o, "\xEF\xBB\xBF"); fputcsv($o, array_map(fn($x) => $x[0], $ex), ',', '"', '\\');
+            foreach ($all as $r) fputcsv($o, array_map(fn($x) => $safe($val($r, $x)), $ex), ',', '"', '\\'); exit;
+        }
+        $use = $fmt === 'pdf' ? array_values(array_filter($ex, fn($x) => $x[2] !== 'textarea')) : $ex;
+        $cols = array_map(fn($x) => [$x[0], $x[4], $x[5]], $use);
+        $data = array_map(fn($r) => array_map(fn($x) => $val($r, $x), $use), $all);
+        if ($fmt === 'xlsx') export_xlsx(export_filename($base, 'xlsx'), $title, setting('site_name') . ' – ' . $title, $sub, $cols, $data);
+        export_pdf(export_filename($base, 'pdf'), $title, $sub, $cols, $data);
+    }
+
     admin_head($c['title'], $c['active']);
     if (!empty($c['top']) && !isset($_GET['edit']) && !isset($_GET['new'])) { ($c['top'])(); }
 
@@ -154,7 +182,8 @@ function admin_crud(array $c): void {
     $rows = rows("SELECT * FROM $t" . ($wsql ? " WHERE $wsql" : '') . " ORDER BY " . ($c['order'] ?? 'id'), $wpar);
     ?>
     <div class="toolbar"><p class="muted" style="margin:0"><?= count($rows) ?> <?= e($c['plural'] ?? $c['singular'] . 's') ?><?= !empty($c['intro']) ? ' · ' . e($c['intro']) : '' ?></p>
-      <a class="btn btn--gold" href="<?= $self ?>?new=1<?= e($c['add_query'] ?? '') ?>"><?= icon('plus', 18) ?> Add <?= e($c['singular']) ?></a></div>
+      <span class="actions"><a class="btn btn--line btn--sm" href="<?= $self ?>?export=xlsx"><?= icon('download', 16) ?> Excel</a><a class="btn btn--line btn--sm" href="<?= $self ?>?export=pdf"><?= icon('download', 16) ?> PDF</a>
+      <a class="btn btn--gold" href="<?= $self ?>?new=1<?= e($c['add_query'] ?? '') ?>"><?= icon('plus', 18) ?> Add <?= e($c['singular']) ?></a></span></div>
     <div class="tablewrap"><table>
       <thead><tr><?php if (!empty($c['thumb'])): ?><th></th><?php endif; ?><?php foreach ($c['list'] as $l): ?><th><?= e($l[0]) ?></th><?php endforeach; ?><th style="text-align:right">Actions</th></tr></thead>
       <tbody>

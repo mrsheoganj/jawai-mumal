@@ -19,6 +19,7 @@ try {
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_TIMEOUT => 2,
     ]);
+    try { $pdo->exec("SET time_zone = '+05:30'"); } catch (Throwable $e) {}   // new timestamps (bookings, logs) in Indian time
 } catch (Throwable $e) {
     if (DB_EXPLICIT) {   // a MySQL database was configured on purpose: never hide a broken connection behind a different database
         error_log('Jawai Mumal: MySQL connection failed: ' . $e->getMessage());
