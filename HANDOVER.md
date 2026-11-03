@@ -11,7 +11,7 @@ No passwords are stored in this repository. They live on the server (`config.loc
 3. Your database, uploaded photos and `config.local.php` are never overwritten by an update.
 
 ## 2. Admin panel (what each menu does)
-Bookings & enquiries (status, notes, confirmation email, CSV export) · Rooms · Menu · Safaris · Explore Jawai places · Gallery · Journal (blog) · FAQs · Testimonials · Home banner slides · Page text & images · Site content · SEO · Email (SMTP) · Site mode (Coming soon / Live / Maintenance) · Go-live cleanup · My account.
+Bookings & enquiries (status, notes, confirmation email, CSV export) · Rooms · Menu · Safaris · Explore Jawai places · Gallery · Journal (blog) · FAQs · Testimonials · Home banner slides · Page text & images · Site content · SEO · Email (SMTP) · Site mode (Coming soon / Live / Maintenance) · My account.
 
 **Forgot the admin password?** Use *Forgot your password?* on the sign-in page. A one-hour reset link is emailed to the admin email (info@jawaimumal.com). Change that address under *My account*.
 

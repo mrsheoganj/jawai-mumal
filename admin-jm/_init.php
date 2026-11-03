@@ -35,7 +35,6 @@ function admin_nav(): array {
             ['email.php', 'email', 'Email (SMTP)', 'mail'],
             ['mode.php', 'mode', 'Launch & maintenance', 'bell'],
             ['update.php', 'update', 'Update from GitHub', 'refresh'],
-            ['cleanup.php', 'cleanup', 'Go-live cleanup', 'trash'],
             ['account.php', 'account', 'My account', 'lock'],
         ]],
     ];

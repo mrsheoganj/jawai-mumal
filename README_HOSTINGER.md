@@ -58,7 +58,6 @@ The setup script puts the site in **Coming soon** mode by default, launching **6
 
 - **Stay signed in** – tick “Keep me signed in” on the login page (30 days on that device).
 - **Email (SMTP)** – Admin → *Email (SMTP)*. Hostinger: create a mailbox in hPanel → Emails, then use host `smtp.hostinger.com`, port `465`, SSL, the mailbox address and its password. Use *Send test email* to verify. Booking alerts go to the addresses you list; guests get a receipt if they leave an email. All templates are editable and every send is logged.
-- **Go-live cleanup** – Admin → *Settings → Go-live cleanup* deletes test enquiries/bookings (type `RESET` to confirm).
 - **Clean URLs** – pages open as `/rooms`, `/contact` etc. (no `.php`); this needs the `.htaccess` that ships in the repo.
 
 ## SEO
