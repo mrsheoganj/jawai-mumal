@@ -21,6 +21,7 @@ Bookings & enquiries (status, notes, confirmation email, CSV export) · Rooms ·
 - Visit statistics use no cookies and store no IP address (a visitor is a one-way daily code). The hotel team is never counted while signed in.
 
 ## 3. Email – how it works
+- **Public email** (footer, contact page, Google listing): `booking@jawaimumal.com`. `info@jawaimumal.com` is for the admin only (password reset and booking alerts) and is never shown on the website.
 - Mailbox used for sending: `booking@jawaimumal.com` (Hostinger SMTP `smtp.hostinger.com`, port 465, SSL). Its password is saved **encrypted in the database** (Admin → Email (SMTP)); change it there if the mailbox password changes.
 - Every new booking or enquiry: one alert to `info@jawaimumal.com` and one to `booking@jawaimumal.com`; the guest receives an acknowledgement from `booking@jawaimumal.com` (replies go to the same address).
 - *Bookings → Send confirmation* emails the guest a confirmed booking.

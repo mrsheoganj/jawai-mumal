@@ -38,7 +38,7 @@ function settings_schema(): array {
         'owner2_role'  => ['Contact', 'Contact 2 – role', 'text', 'Reservations'],
         'owner2_phone' => ['Contact', 'Contact 2 – phone', 'text', '+91 95113 09522'],
         'whatsapp'     => ['Contact', 'WhatsApp number (digits only, with country code)', 'text', '916367968353'],
-        'email'        => ['Contact', 'Email (leave empty to hide)', 'text', 'info@jawaimumal.com'],
+        'email'        => ['Contact', 'Public email shown in the footer and contact page (leave empty to hide)', 'text', 'booking@jawaimumal.com', 'Use the booking address. info@jawaimumal.com is for the admin only and is not shown on the website.'],
         'address'      => ['Contact', 'Address', 'textarea', "Near Up-Tehsil Office, Bera Village,\nBera–Bali Road, District Pali,\nRajasthan, India"],
         'map_lat'      => ['Contact', 'Hotel latitude', 'text', '25.006222', 'For the exact pin: in Google Maps press and hold on the hotel, copy the two numbers shown, and paste them here. All maps, directions and distances use these.'],
         'map_lng'      => ['Contact', 'Hotel longitude', 'text', '73.173296'],
