@@ -97,10 +97,10 @@ function ins_live(): array {
 }
 if (isset($_GET['api'])) {
     header('Content-Type: application/json; charset=utf-8');
-    echo json_encode($_GET['api'] === 'live' ? ins_live() : ins_data(in_array((int)($_GET['range'] ?? 7), [1, 7, 30, 90], true) ? (int)$_GET['range'] : 7), JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
+    echo json_encode($_GET['api'] === 'live' ? ins_live() : ins_data(in_array((int)($_GET['range'] ?? 7), [1, 7, 30, 90], true) ? (int)($_GET['range'] ?? 7) : 7), JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
     exit;
 }
-$range = in_array((int)($_GET['range'] ?? 7), [1, 7, 30, 90], true) ? (int)$_GET['range'] : 7;
+$range = in_array((int)($_GET['range'] ?? 7), [1, 7, 30, 90], true) ? (int)($_GET['range'] ?? 7) : 7;
 ?><!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
 <title>Insights · <?= e(setting('site_name')) ?></title><link rel="icon" href="<?= url('assets/brand/favicon.ico') ?>"><?= font_head() ?><link rel="stylesheet" href="<?= asset('assets/css/pk.css') ?>"></head>
 <body>
