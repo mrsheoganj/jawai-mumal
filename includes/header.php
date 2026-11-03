@@ -31,6 +31,12 @@ if (seo_cfg('blog_in_menu') === '1') $nav['blog'] = [t('nav.blog', 'Journal'), '
 <noscript><style>.rv{opacity:1!important;transform:none!important}.preloader{display:none!important}</style></noscript>
 </head>
 <body class="<?= e($bodyClass ?? '') ?>" data-tax="<?= e(setting('tax_percent')) ?>" data-hit="<?= e(url('hit.php')) ?>">
+<div class="loader" id="loader" role="status" aria-live="polite" aria-label="<?= e(t('loader.label', 'Loading')) ?>">
+  <div class="loader__mark">
+    <svg class="loader__ring" viewBox="0 0 100 100" aria-hidden="true"><circle class="track" cx="50" cy="50" r="46"/><circle class="arc" cx="50" cy="50" r="46"/></svg>
+    <img src="<?= e(img(setting('logo_emblem'))) ?>" alt="" width="180" height="180" fetchpriority="high" decoding="sync">
+  </div>
+</div>
 <a class="skip" href="#main">Skip to content</a>
 
 

@@ -4,6 +4,19 @@
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* Loading screen (logo + turning ring): shown while a page loads, while the next page opens and while a form is sent */
+  var loader = $('#loader'), shownAt = Date.now(), firstVisit = true;
+  try { firstVisit = !sessionStorage.getItem('jmSeen'); } catch (e) {}
+  var hideLoader = function () {
+    if (!loader) return;
+    var wait = Math.max(0, (firstVisit ? 1100 : 350) - (Date.now() - shownAt));
+    setTimeout(function () { loader.classList.add('is-done'); try { sessionStorage.setItem('jmSeen', '1'); } catch (e) {} }, wait);
+  };
+  var showLoader = function () { if (loader) { loader.style.animation = 'none'; loader.classList.remove('is-done'); } };
+  if (document.readyState === 'complete') hideLoader(); else window.addEventListener('load', hideLoader);
+  setTimeout(hideLoader, 5000);
+  window.addEventListener('pageshow', function (e) { if (e.persisted && loader) loader.classList.add('is-done'); });
+
 
   /* Header */
   var nav = $('#nav'), tgl = $('#navtoggle');
@@ -146,15 +159,17 @@
     el.addEventListener('mouseenter', on(true)); el.addEventListener('mouseleave', on(false)); el.addEventListener('focus', on(true)); el.addEventListener('blur', on(false));
   });
 
+  /* Show the loading screen once a form has passed validation and is being sent */
+  document.addEventListener('submit', function (e) { var f = e.target; if (!e.defaultPrevented && f && f.method && f.method.toLowerCase() === 'post' && !/\/admin(-jm)?\//.test(f.action)) setTimeout(function () { if (!e.defaultPrevented) showLoader(); }, 0); });
+
   /* Smooth page transitions for internal links */
   document.addEventListener('click', function (e) {
-    var a = e.target.closest && e.target.closest('a[href]'); if (!a || reduce || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank' || a.hasAttribute('download')) return;
+    var a = e.target.closest && e.target.closest('a[href]'); if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank' || a.hasAttribute('download')) return;
     var u; try { u = new URL(a.href, location.href); } catch (x) { return; }
     if (u.origin !== location.origin || (u.pathname === location.pathname && u.hash) || /^(tel|mailto):/.test(a.href)) return;
     if (/\/admin(-jm)?\//.test(u.pathname)) return;
-    e.preventDefault(); document.body.classList.add('is-leaving'); setTimeout(function () { location.href = a.href; }, 200);
+    e.preventDefault(); showLoader(); setTimeout(function () { location.href = a.href; }, 160);
   });
-  window.addEventListener('pageshow', function (e) { if (e.persisted) document.body.classList.remove('is-leaving'); });
 
   /* Hide the floating WhatsApp button while a form is on screen (mobile) */
   var bb = $$('.bookbox, .hero, .footer');
