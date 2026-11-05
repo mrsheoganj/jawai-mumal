@@ -326,6 +326,7 @@ jm_migrate_private_only_v9();
 if (get_setting_raw('blog_seeded') !== '1') { require_once __DIR__ . '/seed_blog.php'; jm_seed_blog(); }
 if (get_setting_raw('blog_batches_v1') !== '1') { require_once __DIR__ . '/seed_blog_lib.php'; jm_seed_blog_batches(); }
 jm_mark_spam_v1();
+if (get_setting_raw('blog_batch6_v1') !== '1') { require_once __DIR__ . '/seed_blog_lib.php'; jm_seed_blog_batch6(); }
 if (get_setting_raw('blog_ext1_v1') !== '1') { require_once __DIR__ . '/seed_blog_lib.php'; jm_blog_extend_v1(); }
 if (get_setting_raw('blog_more_v1') !== '1' || get_setting_raw('blog_img_v7') !== '1') { require_once __DIR__ . '/seed_blog2.php'; jm_seed_blog_more(); jm_fix_blog_images(); }
 upd_maybe_auto();   // live sync with GitHub (if enabled)

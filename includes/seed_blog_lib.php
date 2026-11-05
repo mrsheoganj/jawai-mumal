@@ -104,3 +104,17 @@ function jm_blog_extend_v1(): void {
         set_setting('blog_ext1_v1', '1');
     } catch (Throwable $e) { /* try again on the next request */ }
 }
+
+/** Adds the 30 articles of batch 6 once (by slug; Admin edits are never overwritten). */
+function jm_seed_blog_batch6(): void {
+    if (get_setting_raw('blog_batch6_v1') === '1') return;
+    try {
+        require_once __DIR__ . '/seed_blog6.php';
+        $pool = ['jawai-leopard-walk', 'jawai-leopard-padma', 'jawai-leopard-rock', 'jawai-leopard-watch', 'jawai-leopard-stride', 'jawai-leopard-boulder', 'jawai-bandh', 'jawai-hills-view', 'jawai-granite-hill', 'jawai-lake-birds', 'jawai-rabari', 'jawai-village-hut', 'jawai-flamingo', 'jawai-peafowl', 'jawai-leopard-sunset'];
+        $rows = jm_blog_build(jm_blog_specs_6(), 90, $pool);
+        foreach ($rows as $k => &$r) $r[4] = date('Y-m-d', strtotime('2026-10-04') + $k * 86400) . ($k % 2 ? ' 15:00:00' : ' 09:00:00');   // one a day, all already live
+        unset($r);
+        jm_blog_add($rows);
+        set_setting('blog_batch6_v1', '1');
+    } catch (Throwable $e) { /* table not ready yet: try again on the next request */ }
+}
