@@ -1,7 +1,7 @@
 # Jawai Mumal — Hotel · Restaurant · Safari
 
 Website and admin panel for **Jawai Mumal**, Bera village, Bera–Bali Road, Pali, Rajasthan — jawaimumal.com
-Owners: Nilesh Singh Chouhan (+91 63679 68353) · Devendra Singh (+91 95113 09522)
+Owners: Nilesh Singh Chouhan (+91 83066 39203) · Devendra Singh (+91 95113 09522)
 
 PHP 8 + MySQL (falls back to SQLite automatically). No build step.
 

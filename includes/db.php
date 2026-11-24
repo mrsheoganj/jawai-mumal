@@ -308,6 +308,15 @@ function jm_migrate_remove_family_v8(): void {
     set_setting('family_v8', '1');
 }
 jm_migrate_room_types_v7();
+/** v10: Nilesh Singh Chouhan's number (also the main WhatsApp Business number) changed to +91 83066 39203. Only replaces the old number; any other value typed in Admin is kept. */
+function jm_migrate_phone_v10(): void {
+    if (get_setting_raw('phone_v10') === '1') return;
+    try {
+        q("UPDATE jm_settings SET svalue = ? WHERE skey = 'owner1_phone' AND REPLACE(REPLACE(svalue, ' ', ''), '-', '') IN ('+916367968353', '6367968353', '916367968353')", ['+91 83066 39203']);
+        q("UPDATE jm_settings SET svalue = ? WHERE skey = 'whatsapp' AND REPLACE(REPLACE(REPLACE(svalue, ' ', ''), '+', ''), '-', '') IN ('916367968353', '6367968353')", ['918306639203']);
+    } catch (Throwable $e) {}
+    set_setting('phone_v10', '1');
+}
 /** v9: safaris are private jeeps only. */
 function jm_migrate_private_only_v9(): void {
     if (get_setting_raw('private_v9') === '1') return;
@@ -323,6 +332,7 @@ function jm_migrate_private_only_v9(): void {
 }
 jm_migrate_remove_family_v8();
 jm_migrate_private_only_v9();
+jm_migrate_phone_v10();
 if (get_setting_raw('blog_seeded') !== '1') { require_once __DIR__ . '/seed_blog.php'; jm_seed_blog(); }
 if (get_setting_raw('blog_batches_v1') !== '1') { require_once __DIR__ . '/seed_blog_lib.php'; jm_seed_blog_batches(); }
 jm_mark_spam_v1();

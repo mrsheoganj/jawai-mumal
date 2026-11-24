@@ -33,11 +33,11 @@ function settings_schema(): array {
         // ---------------- Contact
         'owner1_name'  => ['Contact', 'Contact 1 – name', 'text', 'Nilesh Singh Chouhan'],
         'owner1_role'  => ['Contact', 'Contact 1 – role', 'text', 'Reservations'],
-        'owner1_phone' => ['Contact', 'Contact 1 – phone', 'text', '+91 63679 68353'],
+        'owner1_phone' => ['Contact', 'Contact 1 – phone', 'text', '+91 83066 39203'],
         'owner2_name'  => ['Contact', 'Contact 2 – name', 'text', 'Devendra Singh'],
         'owner2_role'  => ['Contact', 'Contact 2 – role', 'text', 'Reservations'],
         'owner2_phone' => ['Contact', 'Contact 2 – phone', 'text', '+91 95113 09522'],
-        'whatsapp'     => ['Contact', 'WhatsApp number (digits only, with country code)', 'text', '916367968353'],
+        'whatsapp'     => ['Contact', 'WhatsApp number (digits only, with country code)', 'text', '918306639203'],
         'email'        => ['Contact', 'Public email shown in the footer and contact page (leave empty to hide)', 'text', 'booking@jawaimumal.com', 'Use the booking address. info@jawaimumal.com is for the admin only and is not shown on the website.'],
         'address'      => ['Contact', 'Address', 'textarea', "Near Up-Tehsil Office, Bera Village,\nBera–Bali Road, District Pali,\nRajasthan, India"],
         'map_lat'      => ['Contact', 'Hotel latitude', 'text', '25.006222', 'For the exact pin: in Google Maps press and hold on the hotel, copy the two numbers shown, and paste them here. All maps, directions and distances use these.'],
